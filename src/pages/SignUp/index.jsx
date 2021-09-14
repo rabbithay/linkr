@@ -23,6 +23,15 @@ function SignUp() {
         }
     }
 
+    const regexImageURL = (url) => {
+        if (/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g.test(url)) {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+
     const ValidateInputs = () => {
         if (email.length === 0 || password.length === 0 || name.length === 0 || imgUrl.length === 0) {
             Swal.fire({
@@ -40,6 +49,13 @@ function SignUp() {
                 text: 'Insira um e-mail é válido',
               });
         }
+        else if (!regexImageURL(imgUrl)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insira uma url válida',
+              });
+        }
         else {
             HandleResponseFromAPI();
         }
@@ -49,7 +65,7 @@ function SignUp() {
         setLoading(true);
         SignUpAPI(email, password, name, imgUrl)
             .then(() => history.push('/'))
-            .catch(() => {
+            .catch((err) => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
