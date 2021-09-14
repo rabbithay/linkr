@@ -13,6 +13,18 @@ const signUpAPI = (email, password, username, pictureUrl) => {
 	return promise;
 };
 
+const signInAPI = (email, password) => {
+	let body = 
+	{
+		email,
+		password
+	};
+
+	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in', body);
+	return promise;
+};
+
 export {
-	signUpAPI
+	signUpAPI,
+	signInAPI
 };
