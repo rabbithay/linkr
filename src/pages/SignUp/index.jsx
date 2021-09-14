@@ -1,126 +1,107 @@
-import styled from "styled-components";
-import { Link, useHistory } from "react-router-dom";
-import { useState } from "react";
-import Swal from "sweetalert2";
+import React from 'react';
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
-import { SignUpAPI } from "../../service/service.auth";
+import { signUpAPI } from '../../service/service.auth';
 
 
 function SignUp() {
-    let [email, setEmail] = useState('');
-    let [password, setPassword] = useState('');
-    let [name, setName] = useState('');
-    let [imgUrl, setImgUrl] = useState('');
-    let [loading, setLoading] = useState(false);
-    let history = useHistory();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [name, setName] = useState('');
+	const [imgUrl, setImgUrl] = useState('');
+	const [loading, setLoading] = useState(false);
+	const history = useHistory();
+	const ruleRegexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	const ruleRegexURL = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
-    const regexEmail = (email) => {
-        if (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
-            return true
-        }
-        else {
-            return false
-        }
-    }
+	const ThrowSwalError = (text) => {
+		Swal.fire({
+			icon: 'error',
+			title: 'Quase lá!',
+			text: text,
+		});
+	};
 
-    const regexImageURL = (url) => {
-        if (/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g.test(url)) {
-            return true
-        }
-        else {
-            return false
-        }
-    }
+	const regex = (str, rule) => {
+		return (rule.test(str));
+	};
 
-    const ValidateInputs = () => {
-        if (email.length === 0 || password.length === 0 || name.length === 0 || imgUrl.length === 0) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Quase lá!',
-                text: 'Você deve preencher todos os campos',
-              });
-            return
-        }
+	const ValidateInputs = () => {
+		if (email.length === 0 || password.length === 0 || name.length === 0 || imgUrl.length === 0) {
+			ThrowSwalError('Você deve preencher todos os campos');
+			return;
+		}
 
-        if (!regexEmail(email)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Insira um e-mail é válido',
-              });
-        }
-        else if (!regexImageURL(imgUrl)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Insira uma url válida',
-              });
-        }
-        else {
-            HandleResponseFromAPI();
-        }
-    }
+		if (!regex(email, ruleRegexEmail)) {
+			ThrowSwalError('Insira um e-mail é válido');
+		}
+		else if (!regex(imgUrl, ruleRegexURL)) {
+			ThrowSwalError('Insira uma url válida');
+		}
+		else {
+			HandleResponseFromAPI();
+		}
+	};
     
-    const HandleResponseFromAPI = () => {
-        setLoading(true);
-        SignUpAPI(email, password, name, imgUrl)
-            .then(() => history.push('/'))
-            .catch((err) => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Esse e-mail já está cadastrado',
-                  });
-                setLoading(false);
-            });
-    }
-    return (
-        <SignUpPage>
-            <Disclaimer>
-                <Title>linkr</Title>
-                <Description>
+	const HandleResponseFromAPI = () => {
+		setLoading(true);
+		signUpAPI(email, password, name, imgUrl)
+			.then(() => history.push('/'))
+			.catch(() => {
+				ThrowSwalError('Esse e-mail já está cadastrado');
+				setLoading(false);
+			});
+	};
+	return (
+		<SignUpPage>
+			<Disclaimer>
+				<Title>linkr</Title>
+				<Description>
                     save, share and discover<br />the best links on the web
-                </Description>
-            </Disclaimer>
-            <Form >
-                <Input 
-                    required
-                    type='email'
-                    placeholder='e-mail'
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                />
-                <Input
-                    required
-                    type='password'
-                    placeholder='password'
-                    onChange={(e) => setPassword(e.target.value)} value={password}
-                />
-                <Input
-                    required
-                    type='text'
-                    placeholder='name'
-                    onChange={(e) => setName(e.target.value)}
-                    value={name}
-                />
-                <Input
-                    required
-                    type='url'
-                    placeholder='picture url'
-                    onChange={(e) => setImgUrl(e.target.value)}
-                    value={imgUrl}
-                />
+				</Description>
+			</Disclaimer>
+			<Form >
+				<Input 
+					required
+					type='email'
+					placeholder='e-mail'
+					onChange={(e) => setEmail(e.target.value)}
+					value={email}
+				/>
+				<Input
+					required
+					type='password'
+					placeholder='password'
+					onChange={(e) => setPassword(e.target.value)} value={password}
+				/>
+				<Input
+					required
+					type='text'
+					placeholder='name'
+					onChange={(e) => setName(e.target.value)}
+					value={name}
+				/>
+				<Input
+					required
+					type='url'
+					placeholder='picture url'
+					onChange={(e) => setImgUrl(e.target.value)}
+					value={imgUrl}
+				/>
 
-                <Button type='submit' loading={loading ? 1 : 0} onClick={ValidateInputs}>
+				<Button type='submit' loading={loading ? 1 : 0} onClick={ValidateInputs}>
                     Sign Up
-                </Button>
+				</Button>
 
-                <Link to='/'>
-                    <P>Switch back to log in</P>
-                </Link>
-            </Form>
-        </SignUpPage>
-    );
+				<Link to='/'>
+					<P>Switch back to log in</P>
+				</Link>
+			</Form>
+		</SignUpPage>
+	);
 }
 
 const SignUpPage = styled.div`
@@ -132,7 +113,7 @@ const SignUpPage = styled.div`
     @media(max-width: 600px) {
         flex-direction: column;
     }
-`
+`;
 
 const Disclaimer = styled.div`
     width: 65%;
@@ -152,7 +133,7 @@ const Disclaimer = styled.div`
         width: 100%;
         height: 25%;
     }
-`
+`;
 
 const Title = styled.p`
     font-size: 106px;
@@ -163,7 +144,7 @@ const Title = styled.p`
         margin-bottom: 0px;
         font-size: 85px;
     }
-`
+`;
 
 const Description = styled.p`
     font-size: 43px;
@@ -172,7 +153,7 @@ const Description = styled.p`
     @media(max-width: 600px) {
         font-size: 23px;
     }
-`
+`;
 
 const Form = styled.div`
     width: 35%;
@@ -188,7 +169,7 @@ const Form = styled.div`
         width: 100%;
         height: 75%;
     }
-`
+`;
 
 const Input = styled.input`
     width: 80%;
@@ -201,7 +182,7 @@ const Input = styled.input`
     padding-left: 12px;
     font-weight: bold;
     font-family: 'Oswald';
-`
+`;
 
 const Button = styled.button`
     width: 80%;
@@ -216,7 +197,7 @@ const Button = styled.button`
     padding-left: 12px;
     font-weight: bold;
     font-family: 'Oswald';
-`
+`;
 
 const P = styled.p`
     color: #FFFFFF;
@@ -224,6 +205,6 @@ const P = styled.p`
     font-size: 18px;
     font-family: 'Lato';
     font-weight: normal;
-`
+`;
 
-export default SignUp
+export default SignUp;
