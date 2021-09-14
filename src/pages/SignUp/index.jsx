@@ -17,7 +17,7 @@ function SignUp() {
 	const ruleRegexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	const ruleRegexURL = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
-	const ThrowSwalError = (text) => {
+	const throwSwalError = (text) => {
 		Swal.fire({
 			icon: 'error',
 			title: 'Quase lá!',
@@ -29,29 +29,29 @@ function SignUp() {
 		return (rule.test(str));
 	};
 
-	const ValidateInputs = () => {
+	const validateInputs = () => {
 		if (email.length === 0 || password.length === 0 || name.length === 0 || imgUrl.length === 0) {
-			ThrowSwalError('Você deve preencher todos os campos');
+			throwSwalError('Você deve preencher todos os campos');
 			return;
 		}
 
 		if (!regex(email, ruleRegexEmail)) {
-			ThrowSwalError('Insira um e-mail é válido');
+			throwSwalError('Insira um e-mail é válido');
 		}
 		else if (!regex(imgUrl, ruleRegexURL)) {
-			ThrowSwalError('Insira uma url válida');
+			throwSwalError('Insira uma url válida');
 		}
 		else {
-			HandleResponseFromAPI();
+			handleResponseFromAPI();
 		}
 	};
     
-	const HandleResponseFromAPI = () => {
+	const handleResponseFromAPI = () => {
 		setLoading(true);
 		signUpAPI(email, password, name, imgUrl)
 			.then(() => history.push('/'))
 			.catch(() => {
-				ThrowSwalError('Esse e-mail já está cadastrado');
+				throwSwalError('Esse e-mail já está cadastrado');
 				setLoading(false);
 			});
 	};
@@ -92,7 +92,7 @@ function SignUp() {
 					value={imgUrl}
 				/>
 
-				<Button type='submit' loading={loading ? 1 : 0} onClick={ValidateInputs}>
+				<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
                     Sign Up
 				</Button>
 
