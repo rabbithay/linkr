@@ -65,27 +65,27 @@ function SignUp() {
 			</Disclaimer>
 			<Form >
 				<Input 
-					required
+					loading={loading ? 1 : 0}
 					type='email'
 					placeholder='e-mail'
 					onChange={(e) => setEmail(e.target.value)}
 					value={email}
 				/>
 				<Input
-					required
+					loading={loading ? 1 : 0}
 					type='password'
 					placeholder='password'
 					onChange={(e) => setPassword(e.target.value)} value={password}
 				/>
 				<Input
-					required
+					loading={loading ? 1 : 0}
 					type='text'
 					placeholder='name'
 					onChange={(e) => setName(e.target.value)}
 					value={name}
 				/>
 				<Input
-					required
+					loading={loading ? 1 : 0}
 					type='url'
 					placeholder='picture url'
 					onChange={(e) => setImgUrl(e.target.value)}
@@ -178,8 +178,9 @@ const Input = styled.input`
     color: #9F9F9F;
     border-radius: 6px;
     margin-bottom: 13px;
-    font-size: 20px;
     padding-left: 12px;
+    pointer-events: ${props => props.loading ? 'none' : 'all'};
+    font-size: 20px;
     font-weight: bold;
     font-family: 'Oswald';
 `;
