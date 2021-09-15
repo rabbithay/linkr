@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-	BrowserRouter as Router, Switch, Route,
+	BrowserRouter as Router, Switch, Route, Redirect
 } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GlobalStyle from './styles/GlobalStyle';
 import UserContext from './contexts/UserContext';
 import SignIn from './pages/SignIn';
@@ -13,14 +13,23 @@ import MyPosts from './pages/MyPosts';
 import Hashtag from './pages/Hashtag';
 
 function App() {
-	const [userInfo, setUserInfo] = useState({name: '', photo: ''});
+	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
+	const [userInfo, setUserInfo] = useState('');
+	useEffect(() => {
+		if (infoFromLocalStorage !== null) {
+			setUserInfo(infoFromLocalStorage);
+		}
+	}, []);
+
 
 	return (
 		<UserContext.Provider value={{userInfo, setUserInfo}}>
 			<Router>
 				<GlobalStyle/>
 				<Switch>
-					<Route path="/" exact component={SignIn} />
+					<Route path="/" exact> 
+						{userInfo.token !== undefined ? <Redirect to="/timeline" /> : <SignIn />}
+					</Route>
 					<Route path="/sign-up" exact component={SignUp} />
 					<Route path="/timeline" exact component={Timeline} />
 					<Route path="/my-posts" exact component={MyPosts} />

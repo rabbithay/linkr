@@ -1,17 +1,18 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
+import UserContext from '../../contexts/UserContext';
 
 
 function Header () {
-	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-	const userProfilePhoto = userInfo.userImg;
 	const [enabled, setEnabled] = useState(false);
 	const history = useHistory();
 	let dropdownRef = useRef();
+	const {userInfo} = useContext(UserContext);
+	const userProfilePhoto = userInfo.userImg;
 
 	const onClick = (click) => {
 		if (dropdownRef.current !== null) {
