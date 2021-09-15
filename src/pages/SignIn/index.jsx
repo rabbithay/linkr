@@ -1,16 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { signInAPI } from '../../service/service.auth';
+import UserContext from '../../contexts/UserContext';
 
 
 function SignIn(){
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
+	const history = useHistory();
+	const {setUserInfo} = useContext(UserContext);
 	const ruleRegexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	
 	const throwSwalError = (text) => {
@@ -50,6 +53,8 @@ function SignIn(){
 					userId: response.data.user.id,
 					userName: response.data.user.name
 				};
+				setUserInfo(userInfo);
+
 				userInfo = JSON.stringify(userInfo);
 				localStorage.setItem('userInfo', userInfo);
 				
