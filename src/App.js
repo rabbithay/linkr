@@ -34,7 +34,7 @@ function App() {
 					<Route path="/timeline" exact component={Timeline} />
 					<Route path="/my-posts" exact component={MyPosts} />
 					<Route path="/user/:id" exact />
-					<Route path="/hashtagh/:hashtag" exact component={Hashtag} />
+					<Route path="/hashtag/:hashtag" exact component={Hashtag} />
 					<Route path="/my-likes" exact component={MyLikes} />
 				</Switch>
 			</Router>
