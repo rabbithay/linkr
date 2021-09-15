@@ -1,16 +1,40 @@
 import styled from 'styled-components';
 import React from 'react';
+import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 export default function CreatePost() {
+	const [link, setLink] = useState('');
+	const [linkDescription, setLinkDescription] = useState('');
+
+	const publishPost = (e) => {
+		e.preventDefault();
+		if (link === ''){
+			Swal.fire('O link não pode estar vazio 🙄');
+			return;
+		}
+
+
+	};
+
 	return (
 		<Container>
 			<img src='https://pbs.twimg.com/media/ECa2_i3W4AEm5jd.jpg' alt='perfil' />
 			<PostContent>
-				<form>
+				<form onSubmit={publishPost}>
 					<h2>O que você tem pra favoritar hoje?</h2>
 					<fieldset>
-						<Link type='url' placeholder='http:// ...' />
-						<LinkDescription  placeholder='Comente alguma coisa sobre esse link' />
+						<Link 
+							type='url' 
+							placeholder='http:// ...'  
+							value={link} 
+							onChange={e => setLink(e.target.value)}
+						/>
+						<LinkDescription  
+							placeholder='Comente alguma coisa sobre esse link' 
+							value={linkDescription} 
+							onChange={e => setLinkDescription(e.target.value)}
+						/>
 						<button type='submit'>Publicar</button>
 					</fieldset>
 				</form>
