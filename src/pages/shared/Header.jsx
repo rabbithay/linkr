@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useContext, useState } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 
@@ -11,13 +11,45 @@ function Header () {
 	const {userInfo} = useContext(UserContext);
 	const userProfilePhoto = userInfo.photo;
 	const [enabled, setEnabled] = useState(false);
+	const history = useHistory();
+	let dropdownRef = useRef();
+
+	const onClick = (click) => {
+		if (dropdownRef.current !== null) {
+			if (!dropdownRef.current.contains(click.target)) {
+				setEnabled(false);
+				document.removeEventListener('click', (e) => onClick(e));
+			}
+		}
+	};
+	
+	const toggleDropdown = () => {
+		if (enabled){
+			setEnabled(false);
+			document.addEventListener('click', onClick);
+		}
+		else {
+			setEnabled(true);
+		}
+	};
+
+	const redirect = (destination) => {
+		document.removeEventListener('click', (e) => onClick(e));
+		history.push(destination);
+	};
+
+	const logout = () => {
+		localStorage.removeItem('token');
+		redirect('/');
+	};
+	
 
 	return (
-		<Topbar>
+		<Topbar >
 			<P>linkr</P>
-			<Container>
-				<Dropdown>
-					<DropdownButton onClick={() => enabled ? setEnabled(false) : setEnabled(true)}>
+			<Container ref={dropdownRef}>
+				<Dropdown onClick={toggleDropdown}>
+					<DropdownButton>
 						{enabled ? 
 							<ChevronDownOutline
 								color={'#FFFFFF'} 
@@ -33,27 +65,21 @@ function Header () {
 					</DropdownButton>
 
 					<DropdownContent enabled={enabled ? 1 : 0}>
-						<Link>
-							<DropwdownOption>
-								My posts
-							</DropwdownOption>
-						</Link>
+						<DropwdownOption onClick={() => redirect('/my-posts')}>
+							My posts
+						</DropwdownOption>
 
-						<Link>
-							<DropwdownOption>
-								My likes
-							</DropwdownOption>
-						</Link>
+						<DropwdownOption onClick={() => redirect('/my-likes')}>
+							My likes
+						</DropwdownOption>
 
-						<Link>
-							<DropwdownOption>
-								Logout
-							</DropwdownOption>
-						</Link>
+						<DropwdownOption onClick={logout}>
+							Logout
+						</DropwdownOption>
 					</DropdownContent>
 				</Dropdown>
 
-				<ProfilePhoto src={userProfilePhoto} />
+				<ProfilePhoto src={userProfilePhoto} onClick={toggleDropdown}/>
 			</Container>
 		</Topbar>
 	);
@@ -100,6 +126,7 @@ const Container = styled.div`
 
 const Dropdown = styled.div`
 	display: inline-block;
+	cursor: pointer;
 `;
 
 const DropdownButton = styled.button`
@@ -107,6 +134,7 @@ const DropdownButton = styled.button`
 	background-color: transparent;
 	margin: 0px;
 	padding: 0px;
+	pointer-events: none;
 `;
 
 const DropdownContent = styled.div`
@@ -139,6 +167,7 @@ const ProfilePhoto = styled.img`
 	height: 53px;
 	border-radius: 27px;
 	margin-left: 10px;
+	cursor: pointer;
 
 	@media(max-width: 600px) {
         width: 44px;

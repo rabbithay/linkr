@@ -48,6 +48,7 @@ function SignIn(){
 			.then((response) => {
 				history.push('/timeline');
 				setUserInfo({name: response.data.user.username, photo: response.data.user.avatar});
+				localStorage.setItem('token', response.data.token);
 			})
 			.catch(() => {
 				throwSwalError('Email/senha incorretos');
