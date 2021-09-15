@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { getPosts } from '../../service/service.posts';
 import Loader from 'react-loader-spinner';
-import Post from './Post';
+import Post from '../shared/Post';
 import pageReloadErrorAlert from './pageReloadErrorAlert';
+import UserContext from '../../contexts/UserContext';
+import Header from '../shared/Header';
 
 export default function Timeline(){
 	const [timelinePostsList, setTimelinePostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
+	const {userInfo} = useContext(UserContext);
 
-	function renderTimelinePosts(){
+	function renderTimelinePosts(){		
 		setLoaderIsActive(true);
 		const config = {headers: 
-			{ 'Authorization': 'Bearer ecb85fd8-5b84-453c-b6d8-0c83c3d463a8' }
+			{ 'Authorization': `Bearer ${userInfo.token}` }
 		};
-		axios.get(
-			'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts', 
-			config
-		).then((res)=>{
+		getPosts(config).then((res)=>{
 			setTimelinePostsList(res.data.posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
@@ -25,9 +25,10 @@ export default function Timeline(){
 			setLoaderIsActive(false);
 		});
 	}
+	
 	useEffect(()=>{		
 		renderTimelinePosts();
-	},[]);
+	},[userInfo]);
 
 	return(
 		<>	
@@ -57,12 +58,7 @@ export default function Timeline(){
 	);
 }
 
-const Header = styled.div`
-	width: 100%;
-	height: 72px;
-	position: fixed;
-	background-color: #151515;
-`;
+
 const Background = styled.div`
 	width: 100%;
 	min-width: 100vw;

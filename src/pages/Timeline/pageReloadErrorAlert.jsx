@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-export default function ErrorAlert(){
+export default function pageReloadErrorAlert(){
 	return(
 		Swal.fire({
 			icon: 'error',
