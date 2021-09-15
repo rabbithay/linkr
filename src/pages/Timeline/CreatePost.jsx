@@ -176,7 +176,7 @@ const LinkDescription = styled.textarea`
 		font-weight: 300;
 		color: #4a4a4a;
 		pointer-events: ${ props => props.loading? 'none':'initial'};
-
+		resize: none;
 		@media(max-width: 600px){
 			height: 47px;
 			width: 100%;
