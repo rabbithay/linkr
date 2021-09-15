@@ -2,40 +2,91 @@ import styled from 'styled-components';
 import React from 'react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts';
 
 export default function CreatePost() {
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
+	const [loading, setLoading] = useState(false);
+	const user = {
+		'token': '1f9d51f4-a0a4-4c1d-9f81-879c3a35afa9',
+		'user': {
+			'id': 517,
+			'email': 'victor@durco.com',
+			'username': 'Durço',
+			'avatar': 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/517/avatar'
+		}
+	};
+
+	const createPostAPI = (body, config) => {
+		const promise = axios.post(URL, body, config);
+		return promise;
+	};
+
+	const createBody = () => {
+		const body = {
+			text: linkDescription,
+			link: link
+		};
+		return body;
+	};
+
+	const createConfig = () => {
+		const config = {
+			headers: {
+				'Authorization': `Bearer ${user.token}`
+			}
+		};
+		return config;
+	};
 
 	const publishPost = (e) => {
 		e.preventDefault();
-		if (link === ''){
+		if (link === '') {
 			Swal.fire('O link não pode estar vazio 🙄');
 			return;
 		}
-
+		setLoading(true);
+		createPostAPI(createBody(), createConfig())
+			.then(() => {
+				setLoading(false);
+				setLinkDescription('');
+				setLink('');
+				//atualizarTimeline()
+			})
+			.catch(() => {
+				setLoading(false);
+				Swal.fire('Houve um erro ao publicar seu link 😥');
+			});
 
 	};
 
 	return (
 		<Container>
-			<img src='https://pbs.twimg.com/media/ECa2_i3W4AEm5jd.jpg' alt='perfil' />
+			<img src={user.user.avatar} alt='perfil' />
 			<PostContent>
 				<form onSubmit={publishPost}>
 					<h2>O que você tem pra favoritar hoje?</h2>
 					<fieldset>
-						<Link 
-							type='url' 
-							placeholder='http:// ...'  
-							value={link} 
+						<Link
+							type='url'
+							placeholder='http:// ...'
+							value={link}
 							onChange={e => setLink(e.target.value)}
+							loading={loading}
 						/>
-						<LinkDescription  
-							placeholder='Comente alguma coisa sobre esse link' 
-							value={linkDescription} 
+						<LinkDescription
+							placeholder='Comente alguma coisa sobre esse link'
+							value={linkDescription}
 							onChange={e => setLinkDescription(e.target.value)}
+							loading={loading}
 						/>
-						<button type='submit'>Publicar</button>
+						{loading ?
+							<button >Publicando...</button>
+							:
+							<button type='submit'>Publicar</button>
+						}
 					</fieldset>
 				</form>
 			</PostContent>
@@ -104,6 +155,7 @@ const Link = styled.input`
 		font-family: 'Lato', sans-serif;
 		font-weight: 300;
 		color: #4a4a4a;
+		pointer-events: ${ props => props.loading? 'none':'initial'};
 `;
 
 const LinkDescription = styled.textarea`
@@ -118,5 +170,5 @@ const LinkDescription = styled.textarea`
 		font-family: 'Lato', sans-serif;
 		font-weight: 300;
 		color: #4a4a4a;
-
+		pointer-events: ${ props => props.loading? 'none':'initial'};
 `;
