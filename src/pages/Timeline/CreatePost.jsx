@@ -109,11 +109,22 @@ const Container = styled.div`
 	margin: auto auto;
 	font-family: 'Lato', sans-serif;
 	font-weight: 300;
-
+	
 	img{
 		height: 50px;
 		width: 50px;
 		border-radius: 26.5px;
+		@media(max-width: 600px){
+			display: none;
+		}
+	}
+
+	@media(max-width: 600px){
+		width: 100%;
+		height: 164px;
+		border-radius: 0;
+		justify-content: center;
+		padding: 10px 15px 12px 15px;
 	}
 `;
 
@@ -126,6 +137,11 @@ const PostContent = styled.div`
 		color: #707070;
 		font-size: 20px;
 		margin-bottom: 17px;
+		@media(max-width: 600px){
+			text-align: center;
+			font-size: 17px;
+			margin-bottom: 14px;
+		}
 	}
 
 	button{
@@ -140,6 +156,21 @@ const PostContent = styled.div`
 		font-size: 17px;
 		font-family: 'Lato', sans-serif;
 		font-weight: 700;
+		@media(max-width: 600px){
+			height: 22px;
+			right: 15px;
+			bottom: 12px;
+			font-size: 13px;
+		}
+	}
+
+	@media(max-width: 600px){
+		width: 100%;
+		align-items: center;
+
+		form{
+			width: 100%;
+		}
 	}
 `;
 
@@ -156,6 +187,9 @@ const Link = styled.input`
 		font-weight: 300;
 		color: #4a4a4a;
 		pointer-events: ${ props => props.loading? 'none':'initial'};
+		@media(max-width: 600px){
+			width: 100%;
+		}
 `;
 
 const LinkDescription = styled.textarea`
@@ -171,4 +205,9 @@ const LinkDescription = styled.textarea`
 		font-weight: 300;
 		color: #4a4a4a;
 		pointer-events: ${ props => props.loading? 'none':'initial'};
+
+		@media(max-width: 600px){
+			height: 47px;
+			width: 100%;
+		}
 `;
