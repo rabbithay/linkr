@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import axios from 'axios';
-const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts';
+import { createPostAPI } from '../../service/linkr';
 
 export default function CreatePost() {
 	const [link, setLink] = useState('');
@@ -19,27 +18,6 @@ export default function CreatePost() {
 		}
 	};
 
-	const createPostAPI = (body, config) => {
-		const promise = axios.post(URL, body, config);
-		return promise;
-	};
-
-	const createBody = () => {
-		const body = {
-			text: linkDescription,
-			link: link
-		};
-		return body;
-	};
-
-	const createConfig = () => {
-		const config = {
-			headers: {
-				'Authorization': `Bearer ${user.token}`
-			}
-		};
-		return config;
-	};
 
 	const publishPost = (e) => {
 		e.preventDefault();
@@ -48,7 +26,7 @@ export default function CreatePost() {
 			return;
 		}
 		setLoading(true);
-		createPostAPI(createBody(), createConfig())
+		createPostAPI(linkDescription, link, user.token)
 			.then(() => {
 				setLoading(false);
 				setLinkDescription('');
