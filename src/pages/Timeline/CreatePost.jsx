@@ -9,7 +9,7 @@ export default function CreatePost() {
 	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
-	const [loading, setLoading] = useState(0);
+	const [loading, setLoading] = useState(false);
 
 
 	const publishPost = (e) => {
@@ -18,16 +18,16 @@ export default function CreatePost() {
 			Swal.fire('O link não pode estar vazio 🙄');
 			return;
 		}
-		setLoading(1);
+		setLoading(true);
 		createPostAPI(linkDescription, link, userInfo.token)
 			.then(() => {
-				setLoading(0);
+				setLoading(false);
 				setLinkDescription('');
 				setLink('');
 				//atualizarTimeline()
 			})
 			.catch(() => {
-				setLoading(0);
+				setLoading(false);
 				Swal.fire('Houve um erro ao publicar seu link 😥');
 			});
 
@@ -45,15 +45,15 @@ export default function CreatePost() {
 							placeholder='http:// ...'
 							value={link}
 							onChange={e => setLink(e.target.value)}
-							loading={loading}
+							loading={loading? 1:0}
 						/>
 						<LinkDescription
 							placeholder='Comente alguma coisa sobre esse link'
 							value={linkDescription}
 							onChange={e => setLinkDescription(e.target.value)}
-							loading={loading}
+							loading={loading? 1:0}
 						/>
-						{loading === 1?
+						{loading?
 							<button >Publicando...</button>
 							:
 							<button type='submit'>Publicar</button>
@@ -157,7 +157,7 @@ const Link = styled.input`
 		font-family: 'Lato', sans-serif;
 		font-weight: 300;
 		color: #4a4a4a;
-		pointer-events: ${ props => props.loading === 1? 'none':'initial'};
+		pointer-events: ${ props => props.loading? 'none':'initial'};
 		@media(max-width: 600px){
 			width: 100%;
 		}
@@ -175,7 +175,7 @@ const LinkDescription = styled.textarea`
 		font-family: 'Lato', sans-serif;
 		font-weight: 300;
 		color: #4a4a4a;
-		pointer-events: ${ props => props.loading === 1? 'none':'initial'};
+		pointer-events: ${ props => props.loading? 'none':'initial'};
 
 		@media(max-width: 600px){
 			height: 47px;
