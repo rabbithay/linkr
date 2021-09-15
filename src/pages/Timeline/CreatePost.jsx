@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React from 'react';
 import { useState, useContext } from 'react';
 import Swal from 'sweetalert2';
-import { createPostAPI } from '../../service/linkr';
+import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 
 export default function CreatePost() {
