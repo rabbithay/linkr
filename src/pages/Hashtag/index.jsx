@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import HashtagSidebar from '../shared/HashtagSidebar';
+import HashtagTrending from '../shared/HashtagTrending';
 
 
 export default function Hashtag(){
@@ -9,7 +9,7 @@ export default function Hashtag(){
 			<HeaderTest />
 
 			<MainBodyTest>
-				<HashtagSidebar />
+				<HashtagTrending />
 			</MainBodyTest>
 		</>
 	);
