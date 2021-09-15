@@ -1,22 +1,15 @@
 import styled from 'styled-components';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Swal from 'sweetalert2';
 import { createPostAPI } from '../../service/linkr';
+import UserContext from '../../contexts/UserContext';
 
 export default function CreatePost() {
+	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
 	const [loading, setLoading] = useState(0);
-	const user = {
-		'token': '1f9d51f4-a0a4-4c1d-9f81-879c3a35afa9',
-		'user': {
-			'id': 517,
-			'email': 'victor@durco.com',
-			'username': 'Durço',
-			'avatar': 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/users/517/avatar'
-		}
-	};
 
 
 	const publishPost = (e) => {
@@ -26,7 +19,7 @@ export default function CreatePost() {
 			return;
 		}
 		setLoading(1);
-		createPostAPI(linkDescription, link, user.token)
+		createPostAPI(linkDescription, link, userInfo.token)
 			.then(() => {
 				setLoading(0);
 				setLinkDescription('');
@@ -42,7 +35,7 @@ export default function CreatePost() {
 
 	return (
 		<Container>
-			<img src={user.user.avatar} alt='perfil' />
+			<img src={userInfo.userImg} alt='perfil' />
 			<PostContent>
 				<form onSubmit={publishPost}>
 					<h2>O que você tem pra favoritar hoje?</h2>
