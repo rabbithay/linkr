@@ -19,5 +19,11 @@ const getHashtagTrending = (token) => {
 	return promise;
 };
 
+const getHashtagPosts = (token, hashtag) => {
+	const promise = axios.get(`${API_HASHTAG}/${hashtag}/posts`, makeConfig(token));
+	console.log(promise);
+	return promise;
+};
 
-export { getHashtagTrending };
+
+export { getHashtagTrending, getHashtagPosts };

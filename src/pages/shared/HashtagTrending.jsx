@@ -7,7 +7,7 @@ import { getHashtagTrending } from '../../service/service.hashtag';
 
 
 export default function HashtagTrending(){
-	const { token } = useContext(UserContext);
+	const { userInfo: { token } } = useContext(UserContext);
 	const [hashtagList, setHashtagList] = useState([{id: '', name: ''}]);
 
 	useEffect(() => {
