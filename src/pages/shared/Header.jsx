@@ -1,15 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useContext, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 
-import UserContext from '../../contexts/UserContext';
 
 function Header () {
-	const {userInfo} = useContext(UserContext);
-	const userProfilePhoto = userInfo.photo;
+	const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+	const userProfilePhoto = userInfo.userImg;
 	const [enabled, setEnabled] = useState(false);
 	const history = useHistory();
 	let dropdownRef = useRef();
@@ -39,7 +38,7 @@ function Header () {
 	};
 
 	const logout = () => {
-		localStorage.removeItem('token');
+		localStorage.removeItem('userInfo');
 		redirect('/');
 	};
 	

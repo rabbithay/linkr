@@ -1,21 +1,23 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Swal from 'sweetalert2';
 
 import { signInAPI } from '../../service/service.auth';
-import UserContext from '../../contexts/UserContext';
 
 
 function SignIn(){
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [loading, setLoading] = useState(false);
-	const {setUserInfo} = useContext(UserContext);
 	const history = useHistory();
 	const ruleRegexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+	if (localStorage.getItem('userInfo') !== null) {
+		history.push('/timeline');
+	}
+	
 	const throwSwalError = (text) => {
 		Swal.fire({
 			icon: 'error',
@@ -46,9 +48,17 @@ function SignIn(){
 		setLoading(true);
 		signInAPI(email, password)
 			.then((response) => {
+				let userInfo =  
+				{
+					token: response.data.token,
+					userImg: response.data.user.avatar,
+					userId: response.data.user.id,
+					userName: response.data.user.name
+				};
+				userInfo = JSON.stringify(userInfo);
+				localStorage.setItem('userInfo', userInfo);
+				
 				history.push('/timeline');
-				setUserInfo({name: response.data.user.username, photo: response.data.user.avatar});
-				localStorage.setItem('token', response.data.token);
 			})
 			.catch(() => {
 				throwSwalError('Email/senha incorretos');
