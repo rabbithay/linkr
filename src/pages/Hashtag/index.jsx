@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import HashtagTrending from '../shared/HashtagTrending';
+// import HashtagTrending from '../shared/HashtagTrending';
 
 
 export default function Hashtag(){
+	// TODO: Refazer essa página
 	return(
 		<>
 			<HeaderTest />
 
 			<MainBodyTest>
-				<HashtagTrending />
+				{/* <HashtagTrending /> */}
 			</MainBodyTest>
 		</>
 	);

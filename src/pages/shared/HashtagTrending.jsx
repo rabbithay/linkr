@@ -1,31 +1,28 @@
-import React from 'react';
-// import { useContext, useState, useEffect } from 'react';
-import { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-// import UserContext from '../../contexts/UserContext';
+import UserContext from '../../contexts/UserContext';
 import { getHashtagTrending } from '../../service/service.hashtag';
 
 
 export default function HashtagTrending(){
-	// const { token } = useContext(UserContext);
-	const token = '2fda8a6a-af82-4c24-bd50-398c830636d8';
+	const { token } = useContext(UserContext);
 	const [hashtagList, setHashtagList] = useState([{id: '', name: ''}]);
 
 	useEffect(() => {
 		getHashtagTrending(token)
 			.then(({ data: { hashtags }}) => setHashtagList(hashtags))
-			.catch(({ response }) => {
+			.catch(() => {
+				// TODO: Colocar modal; Fazer tratamento de erros
 				alert('Deu ruim com a hashtagTrending menor :\'(');
-				console.log({response});  // TODO: Tirar depois e colocar modal
 			});
 
 	}, []);
 
 
-	const makeShortHashtag = (str) => {
-		// TODO: Não tem algum jeito melhor de fazer esse tratamento?
+	const makeShortString = (str) => {
+		// TODO: Encontrar um tratamento melhor, que seja com base no tamanho da (tela) da str
 		const maxLength = 15;
 
 		const shortStr = str.length > maxLength
@@ -42,33 +39,22 @@ export default function HashtagTrending(){
 				<h1>trending</h1>
 			</div>
 
-			<ul className='HashtagsBox'>
+			<HashtagsBox>
 				{hashtagList.map(({ id, name }) => {
 					return (
 						<Link key={id} to={`/hashtag/${id}`}>
-							<li>{`# ${makeShortHashtag(name)}`}</li>
+							<li>{`# ${makeShortString(name)}`}</li>
 						</Link>
 					);
 				})}
-
-				{/* <Link to='/hashtag'>
-					<li># hey1</li>
-				</Link>
-				<li># 0123456789101214</li>
-				<li># AAAAAAAAAAAAAAAA...</li>
-				<li># {makeShortHashtag('AAAAAAAAAAAAAAAAAAAAAAa')}</li>
-				<li># {makeShortHashtag('OOOOOOOOOOOOOOOOOOOOOOO')}</li>
-				<li># hey5</li>
-				<li># hey6</li>
-				<li># hey7</li>
-				<li># hey8</li> */}
-			</ul>
+			</HashtagsBox>
 			
 		</Container>
 	);
 }
 
 
+// Styled components
 const Container = styled.div`
 	position: fixed;
 	width: 301px;
@@ -92,23 +78,21 @@ const Container = styled.div`
 			font-size: 27px;
 			line-height: 40px;
 		}
+	}	
+`;
+
+const HashtagsBox = styled.ul`
+	width: 100%;
+	height: 85%;
+	padding: 22px 16px 30px;
+
+	li {
+		font-family: Lato;
+		font-style: normal;
+		font-weight: bold;
+		font-size: 19px;
+		line-height: 29px;
+		letter-spacing: 0.05em;
+		color: #FFFFFF;
 	}
-
-	.HashtagsBox {
-		width: 100%;
-		height: 85%;
-		padding: 22px 16px 30px;
-
-		li {
-			font-family: Lato;
-			font-style: normal;
-			font-weight: bold;
-			font-size: 19px;
-			line-height: 29px;
-			letter-spacing: 0.05em;
-			color: #FFFFFF;
-		}
-	}
-
-	
 `;
