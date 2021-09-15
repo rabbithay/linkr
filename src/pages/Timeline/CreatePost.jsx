@@ -7,7 +7,7 @@ import { createPostAPI } from '../../service/linkr';
 export default function CreatePost() {
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(0);
 	const user = {
 		'token': '1f9d51f4-a0a4-4c1d-9f81-879c3a35afa9',
 		'user': {
@@ -25,16 +25,16 @@ export default function CreatePost() {
 			Swal.fire('O link não pode estar vazio 🙄');
 			return;
 		}
-		setLoading(true);
+		setLoading(1);
 		createPostAPI(linkDescription, link, user.token)
 			.then(() => {
-				setLoading(false);
+				setLoading(0);
 				setLinkDescription('');
 				setLink('');
 				//atualizarTimeline()
 			})
 			.catch(() => {
-				setLoading(false);
+				setLoading(0);
 				Swal.fire('Houve um erro ao publicar seu link 😥');
 			});
 
@@ -60,7 +60,7 @@ export default function CreatePost() {
 							onChange={e => setLinkDescription(e.target.value)}
 							loading={loading}
 						/>
-						{loading ?
+						{loading === 1?
 							<button >Publicando...</button>
 							:
 							<button type='submit'>Publicar</button>
@@ -164,7 +164,7 @@ const Link = styled.input`
 		font-family: 'Lato', sans-serif;
 		font-weight: 300;
 		color: #4a4a4a;
-		pointer-events: ${ props => props.loading? 'none':'initial'};
+		pointer-events: ${ props => props.loading === 1? 'none':'initial'};
 		@media(max-width: 600px){
 			width: 100%;
 		}
@@ -182,7 +182,7 @@ const LinkDescription = styled.textarea`
 		font-family: 'Lato', sans-serif;
 		font-weight: 300;
 		color: #4a4a4a;
-		pointer-events: ${ props => props.loading? 'none':'initial'};
+		pointer-events: ${ props => props.loading === 1? 'none':'initial'};
 
 		@media(max-width: 600px){
 			height: 47px;
