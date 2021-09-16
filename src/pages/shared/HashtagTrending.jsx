@@ -1,35 +1,28 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Swal from 'sweetalert2';
 
 import UserContext from '../../contexts/UserContext';
 import { getHashtagTrending } from '../../service/service.hashtag';
 
 
 export default function HashtagTrending(){
-	const { token } = useContext(UserContext);
-	const [hashtagList, setHashtagList] = useState([{id: '', name: ''}]);
+	const { userInfo: { token } } = useContext(UserContext);
+	const [hashtagList, setHashtagList] = useState([]);
 
 	useEffect(() => {
 		getHashtagTrending(token)
 			.then(({ data: { hashtags }}) => setHashtagList(hashtags))
-			.catch(() => {
-				// TODO: Colocar modal; Fazer tratamento de erros
-				alert('Deu ruim com a hashtagTrending menor :\'(');
-			});
-
+			.catch(loadingTrendingError);
 	}, []);
 
-
-	const makeShortString = (str) => {
-		// TODO: Encontrar um tratamento melhor, que seja com base no tamanho da (tela) da str
-		const maxLength = 15;
-
-		const shortStr = str.length > maxLength
-			? `${str.slice(0, maxLength-1)}...`
-			: str;
-		
-		return shortStr;
+	const loadingTrendingError = () => {
+		Swal.fire({
+			icon: 'error',
+			title: 'Erro nosso >.<',
+			text: 'Erro ao carregar a trending :/'
+		});
 	};
 
 
@@ -43,7 +36,7 @@ export default function HashtagTrending(){
 				{hashtagList.map(({ id, name }) => {
 					return (
 						<Link key={id} to={`/hashtag/${id}`}>
-							<li>{`# ${makeShortString(name)}`}</li>
+							<li>{`# ${name}`}</li>
 						</Link>
 					);
 				})}
@@ -93,6 +86,9 @@ const HashtagsBox = styled.ul`
 		font-size: 19px;
 		line-height: 29px;
 		letter-spacing: 0.05em;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		color: #FFFFFF;
 	}
 `;
