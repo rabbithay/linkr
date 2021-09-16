@@ -6,12 +6,11 @@ import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 import UserContext from '../../contexts/UserContext';
 
-
 function Header () {
 	const [enabled, setEnabled] = useState(false);
 	const history = useHistory();
 	let dropdownRef = useRef();
-	const {userInfo} = useContext(UserContext);
+	const {userInfo, setUserInfo} = useContext(UserContext);
 	const userProfilePhoto = userInfo.userImg;
 
 	const onClick = (click) => {
@@ -40,6 +39,7 @@ function Header () {
 
 	const logout = () => {
 		localStorage.removeItem('userInfo');
+		setUserInfo('');
 		redirect('/');
 	};
 	
@@ -51,13 +51,13 @@ function Header () {
 				<Dropdown onClick={toggleDropdown}>
 					<DropdownButton>
 						{enabled ? 
-							<ChevronDownOutline
+							<ChevronUpOutline
 								color={'#FFFFFF'} 
 								height="20px"
 								width="20px"
 							/> 
 							: 
-							<ChevronUpOutline
+							<ChevronDownOutline
 								color={'#FFFFFF'} 
 								height="20px"
 								width="20px"

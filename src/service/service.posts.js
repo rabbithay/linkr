@@ -1,5 +1,9 @@
 import axios from 'axios';
-const POSTS_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts';
+const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts';
+
+function getPosts (config) {
+	return axios.get(BASE_URL, config);
+}
 
 const createPostAPI = (text, link, token) => {
 	const body = {
@@ -11,10 +15,11 @@ const createPostAPI = (text, link, token) => {
 			'Authorization': `Bearer ${token}`
 		}
 	};
-	const promise = axios.post(POSTS_URL, body, config);
+	const promise = axios.post(BASE_URL, body, config);
 	return promise;
 };
 
 export {
+	getPosts,
 	createPostAPI
 };

@@ -3,6 +3,8 @@ import axios from 'axios';
 
 const API_HASHTAG = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/hashtags';
 
+const isDeveloping = true; // TODO: Tirar 
+
 const makeConfig = (token) => {
 	const config = {
 		headers: {
@@ -15,7 +17,9 @@ const makeConfig = (token) => {
 
 const getHashtagTrending = (token) => {
 	const promise = axios.get(`${API_HASHTAG}/trending`, makeConfig(token));
-	console.log(promise);
+	if (isDeveloping) {
+		console.log(promise);
+	}
 	return promise;
 };
 
