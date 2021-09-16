@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getPosts } from '../../service/service.posts';
 import Post from '../shared/Post';
-import pageReloadErrorAlert from './pageReloadErrorAlert';
+import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CreatePost from './CreatePost';
@@ -39,7 +39,7 @@ export default function Timeline(){
 			<Background>
 				<TimelineContent>
 					<h1>timeline</h1>
-					<CreatePost/>
+					<CreatePost loadTimelinePosts={loadTimelinePosts}/>
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (timelinePostsList.length)

@@ -5,12 +5,11 @@ import Swal from 'sweetalert2';
 import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 
-export default function CreatePost() {
+export default function CreatePost({loadTimelinePosts}) {
 	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
 	const [loading, setLoading] = useState(false);
-
 
 	const publishPost = (e) => {
 		e.preventDefault();
@@ -24,7 +23,7 @@ export default function CreatePost() {
 				setLoading(false);
 				setLinkDescription('');
 				setLink('');
-				//atualizarTimeline()
+				loadTimelinePosts();
 			})
 			.catch(() => {
 				setLoading(false);

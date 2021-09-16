@@ -46,8 +46,7 @@ const PostContainer = styled.div`
 	@media (max-width: 611px) {
 		width: 100vw;
 		border-radius: 0px;
-		padding: 10px 18px 15px 15px;
-		
+		padding: 10px 18px 15px 15px;		
     }
 `;
 
@@ -84,6 +83,10 @@ const PostContent = styled.div `
 			line-height: 18px;
 		}
     }
+	a {
+		color: #fff;
+		font-weight: bold;
+	}
 	
 `;
 
@@ -152,4 +155,7 @@ const LinkPreviewImage = styled.img `
 	@media (max-width: 611px) {
 		width: 28%;
     }
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `; 
