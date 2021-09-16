@@ -6,15 +6,16 @@ import pageReloadErrorAlert from './pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CreatePost from './CreatePost';
-import CirclesLoader from './CirclesLoader';
+import CirclesLoader from '../shared/CirclesLoader';
 import HashtagTrending from '../shared/HashtagTrending';
+import NoPostMessage from '../shared/NoPostMessage';
 
 export default function Timeline(){
 	const [timelinePostsList, setTimelinePostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const {userInfo} = useContext(UserContext);
 
-	function renderTimelinePosts(){		
+	function loadTimelinePosts(){		
 		setLoaderIsActive(true);
 		const config = {headers: 
 			{ 'Authorization': `Bearer ${userInfo.token}` }
@@ -29,7 +30,7 @@ export default function Timeline(){
 	}
 	
 	useEffect(()=>{		
-		renderTimelinePosts();
+		loadTimelinePosts();
 	},[userInfo]);
 
 	return(
@@ -47,9 +48,7 @@ export default function Timeline(){
 									<Post key={p.id} postInfo={p} />
 								);
 							})
-							: <DisplayFlexCenter>
-								<NoPostMessage>No posts were found :(</NoPostMessage>
-							</DisplayFlexCenter>
+							: <NoPostMessage/>
 					}
 				</TimelineContent>
 				<HashtagContainer>
@@ -108,20 +107,4 @@ const HashtagContainer = styled.div`
 	}
 	position: sticky;
 	top: 80px;
-`;
-
-const DisplayFlexCenter = styled.div`
-	width: 100%;
-	height: auto;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 40px;
-`;
-
-const NoPostMessage = styled.p`
-	font-weight: bold;
-	font-size: 20px;
-	color: #b7b7b7;
-	font-family: 'Lato';
 `;
