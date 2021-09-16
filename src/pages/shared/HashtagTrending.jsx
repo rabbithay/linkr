@@ -56,11 +56,12 @@ export default function HashtagTrending(){
 
 // Styled components
 const Container = styled.div`
-	position: fixed;
+	/* position: fixed; */
+
 	width: 301px;
 	height: 406px;
-	right: 18.2%;
-	bottom: 20%;
+	/* right: calc((100vw - 947px)/2); */
+	/* top: 232px; */
 	background-color: #171717;
 	border-radius: 16px;
 

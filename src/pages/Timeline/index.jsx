@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getPosts } from '../../service/service.posts';
-import Loader from 'react-loader-spinner';
 import Post from '../shared/Post';
 import pageReloadErrorAlert from './pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CreatePost from './CreatePost';
+import CirclesLoader from './CirclesLoader';
+import HashtagTrending from '../shared/HashtagTrending';
 
 export default function Timeline(){
 	const [timelinePostsList, setTimelinePostsList] = useState([]);
@@ -39,9 +40,7 @@ export default function Timeline(){
 					<h1>timeline</h1>
 					<CreatePost/>
 					{loaderIsActive 
-						? <DisplayFlexCenter>						
-							<Loader type="Circles" color="#b7b7b7" height={100} width={100} />
-						</DisplayFlexCenter>
+						? <CirclesLoader/>
 						: (timelinePostsList.length)
 							?  timelinePostsList.map((p)=>{
 								return (
@@ -53,7 +52,9 @@ export default function Timeline(){
 							</DisplayFlexCenter>
 					}
 				</TimelineContent>
-				<HashtagContainer/>
+				<HashtagContainer>
+					<HashtagTrending/>
+				</HashtagContainer>
 			</Background>
 		</>
 	);
@@ -99,12 +100,14 @@ const TimelineContent = styled.div`
 const HashtagContainer = styled.div`
 	width: 301px; 
 	height: 406px;
-	background-color: #171717;
+	background-color: #333;
 	margin-top: 160px;
 	border-radius: 16px;
 	@media (max-width: 1024px) {
 		display: none;
 	}
+	position: sticky;
+	top: 80px;
 `;
 
 const DisplayFlexCenter = styled.div`
