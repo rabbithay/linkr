@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router';
 
-import HashtagTrending from '../shared/HashtagTrending';
+import Trending from '../shared/Trending';
 import UserContext from '../../contexts/UserContext';
 import { getHashtagPosts } from '../../service/service.hashtag';
 
@@ -18,7 +18,7 @@ export default function Hashtag(){
 					<PostContainerTest >
 					</PostContainerTest>;
 
-				<HashtagTrending />
+				<Trending />
 			</MainBodyTest>
 		</>
 	);

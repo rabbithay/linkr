@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/posts';
+const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts';
 
 function getPosts (config) {
 	return axios.get(BASE_URL, config);

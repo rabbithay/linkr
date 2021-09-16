@@ -78,6 +78,7 @@ const PostContent = styled.div `
 		font-size: 17px;
 		line-height: 20px;
 		margin-bottom: 14px;
+		word-break: break-word;
 		@media (max-width: 611px) {
 			font-size: 15px;
 			line-height: 18px;
@@ -112,6 +113,9 @@ const LinkPreviewTexts = styled.div `
 		font-size: 16px;
 		color: #CECECE;
 		line-height: 19px;
+		word-break: break-word;
+		text-overflow: ellipsis;
+		overflow: hidden;
 		@media (max-width: 611px) {
 			font-size: 11px;
 			line-height: 13px;
@@ -122,6 +126,9 @@ const LinkPreviewTexts = styled.div `
 		color: #9B9595;
 		line-height: 13px;
 		max-height: 40px;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		@media (max-width: 611px) {
 			font-size: 9px;
 			line-height: 11px;
