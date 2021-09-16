@@ -50,14 +50,13 @@ export default function Timeline(){
 							: <DisplayFlexCenter>
 								<NoPostMessage>No posts were found :(</NoPostMessage>
 							</DisplayFlexCenter>
-					} 					
+					}
 				</TimelineContent>
 				<HashtagContainer/>
 			</Background>
 		</>
 	);
 }
-
 
 const Background = styled.div`
 	width: 100%;
@@ -69,6 +68,9 @@ const Background = styled.div`
 	justify-content: center;
 	gap: 25px;
 	padding: 72px;
+	@media (max-width: 611px) {
+		padding: 19px 0px;
+    }
 `;
 const TimelineContent = styled.div`
 	width: 611px;
@@ -81,14 +83,28 @@ const TimelineContent = styled.div`
 		margin: 53px 0px 43px 0px;
 		justify-content: flex-start;
 		line-height: 63px;
+		@media (max-width: 611px) {
+			margin: 53px 0px 12px 17px;
+			font-size: 33px;
+			line-height: 49px;
+		}
+	}
+	@media (max-width: 611px) {
+		width: 100vw;    
 	}
 `;
 const CreateNewPostBox = styled.div`
-	width: 611px;
-	height: 209px;
+	width: 100%;
+	min-height: 209px;
+	height: auto;
 	background-color: #fff;
 	border-radius: 16px;
 	margin-bottom: 13px;
+	@media (max-width: 611px) {
+		border-radius: 0px;
+		margin-bottom: 0px;
+		min-height: 164px;
+	}
 `;
 
 const HashtagContainer = styled.div`
@@ -97,6 +113,9 @@ const HashtagContainer = styled.div`
 	background-color: #171717;
 	margin-top: 160px;
 	border-radius: 16px;
+	@media (max-width: 1024px) {
+		display: none;
+	}
 `;
 
 const DisplayFlexCenter = styled.div`

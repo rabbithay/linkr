@@ -11,7 +11,7 @@ function Header () {
 	const [enabled, setEnabled] = useState(false);
 	const history = useHistory();
 	let dropdownRef = useRef();
-	const {userInfo} = useContext(UserContext);
+	const {userInfo, setUserInfo} = useContext(UserContext);
 	const userProfilePhoto = userInfo.userImg;
 
 	const onClick = (click) => {
@@ -40,6 +40,7 @@ function Header () {
 
 	const logout = () => {
 		localStorage.removeItem('userInfo');
+		setUserInfo('');
 		redirect('/');
 	};
 	
