@@ -6,6 +6,7 @@ import Post from '../shared/Post';
 import pageReloadErrorAlert from './pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
+import CreatePost from './CreatePost';
 
 export default function Timeline(){
 	const [timelinePostsList, setTimelinePostsList] = useState([]);
@@ -36,7 +37,7 @@ export default function Timeline(){
 			<Background>
 				<TimelineContent>
 					<h1>timeline</h1>
-					<CreateNewPostBox/>
+					<CreatePost/>
 					{loaderIsActive 
 						? <DisplayFlexCenter>						
 							<Loader type="Circles" color="#b7b7b7" height={100} width={100} />
@@ -93,19 +94,7 @@ const TimelineContent = styled.div`
 		width: 100vw;    
 	}
 `;
-const CreateNewPostBox = styled.div`
-	width: 100%;
-	min-height: 209px;
-	height: auto;
-	background-color: #fff;
-	border-radius: 16px;
-	margin-bottom: 13px;
-	@media (max-width: 611px) {
-		border-radius: 0px;
-		margin-bottom: 0px;
-		min-height: 164px;
-	}
-`;
+
 
 const HashtagContainer = styled.div`
 	width: 301px; 
