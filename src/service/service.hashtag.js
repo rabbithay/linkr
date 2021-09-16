@@ -21,7 +21,7 @@ const getHashtagTrending = (token) => {
 
 const getHashtagPosts = (token, hashtag) => {
 	const promise = axios.get(`${API_HASHTAG}/${hashtag}/posts`, makeConfig(token));
-	console.log(promise);
+	console.log('hashtagPosts\n', promise);
 	return promise;
 };
 
