@@ -19,7 +19,6 @@ export default function Hashtag(){
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
 		getHashtagPosts(userInfo.token, hashtag).then(({ data: { posts } })=>{
-			console.log('posts:', posts);
 			setHashtagPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
@@ -29,8 +28,6 @@ export default function Hashtag(){
 	}
 	
 	useEffect(()=>{
-		// Tem um delay para atualizar o token com o LocalStorage,
-		// por isso fica verificando quando o token não é undefined
 		if (userInfo.token) loadHashtagPosts();
 	},[userInfo.token, hashtag]);
 
