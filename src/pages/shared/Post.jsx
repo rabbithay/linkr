@@ -21,18 +21,13 @@ export default function Post({postInfo}){
 		return repl;
 	}
 
-	const handleEditMode = (keyboard) => {
-		console.log(keyboard);
-		if (editRef.current !== null) { 
-			editRef.current.focus();
-			if (keyboard.key === 'Escape') {
-				setEdit(false);
-				setEditValue(text);
-			}
-			else if (keyboard.key === 'Enter') {
-				alert('teste');
-				document.removeEventListener('keyup',(e) => handleEditMode(e));
-			}
+	const handleEditMode = (key) => {
+		if (key === 'Escape') {
+			setEdit(false);
+			setEditValue(text);
+		}
+		else if (key === 'Enter') {
+			alert('teste');
 		}
 	};
 	
@@ -45,7 +40,6 @@ export default function Post({postInfo}){
 					<WrapperDeleteAndEdit 
 						edit={edit}
 						setEdit={setEdit}
-						handleEditMode={handleEditMode}
 					/> 
 					: 
 					''
@@ -57,7 +51,9 @@ export default function Post({postInfo}){
 					<InputEdit 
 						value={editValue}
 						onChange={(e) => setEditValue(e.target.value)}
+						onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
 						ref={editRef}
+						onLoad={() => editRef.current.focus()}
 					/> 					
 					:
 					<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(text)}</p>` }} />
@@ -77,14 +73,11 @@ export default function Post({postInfo}){
 	);
 }
 
-function WrapperDeleteAndEdit({edit, setEdit, handleEditMode}) {
+function WrapperDeleteAndEdit({edit, setEdit}) {
 	return (
 		<WrapperOptions>
 			<Pencil 
-				onClick={() => {
-					edit ? setEdit(false) : setEdit(true);
-					document.addEventListener('keyup', handleEditMode);
-				}}
+				onClick={() => edit ? setEdit(false) : setEdit(true)}
 				color={'#ffffff'} 
 				height="20px"
 				width="20px"
