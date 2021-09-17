@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import Swal from 'sweetalert2';
+import ModalAlert from '../shared/ModalAlert';
 
 import { signInAPI } from '../../service/service.auth';
 import UserContext from '../../contexts/UserContext';
@@ -17,11 +17,13 @@ function SignIn(){
 	const ruleRegexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	
 	const throwSwalError = (text) => {
-		Swal.fire({
+		const modalObj = 
+		{
 			icon: 'error',
 			title: 'Quase lá!',
-			text: text,
-		});
+			description: text
+		};
+		ModalAlert(modalObj);
 	};
 
 	const regex = (str, rule) => {
@@ -51,7 +53,7 @@ function SignIn(){
 					token: response.data.token,
 					userImg: response.data.user.avatar,
 					userId: response.data.user.id,
-					userName: response.data.user.name
+					userName: response.data.user.username
 				};
 				setUserInfo(userInfo);
 

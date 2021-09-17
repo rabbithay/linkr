@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Swal from 'sweetalert2';
 
+import ModalAlert from './ModalAlert';
 import UserContext from '../../contexts/UserContext';
 import { getHashtagTrending } from '../../service/service.hashtag';
 
@@ -15,14 +15,16 @@ export default function HashtagTrending(){
 		getHashtagTrending(token)
 			.then(({ data: { hashtags }}) => setHashtagList(hashtags))
 			.catch(loadingTrendingError);
-	}, []);
+	}, [token]);
 
 	const loadingTrendingError = () => {
-		Swal.fire({
+		const modalObj = 
+		{
 			icon: 'error',
 			title: 'Erro nosso >.<',
-			text: 'Erro ao carregar a trending :/'
-		});
+			description: 'Erro ao carregar a trending :/'
+		};
+		ModalAlert(modalObj);
 	};
 
 
