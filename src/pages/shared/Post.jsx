@@ -1,19 +1,20 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Pencil, TrashOutline } from 'react-ionicons';
 
 import UserContext from '../../contexts/UserContext';
-// import Swal from 'sweetalert2';
-// import { editPost } from '../../service/service.posts';
+import { editPost } from '../../service/service.posts';
 
 export default function Post({postInfo}){
 	const {userInfo} = useContext(UserContext);
-	const {userId} = userInfo;
+	const {userId, token} = userInfo;
 	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
+	const postId = postInfo.id;
 	const { avatar, username, id } = user;
 	const [edit, setEdit] = useState(false);
 	const [editValue, setEditValue] = useState(text);
+	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
 
 	function hashtag(text){
@@ -27,7 +28,15 @@ export default function Post({postInfo}){
 			setEditValue(text);
 		}
 		else if (key === 'Enter') {
-			alert('teste');
+			setLoading(true);
+			editPost(token, editValue, postId)
+				.then(() => {
+					setLoading(false);
+					setEdit(false);
+				})
+				.catch(() => {
+					alert('aaa');
+				});
 		}
 	};
 	
@@ -36,10 +45,12 @@ export default function Post({postInfo}){
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
 
 			<PostContent>
-				{userId !== id ? 
+				{userId === id ? 
 					<WrapperDeleteAndEdit 
 						edit={edit}
 						setEdit={setEdit}
+						setEditValue={setEditValue}
+						text={text}
 					/> 
 					: 
 					''
@@ -48,15 +59,15 @@ export default function Post({postInfo}){
 				<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	
 
 				{edit ? 
-					<InputEdit 
-						value={editValue}
-						onChange={(e) => setEditValue(e.target.value)}
-						onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
-						ref={editRef}
-						onLoad={() => editRef.current.focus()}
-					/> 					
+					<InsertEditInput 
+						editValue={editValue}
+						setEditValue={setEditValue}
+						editRef={editRef}
+						handleEditMode={handleEditMode}
+						loading={loading ? 1 : 0}
+					/>			
 					:
-					<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(text)}</p>` }} />
+					<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
 				}
 				<a href={link} target="_blank" rel="noreferrer" >
 					<LinkContainer >
@@ -73,11 +84,14 @@ export default function Post({postInfo}){
 	);
 }
 
-function WrapperDeleteAndEdit({edit, setEdit}) {
+function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text}) {
 	return (
 		<WrapperOptions>
 			<Pencil 
-				onClick={() => edit ? setEdit(false) : setEdit(true)}
+				onClick={() => {
+					edit ? setEdit(false) : setEdit(true);
+					setEditValue(text);
+				}}
 				color={'#ffffff'} 
 				height="20px"
 				width="20px"
@@ -95,6 +109,22 @@ function WrapperDeleteAndEdit({edit, setEdit}) {
 			/>
 		</WrapperOptions>
 	);
+}
+
+function InsertEditInput({editValue, setEditValue, editRef, handleEditMode, loading}) {
+	useEffect(() => {
+		editRef.current.focus();
+	}, []);
+
+	return (
+		<InputEdit 
+			value={editValue}
+			onChange={(e) => setEditValue(e.target.value)}
+			onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
+			ref={editRef}
+			loadind={loading ? 1 : 0}
+		/> 
+	);	
 }
 
 
@@ -162,6 +192,11 @@ const WrapperOptions = styled.div`
 	position: absolute;
 	top: 18px;
 	right: 15px;
+
+	@media (max-width: 600px) {
+		top: 10px;
+		right: 10px;
+	}
 `;
 
 const LinkContainer = styled.div `
@@ -221,26 +256,49 @@ const LinkPreviewTexts = styled.div `
     }
 `;
 
-const InputEdit = styled.input`
+const InputEdit = styled.textarea`
 	width: 100%;
 	background: #FFFFFF;
 	color: #4C4C4C;
 	word-break: break-all;
 	resize: none;
 	padding: 8px;
-	min-height: 40px;
-	max-height: 300px;
+	height: 100px;
 	margin-bottom: 14px;
 	border-radius: 7px;
 	font-family: 'Lato';
 	font-size: 14px;
 	line-height: 17px;
-
+	pointer-events: ${props => props.loadind ? 'none' : 'all'};
+	
 	:focus {
 		outline: none;
 	}
+	
+	@media (min-width: 600px) {
+		::-webkit-scrollbar {
+			width: 5px;
+		}
+		
+		/* Track */
+		::-webkit-scrollbar-track {
+			background: #f1f1f1; 
+			border-radius: 5px;
+		}
+		
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: #888; 
+			border-radius: 5px;
+		}
 
-	@media (max-width: 611px) {
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: #555; 
+		}
+	}
+
+	@media (max-width: 600px) {
 		font-size: 11px;
 		line-height: 13px;
 	}

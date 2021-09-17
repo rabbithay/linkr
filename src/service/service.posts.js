@@ -23,13 +23,13 @@ const editPost = (token, text, id) => {
 	const body = {
 		text,
 	};
-
+	
 	const config = {
 		headers: {
 			'Authorization': `Bearer ${token}`
 		}
 	};
-	const promise = axios.post(BASE_URL + id, body, config);
+	const promise = axios.put(BASE_URL + `/${id}`, body, config);
 	return promise;
 };
 
