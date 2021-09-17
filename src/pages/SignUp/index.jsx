@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalAlert from '../shared/ModalAlert';
+import Loader from 'react-loader-spinner';
 
 import { signUpAPI } from '../../service/service.auth';
 
@@ -62,7 +63,7 @@ function SignUp() {
 			<Disclaimer>
 				<Title>linkr</Title>
 				<Description>
-                    save, share and discover<br />the best links on the web
+                    save, share and discover the best links on the web
 				</Description>
 			</Disclaimer>
 			<Form >
@@ -93,10 +94,20 @@ function SignUp() {
 					onChange={(e) => setImgUrl(e.target.value)}
 					value={imgUrl}
 				/>
-
-				<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
-                    Sign Up
-				</Button>
+				{!loading ?
+					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
+						Sign Up
+					</Button>
+					:
+					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
+						<Loader
+							type="ThreeDots"
+							color="#FFFFFF"
+							height={50}
+							width={50}
+						/>
+					</Button>
+				}
 
 				<Link to='/'>
 					<P>Switch back to log in</P>
@@ -151,9 +162,12 @@ const Title = styled.p`
 const Description = styled.p`
     font-size: 43px;
     font-family: 'Oswald';
+	max-width: 442px;
+	width: 80%;
     
     @media(max-width: 600px) {
         font-size: 23px;
+		width: unset;
     }
 `;
 
