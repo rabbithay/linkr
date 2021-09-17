@@ -1,22 +1,81 @@
-import React from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Pencil, TrashOutline } from 'react-ionicons';
+
+import UserContext from '../../contexts/UserContext';
+import { editPost } from '../../service/service.posts';
+import ModalAlert from './ModalAlert';
 
 export default function Post({postInfo}){
+	const {userInfo} = useContext(UserContext);
+	const {userId, token} = userInfo;
 	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
-	const { avatar, username } = user;
+	const postId = postInfo.id;
+	const { avatar, username, id } = user;
+	const [edit, setEdit] = useState(false);
+	const [editValue, setEditValue] = useState(text);
+	const [loading, setLoading] = useState(false);
+	const editRef = useRef();
 
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
 
+	const handleEditMode = (key) => {
+		if (key === 'Escape') {
+			setEdit(false);
+			setEditValue(text);
+		}
+		else if (key === 'Enter') {
+			setLoading(true);
+			editPost(token, editValue, postId)
+				.then(() => {
+					setLoading(false);
+					setEdit(false);
+				})
+				.catch(() => {
+					const modalObj = 
+					{
+						icon: 'error',
+						title: 'Oops...',
+						description: 'Ocorreu um erro ao fazer essa edição'
+					};
+					ModalAlert(modalObj);
+				});
+		}
+	};
+	
 	return (
 		<PostContainer>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+
 			<PostContent>
+				{userId === id ? 
+					<WrapperDeleteAndEdit 
+						edit={edit}
+						setEdit={setEdit}
+						setEditValue={setEditValue}
+						text={text}
+					/> 
+					: 
+					''
+				}
+
 				<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	
-				<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(text)}</p>` }} />
+
+				{edit ? 
+					<InsertEditInput 
+						editValue={editValue}
+						setEditValue={setEditValue}
+						editRef={editRef}
+						handleEditMode={handleEditMode}
+						loading={loading ? 1 : 0}
+					/>			
+					:
+					<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
+				}
 				<a href={link} target="_blank" rel="noreferrer" >
 					<LinkContainer >
 						<LinkPreviewTexts>
@@ -29,8 +88,50 @@ export default function Post({postInfo}){
 				</a>
 			</PostContent>
 		</PostContainer>
-
 	);
+}
+
+function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text}) {
+	return (
+		<WrapperOptions>
+			<Pencil 
+				onClick={() => {
+					edit ? setEdit(false) : setEdit(true);
+					setEditValue(text);
+				}}
+				color={'#ffffff'} 
+				height="20px"
+				width="20px"
+				style={{
+					cursor: 'pointer'
+				}}
+			/>
+			<TrashOutline
+				color={'#ffffff'} 
+				height="20px"
+				width="20px"
+				style={{
+					cursor: 'pointer'
+				}}
+			/>
+		</WrapperOptions>
+	);
+}
+
+function InsertEditInput({editValue, setEditValue, editRef, handleEditMode, loading}) {
+	useEffect(() => {
+		editRef.current.focus();
+	}, []);
+
+	return (
+		<InputEdit 
+			value={editValue}
+			onChange={(e) => setEditValue(e.target.value)}
+			onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
+			ref={editRef}
+			loadind={loading ? 1 : 0}
+		/> 
+	);	
 }
 
 
@@ -43,6 +144,7 @@ const PostContainer = styled.div`
 	padding: 17px 21px 20px 18px;
 	display: inline-flex;
 	gap: 18px;
+	position: relative;
 	@media (max-width: 611px) {
 		width: 100vw;
 		border-radius: 0px;
@@ -87,7 +189,21 @@ const PostContent = styled.div `
 		color: #fff;
 		font-weight: bold;
 	}
-	
+`;
+
+const WrapperOptions = styled.div`
+	width: 60px;
+	height: 20px;
+	display: flex;
+	justify-content: space-around;
+	position: absolute;
+	top: 18px;
+	right: 15px;
+
+	@media (max-width: 600px) {
+		top: 10px;
+		right: 10px;
+	}
 `;
 
 const LinkContainer = styled.div `
@@ -145,6 +261,54 @@ const LinkPreviewTexts = styled.div `
 		width: 72%;
 		padding: 7px 7px 8px 11px;
     }
+`;
+
+const InputEdit = styled.textarea`
+	width: 100%;
+	background: #FFFFFF;
+	color: #4C4C4C;
+	word-break: break-all;
+	resize: none;
+	padding: 8px;
+	height: 100px;
+	margin-bottom: 14px;
+	border-radius: 7px;
+	font-family: 'Lato';
+	font-size: 14px;
+	line-height: 17px;
+	pointer-events: ${props => props.loadind ? 'none' : 'all'};
+	
+	:focus {
+		outline: none;
+	}
+	
+	@media (min-width: 600px) {
+		::-webkit-scrollbar {
+			width: 5px;
+		}
+		
+		/* Track */
+		::-webkit-scrollbar-track {
+			background: #f1f1f1; 
+			border-radius: 5px;
+		}
+		
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: #888; 
+			border-radius: 5px;
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: #555; 
+		}
+	}
+
+	@media (max-width: 600px) {
+		font-size: 11px;
+		line-height: 13px;
+	}
 `;
 
 const LinkPreviewImage = styled.img `
