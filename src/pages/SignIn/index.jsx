@@ -51,7 +51,7 @@ function SignIn(){
 					token: response.data.token,
 					userImg: response.data.user.avatar,
 					userId: response.data.user.id,
-					userName: response.data.user.name
+					userName: response.data.user.username
 				};
 				setUserInfo(userInfo);
 

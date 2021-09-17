@@ -24,8 +24,20 @@ const createPostAPI = (text, link, token) => {
 	return promise;
 };
 
+const getSomeonesPosts = (userId, token) => {
+	const config = {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	};
+	const promise = axios.get(`${BASE_URL}/users/${userId}/posts`, config);
+	return promise;
+};
+
+
 export {
 	getPosts,
 	createPostAPI,
 	getUserPosts,
+	getSomeonesPosts
 };

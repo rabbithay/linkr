@@ -11,6 +11,7 @@ import Timeline from './pages/Timeline';
 import MyLikes from './pages/MyLikes';
 import MyPosts from './pages/MyPosts';
 import Hashtag from './pages/Hashtag';
+import SomeonesPosts from './pages/SomeonesPosts';
 
 function App() {
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
@@ -37,7 +38,7 @@ function App() {
 					<Route path="/my-posts" exact >
 						{userInfo.token === undefined ? <Redirect to="/" /> : <MyPosts />}
 					</Route>
-					<Route path="/user/:id" exact />
+					<Route path="/user/:id" exact component={SomeonesPosts}/>
 					<Route path="/hashtag/:hashtag" exact component={Hashtag} />
 					<Route path="/my-likes" exact component={MyLikes} />
 				</Switch>
