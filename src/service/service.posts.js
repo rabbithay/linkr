@@ -6,7 +6,6 @@ function getPosts (config) {
 }
 
 function getUserPosts(config, userId){
-	console.log({config, userId});
 	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 }
 
