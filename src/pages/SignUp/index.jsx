@@ -63,7 +63,7 @@ function SignUp() {
 			<Disclaimer>
 				<Title>linkr</Title>
 				<Description>
-                    save, share and discover<br />the best links on the web
+                    save, share and discover the best links on the web
 				</Description>
 			</Disclaimer>
 			<Form >
@@ -162,9 +162,12 @@ const Title = styled.p`
 const Description = styled.p`
     font-size: 43px;
     font-family: 'Oswald';
+	max-width: 442px;
+	width: 80%;
     
     @media(max-width: 600px) {
         font-size: 23px;
+		width: unset;
     }
 `;
 
