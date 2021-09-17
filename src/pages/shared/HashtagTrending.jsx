@@ -15,7 +15,7 @@ export default function HashtagTrending(){
 		getHashtagTrending(token)
 			.then(({ data: { hashtags }}) => setHashtagList(hashtags))
 			.catch(loadingTrendingError);
-	}, []);
+	}, [token]);
 
 	const loadingTrendingError = () => {
 		const modalObj = 
