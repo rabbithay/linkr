@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState, useRef, useContext } from 'react';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
@@ -46,7 +46,9 @@ function Header () {
 
 	return (
 		<Topbar >
-			<P>linkr</P>
+			<Link to='/timeline'>
+				<P>linkr</P>
+			</Link>
 			<Container ref={dropdownRef}>
 				<Dropdown onClick={toggleDropdown}>
 					<DropdownButton>
