@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getPosts } from '../../service/service.posts';
+import { getSomeonesPosts } from '../../service/service.posts';
 import Post from '../shared/Post';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
@@ -8,19 +8,20 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import HashtagTrending from '../shared/HashtagTrending';
 import NoPostMessage from '../shared/NoPostMessage';
+import { useParams } from 'react-router';
 
 export default function SomeonesPosts(){
-	const [timelinePostsList, setTimelinePostsList] = useState([]);
+	const [postsList, setPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const {userInfo} = useContext(UserContext);
+	const someonesId = useParams();
 
-	function loadTimelinePosts(){		
+	function loadPosts(){		
 		setLoaderIsActive(true);
-		const config = {headers: 
-			{ 'Authorization': `Bearer ${userInfo.token}` }
-		};
-		getPosts(config).then((res)=>{
-			setTimelinePostsList(res.data.posts);
+		console.log(someonesId, userInfo.token);
+		getSomeonesPosts(someonesId ,userInfo.token).then((res)=>{
+			console.log(res.data);
+			setPostsList(res.data.posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
 		}).finally(()=>{
@@ -29,7 +30,7 @@ export default function SomeonesPosts(){
 	}
 	
 	useEffect(()=>{		
-		loadTimelinePosts();
+		loadPosts();
 	},[userInfo]);
 
 	return(
@@ -40,8 +41,8 @@ export default function SomeonesPosts(){
 					<h1>timeline</h1>
 					{loaderIsActive 
 						? <CirclesLoader/>
-						: (timelinePostsList.length)
-							?  timelinePostsList.map((p)=>{
+						: (postsList.length)
+							?  postsList.map((p)=>{
 								return (
 									<Post key={p.id} postInfo={p} />
 								);
