@@ -5,6 +5,7 @@ import { Pencil, TrashOutline } from 'react-ionicons';
 
 import UserContext from '../../contexts/UserContext';
 import { editPost } from '../../service/service.posts';
+import ModalAlert from './ModalAlert';
 
 export default function Post({postInfo}){
 	const {userInfo} = useContext(UserContext);
@@ -35,7 +36,13 @@ export default function Post({postInfo}){
 					setEdit(false);
 				})
 				.catch(() => {
-					alert('aaa');
+					const modalObj = 
+					{
+						icon: 'error',
+						title: 'Oops...',
+						description: 'Ocorreu um erro ao fazer essa edição'
+					};
+					ModalAlert(modalObj);
 				});
 		}
 	};
