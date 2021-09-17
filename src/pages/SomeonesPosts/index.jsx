@@ -8,21 +8,23 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import HashtagTrending from '../shared/HashtagTrending';
 import NoPostMessage from '../shared/NoPostMessage';
-import { useParams } from 'react-router';
+import { useParams } from 'react-router-dom';
 
 export default function SomeonesPosts(){
 	const [postsList, setPostsList] = useState([]);
+	const [userName, setUserName] = useState('');
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const {userInfo} = useContext(UserContext);
-	const someonesId = useParams();
+	const params = useParams();
+	const {id:someonesId} = params;
 
 	function loadPosts(){		
 		setLoaderIsActive(true);
-		console.log(someonesId, userInfo.token);
 		getSomeonesPosts(someonesId ,userInfo.token).then((res)=>{
-			console.log(res.data);
+			setUserName(res.data.posts[0].user.username);
 			setPostsList(res.data.posts);
 		}).catch(()=>{
+			
 			pageReloadErrorAlert();
 		}).finally(()=>{
 			setLoaderIsActive(false);
@@ -38,7 +40,7 @@ export default function SomeonesPosts(){
 			<Header/>
 			<Background>
 				<TimelineContent>
-					<h1>timeline</h1>
+					<h1>{`${userName}'s`}</h1>
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (postsList.length)
