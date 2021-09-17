@@ -10,6 +10,7 @@ import HashtagTrending from '../shared/HashtagTrending';
 import NoPostMessage from '../shared/NoPostMessage';
 import { useParams } from 'react-router-dom';
 
+
 export default function SomeonesPosts(){
 	const [postsList, setPostsList] = useState([]);
 	const [userName, setUserName] = useState('');
@@ -20,15 +21,17 @@ export default function SomeonesPosts(){
 
 	function loadPosts(){		
 		setLoaderIsActive(true);
-		getSomeonesPosts(someonesId ,userInfo.token).then((res)=>{
-			setUserName(res.data.posts[0].user.username);
-			setPostsList(res.data.posts);
-		}).catch(()=>{
-			
-			pageReloadErrorAlert();
-		}).finally(()=>{
-			setLoaderIsActive(false);
-		});
+		if(userInfo.token){
+			getSomeonesPosts(someonesId ,userInfo.token).then((res)=>{
+				setUserName(res.data.posts[0].user.username);
+				setPostsList(res.data.posts);
+			}).catch(()=>{
+				
+				pageReloadErrorAlert();
+			}).finally(()=>{
+				setLoaderIsActive(false);
+			});
+		}
 	}
 	
 	useEffect(()=>{		
@@ -40,7 +43,7 @@ export default function SomeonesPosts(){
 			<Header/>
 			<Background>
 				<TimelineContent>
-					<h1>{`${userName}'s`}</h1>
+					<h1>{`${userName}'s posts`}</h1>
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (postsList.length)
@@ -53,7 +56,12 @@ export default function SomeonesPosts(){
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					<HashtagTrending/>
+					{userInfo.token?
+						<HashtagTrending/>
+						:
+						<></>
+					}
+					
 				</HashtagContainer>
 			</Background>
 		</>
