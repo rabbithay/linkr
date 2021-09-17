@@ -34,7 +34,9 @@ function App() {
 					<Route path="/timeline" exact>
 						{userInfo.token === undefined ? <Redirect to="/" /> : <Timeline />}
 					</Route>
-					<Route path="/my-posts" exact component={MyPosts} />
+					<Route path="/my-posts" exact >
+						{userInfo.token === undefined ? <Redirect to="/" /> : <MyPosts />}
+					</Route>
 					<Route path="/user/:id" exact />
 					<Route path="/hashtag/:hashtag" exact component={Hashtag} />
 					<Route path="/my-likes" exact component={MyLikes} />

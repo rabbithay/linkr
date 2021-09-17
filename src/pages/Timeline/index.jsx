@@ -38,7 +38,7 @@ export default function Timeline(){
 			<Header/>
 			<Background>
 				<TimelineContent>
-					<h1>timeline</h1>
+					<h1>my posts</h1>
 					<CreatePost loadTimelinePosts={loadTimelinePosts}/>
 					{loaderIsActive 
 						? <CirclesLoader/>
