@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import Swal from 'sweetalert2';
+import ModalAlert from '../shared/ModalAlert';
 
 import { signUpAPI } from '../../service/service.auth';
 
@@ -18,11 +18,13 @@ function SignUp() {
 	const ruleRegexURL = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
 	const throwSwalError = (text) => {
-		Swal.fire({
+		const modalObj = 
+		{
 			icon: 'error',
 			title: 'Quase lá!',
-			text: text,
-		});
+			description: text
+		};
+		ModalAlert(modalObj);
 	};
 
 	const regex = (str, rule) => {

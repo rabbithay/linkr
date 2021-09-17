@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { useState, useContext } from 'react';
-import Swal from 'sweetalert2';
+import ModalAlert from '../shared/ModalAlert';
 import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 
@@ -14,7 +14,11 @@ export default function CreatePost({loadTimelinePosts}) {
 	const publishPost = (e) => {
 		e.preventDefault();
 		if (link === '') {
-			Swal.fire('O link não pode estar vazio 🙄');
+			const modalObj = 
+				{
+					title: 'O link não pode estar vazio 🙄',
+				};
+			ModalAlert(modalObj);
 			return;
 		}
 		setLoading(true);
@@ -27,7 +31,11 @@ export default function CreatePost({loadTimelinePosts}) {
 			})
 			.catch(() => {
 				setLoading(false);
-				Swal.fire('Houve um erro ao publicar seu link 😥');
+				const modalObj = 
+				{
+					title: 'Houve um erro ao publicar seu link 😥',
+				};
+				ModalAlert(modalObj);
 			});
 
 	};
