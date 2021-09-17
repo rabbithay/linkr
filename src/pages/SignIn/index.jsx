@@ -95,7 +95,7 @@ function SignIn(){
 
 				{!loading ? 
 					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
-						Sign Up
+						Sign In
 					</Button>
 					:
 					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
