@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import ModalAlert from './ModalAlert';
 
 export default function Post({postInfo}){
 	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
@@ -11,15 +10,6 @@ export default function Post({postInfo}){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
-	const x = () => console.log('aa');
-	let modalObj = 
-		{
-			title: 'testando',
-			buttonOptions: true,
-			functionOnConfirm : x
-		};
-
-	ModalAlert(modalObj);
 
 	return (
 		<PostContainer>
