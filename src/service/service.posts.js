@@ -1,9 +1,12 @@
 import axios from 'axios';
-const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts';
-const USERS_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users';
+const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr';
 
 function getPosts (config) {
-	return axios.get(BASE_URL, config);
+	return axios.get(`${BASE_URL}/posts`, config);
+}
+
+function getUserPosts(config, userId){
+	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 }
 
 const createPostAPI = (text, link, token) => {
@@ -16,7 +19,7 @@ const createPostAPI = (text, link, token) => {
 			'Authorization': `Bearer ${token}`
 		}
 	};
-	const promise = axios.post(BASE_URL, body, config);
+	const promise = axios.post(`${BASE_URL}/posts`, body, config);
 	return promise;
 };
 
@@ -26,7 +29,7 @@ const getSomeonesPosts = (userId, token) => {
 			'Authorization': `Bearer ${token}`
 		}
 	};
-	const promise = axios.get(`${USERS_URL}/${userId}/posts`, config);
+	const promise = axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 	return promise;
 };
 
@@ -34,5 +37,6 @@ const getSomeonesPosts = (userId, token) => {
 export {
 	getPosts,
 	createPostAPI,
+	getUserPosts,
 	getSomeonesPosts
 };
