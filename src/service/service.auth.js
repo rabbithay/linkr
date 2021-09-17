@@ -1,4 +1,5 @@
 import axios from 'axios';
+const URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/';
 
 const signUpAPI = (email, password, username, pictureUrl) => {
 	let body = 
@@ -9,7 +10,7 @@ const signUpAPI = (email, password, username, pictureUrl) => {
 		pictureUrl
 	};
 	
-	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up', body);
+	const promise = axios.post(URL + 'sign-up', body);
 	return promise;
 };
 
@@ -20,7 +21,7 @@ const signInAPI = (email, password) => {
 		password
 	};
 
-	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in', body);
+	const promise = axios.post(URL + 'sign-in', body);
 	return promise;
 };
 

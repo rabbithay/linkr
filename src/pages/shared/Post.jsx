@@ -1,22 +1,67 @@
-import React from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Pencil, TrashOutline } from 'react-ionicons';
+
+import UserContext from '../../contexts/UserContext';
+// import Swal from 'sweetalert2';
+// import { editPost } from '../../service/service.posts';
 
 export default function Post({postInfo}){
+	const {userInfo} = useContext(UserContext);
+	const {userId} = userInfo;
 	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
-	const { avatar, username } = user;
+	const { avatar, username, id } = user;
+	const [edit, setEdit] = useState(false);
+	const [editValue, setEditValue] = useState(text);
+	const editRef = useRef();
 
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
+
+	const handleEditMode = (keyboard) => {
+		console.log(keyboard);
+		if (editRef.current !== null) { 
+			editRef.current.focus();
+			if (keyboard.key === 'Escape') {
+				setEdit(false);
+				setEditValue(text);
+			}
+			else if (keyboard.key === 'Enter') {
+				alert('teste');
+				document.removeEventListener('keyup',(e) => handleEditMode(e));
+			}
+		}
+	};
 	
 	return (
 		<PostContainer>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+
 			<PostContent>
+				{userId !== id ? 
+					<WrapperDeleteAndEdit 
+						edit={edit}
+						setEdit={setEdit}
+						handleEditMode={handleEditMode}
+					/> 
+					: 
+					''
+				}
+
 				<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	
-				<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(text)}</p>` }} />
+
+				{edit ? 
+					<InputEdit 
+						value={editValue}
+						onChange={(e) => setEditValue(e.target.value)}
+						ref={editRef}
+					/> 					
+					:
+					<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(text)}</p>` }} />
+				}
 				<a href={link} target="_blank" rel="noreferrer" >
 					<LinkContainer >
 						<LinkPreviewTexts>
@@ -29,7 +74,33 @@ export default function Post({postInfo}){
 				</a>
 			</PostContent>
 		</PostContainer>
+	);
+}
 
+function WrapperDeleteAndEdit({edit, setEdit, handleEditMode}) {
+	return (
+		<WrapperOptions>
+			<Pencil 
+				onClick={() => {
+					edit ? setEdit(false) : setEdit(true);
+					document.addEventListener('keyup', handleEditMode);
+				}}
+				color={'#ffffff'} 
+				height="20px"
+				width="20px"
+				style={{
+					cursor: 'pointer'
+				}}
+			/>
+			<TrashOutline
+				color={'#ffffff'} 
+				height="20px"
+				width="20px"
+				style={{
+					cursor: 'pointer'
+				}}
+			/>
+		</WrapperOptions>
 	);
 }
 
@@ -43,6 +114,7 @@ const PostContainer = styled.div`
 	padding: 17px 21px 20px 18px;
 	display: inline-flex;
 	gap: 18px;
+	position: relative;
 	@media (max-width: 611px) {
 		width: 100vw;
 		border-radius: 0px;
@@ -87,7 +159,16 @@ const PostContent = styled.div `
 		color: #fff;
 		font-weight: bold;
 	}
-	
+`;
+
+const WrapperOptions = styled.div`
+	width: 60px;
+	height: 20px;
+	display: flex;
+	justify-content: space-around;
+	position: absolute;
+	top: 18px;
+	right: 15px;
 `;
 
 const LinkContainer = styled.div `
@@ -145,6 +226,31 @@ const LinkPreviewTexts = styled.div `
 		width: 72%;
 		padding: 7px 7px 8px 11px;
     }
+`;
+
+const InputEdit = styled.input`
+	width: 100%;
+	background: #FFFFFF;
+	color: #4C4C4C;
+	word-break: break-all;
+	resize: none;
+	padding: 8px;
+	min-height: 40px;
+	max-height: 300px;
+	margin-bottom: 14px;
+	border-radius: 7px;
+	font-family: 'Lato';
+	font-size: 14px;
+	line-height: 17px;
+
+	:focus {
+		outline: none;
+	}
+
+	@media (max-width: 611px) {
+		font-size: 11px;
+		line-height: 13px;
+	}
 `;
 
 const LinkPreviewImage = styled.img `

@@ -61,7 +61,6 @@ export default function Timeline(){
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;
