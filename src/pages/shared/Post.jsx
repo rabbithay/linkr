@@ -10,7 +10,7 @@ export default function Post({postInfo}){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
-	
+
 	return (
 		<PostContainer>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>

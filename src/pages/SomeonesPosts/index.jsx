@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { getSomeonesPosts } from '../../service/service.posts';
 import Post from '../shared/Post';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
@@ -7,50 +8,71 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import HashtagTrending from '../shared/HashtagTrending';
 import NoPostMessage from '../shared/NoPostMessage';
-import { getUserPosts } from '../../service/service.posts';
+import { useParams, useHistory } from 'react-router-dom';
 
-export default function MyPosts(){
-	const [timelinePostsList, setTimelinePostsList] = useState([]);
+
+export default function SomeonesPosts() {
+	const [postsList, setPostsList] = useState([]);
+	const [userName, setUserName] = useState('');
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const {userInfo} = useContext(UserContext);
+	const { userInfo } = useContext(UserContext);
+	const params = useParams();
+	const { id: someonesId } = params;
+	window.scrollTo(0, 0);
+	const history = useHistory();
 
-	function loadTimelinePosts(){		
+	const loadPosts = () => {
 		setLoaderIsActive(true);
-		const config = {headers: 
-			{ 'Authorization': `Bearer ${userInfo.token}` }
-		};
-		getUserPosts(config, userInfo.userId).then((res)=>{
-			setTimelinePostsList(res.data.posts);
-		}).catch(()=>{
-			pageReloadErrorAlert();
-		}).finally(()=>{
-			setLoaderIsActive(false);
-		});
-	}
-	
-	useEffect(()=>{		
-		loadTimelinePosts();
-	},[userInfo]);
+		if (userInfo.token) {
+			getSomeonesPosts(someonesId, userInfo.token).then((res) => {
+				setUserName(res.data.posts[0].user.username);
+				if (res.data.posts[0].user.id === userInfo.userId) //check if is user's posts
+					history.push('/my-posts');
+				setPostsList(res.data.posts);
+			}).catch(() => {
 
-	return(
-		<>	
-			<Header/>
+				pageReloadErrorAlert();
+			}).finally(() => {
+				setLoaderIsActive(false);
+			});
+		}
+	};
+
+	useEffect(() => {
+		loadPosts();
+	}, [userInfo]);
+
+	return (
+		<>
+			<Header />
 			<Background>
 				<TimelineContent>
-					<h1>my posts</h1>
-					{loaderIsActive 
-						? <CirclesLoader/>
-						: (timelinePostsList.length)
-							?  timelinePostsList.map((p)=>{
+					{loaderIsActive ?
+						<h1>Carregando...</h1>
+						:
+						<h1>{`${userName}'s posts`}</h1>
+					}
+
+					{loaderIsActive? 
+						<CirclesLoader />
+						: 
+						(postsList.length)? 
+							postsList.map((p) => {
 								return (
 									<Post key={p.id} postInfo={p} />
 								);
 							})
-							: <NoPostMessage/>
+							: 
+							<NoPostMessage />
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					<HashtagTrending/>
+					{userInfo.token ?
+						<HashtagTrending />
+						:
+						<></>
+					}
+
 				</HashtagContainer>
 			</Background>
 		</>
@@ -79,7 +101,7 @@ const TimelineContent = styled.div`
 		font-weight: 700;
 		font-size: 43px;
 		color: #fff;
-		margin: 53px 0px 29px 0px;
+		margin: 53px 0px 43px 0px;
 		justify-content: flex-start;
 		line-height: 63px;
 		@media (max-width: 611px) {
