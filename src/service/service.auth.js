@@ -9,7 +9,7 @@ const signUpAPI = (email, password, username, pictureUrl) => {
 		pictureUrl
 	};
 	
-	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-up', body);
+	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/sign-up', body);
 	return promise;
 };
 
@@ -20,7 +20,7 @@ const signInAPI = (email, password) => {
 		password
 	};
 
-	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/linkr/sign-in', body);
+	const promise = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/sign-in', body);
 	return promise;
 };
 
