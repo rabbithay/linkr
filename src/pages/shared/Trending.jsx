@@ -12,10 +12,12 @@ export default function Trending(){
 	const [hashtagList, setHashtagList] = useState([]);
 
 	useEffect(() => {
-		getTrending(token)
-			.then(({ data: { hashtags }}) => setHashtagList(hashtags))
-			.catch(loadingTrendingError);
-	}, []);
+		if (token) {
+			getTrending(token)
+				.then(({ data: { hashtags }}) => setHashtagList(hashtags))
+				.catch(loadingTrendingError);
+		}
+	}, [token]);
 
 	const loadingTrendingError = () => {
 		Swal.fire({
