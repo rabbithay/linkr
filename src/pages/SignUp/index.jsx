@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalAlert from '../shared/ModalAlert';
+import Loader from 'react-loader-spinner';
 
 import { signUpAPI } from '../../service/service.auth';
 
@@ -93,10 +94,20 @@ function SignUp() {
 					onChange={(e) => setImgUrl(e.target.value)}
 					value={imgUrl}
 				/>
-
-				<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
-                    Sign Up
-				</Button>
+				{!loading ?
+					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
+						Sign Up
+					</Button>
+					:
+					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
+						<Loader
+							type="ThreeDots"
+							color="#FFFFFF"
+							height={50}
+							width={50}
+						/>
+					</Button>
+				}
 
 				<Link to='/'>
 					<P>Switch back to log in</P>
