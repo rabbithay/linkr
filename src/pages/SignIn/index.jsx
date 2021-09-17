@@ -161,9 +161,11 @@ const Title = styled.p`
 const Description = styled.p`
     font-size: 43px;
     font-family: 'Oswald';
+	width: 80%;
     
     @media(max-width: 600px) {
         font-size: 23px;
+		width: unset;
     }
 `;
 
