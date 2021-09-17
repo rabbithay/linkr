@@ -11,7 +11,16 @@ export default function Post({postInfo}){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
-	ModalAlert('texto', 'error', 'descricao');
+	const x = () => console.log('aa');
+	let modalObj = 
+		{
+			title: 'testando',
+			buttonOptions: true,
+			functionOnConfirm : x
+		};
+
+	ModalAlert(modalObj);
+
 	return (
 		<PostContainer>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
