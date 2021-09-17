@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ModalAlert from './ModalAlert';
 
 export default function Post({postInfo}){
 	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
@@ -10,7 +11,7 @@ export default function Post({postInfo}){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
-	
+	ModalAlert('texto', 'error', 'descricao');
 	return (
 		<PostContainer>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
