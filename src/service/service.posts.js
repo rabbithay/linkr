@@ -32,13 +32,7 @@ const editPost = (token, text, id) => {
 	const body = {
 		text,
 	};
-	const config = {
-		headers: {
-			'Authorization': `Bearer ${token}`
-		}
-	};
-	console.log(BASE_URL + `/${id}`, body, config);
-	const promise = axios.put(BASE_URL + `/posts/${id}`, body, config);
+	const promise = axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
 	return promise;
 };
 const getSomeonesPosts = (userId, token) => {
@@ -46,9 +40,7 @@ const getSomeonesPosts = (userId, token) => {
 };
 
 const getMyLikedPosts = (token) => {
-	const promise = axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
-	console.log('posts que curti: ', promise);
-	return promise;
+	return axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
 };
 
 export {

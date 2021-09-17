@@ -20,7 +20,6 @@ export default function Hashtag(){
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
 		getMyLikedPosts(userInfo.token).then(({ data: { posts } })=>{
-			console.log('posts:', posts);
 			setLikedPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
@@ -63,7 +62,7 @@ export default function Hashtag(){
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
+	min-width: 100%;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;

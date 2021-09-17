@@ -81,7 +81,7 @@ export default function SomeonesPosts() {
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
+	min-width: 100%;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;

@@ -19,7 +19,6 @@ export default function Hashtag(){
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
 		getHashtagPosts(userInfo.token, hashtag).then(({ data: { posts } })=>{
-			console.log('posts:', posts);
 			setHashtagPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
@@ -62,7 +61,7 @@ export default function Hashtag(){
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
+	min-width: 100%;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;
