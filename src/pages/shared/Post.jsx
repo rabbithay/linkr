@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Pencil, TrashOutline } from 'react-ionicons';
-
+//import { deletePostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 import { editPost } from '../../service/service.posts';
 import ModalAlert from './ModalAlert';
@@ -46,6 +46,19 @@ export default function Post({postInfo}){
 				});
 		}
 	};
+
+	const deletePost = () => {
+		const sendDeleteToAPI = () => {
+			console.log(userId, token);
+		};
+		const modalObj =
+		{
+			title: 'Tem certeza que deseja excluir essa publicação?',
+			buttonOptions: true,
+			functionOnConfirm: sendDeleteToAPI
+		};
+		ModalAlert(modalObj);
+	};
 	
 	return (
 		<PostContainer>
@@ -58,6 +71,7 @@ export default function Post({postInfo}){
 						setEdit={setEdit}
 						setEditValue={setEditValue}
 						text={text}
+						deletePost={deletePost}
 					/> 
 					: 
 					''
@@ -91,7 +105,7 @@ export default function Post({postInfo}){
 	);
 }
 
-function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text}) {
+function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text, deletePost}) {
 	return (
 		<WrapperOptions>
 			<Pencil 
@@ -107,6 +121,7 @@ function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text}) {
 				}}
 			/>
 			<TrashOutline
+				onClick = {deletePost}
 				color={'#ffffff'} 
 				height="20px"
 				width="20px"
@@ -133,6 +148,7 @@ function InsertEditInput({editValue, setEditValue, editRef, handleEditMode, load
 		/> 
 	);	
 }
+
 
 
 const PostContainer = styled.div`

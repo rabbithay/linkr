@@ -23,6 +23,16 @@ const createPostAPI = (text, link, token) => {
 	return promise;
 };
 
+const deletePostAPI = (id, token) =>{
+	const config = {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	};
+	const promise = axios.delete(`${BASE_URL}/posts/${id}`, config);
+	return promise;
+};
+
 const editPost = (token, text, id) => {
 	const body = {
 		text,
@@ -51,5 +61,6 @@ export {
 	createPostAPI,
 	getUserPosts,
 	editPost,
-	getSomeonesPosts
+	getSomeonesPosts,
+	deletePostAPI
 };
