@@ -69,7 +69,7 @@ const Background = styled.div`
 	padding: 72px;
 	@media (max-width: 611px) {
 		padding: 19px 0px;
-    }
+  }
 `;
 const TimelineContent = styled.div`
 	width: 611px;

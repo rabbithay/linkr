@@ -37,7 +37,6 @@ export default function Hashtag(){
 			<Background>
 				<TimelineContent>
 					<h1># {hashtag}</h1>
-					{/* TODO: Seria bacana colocar o nome dessa função para somente um loadPosts */}
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (hashtagPostsList.length)
@@ -69,7 +68,7 @@ const Background = styled.div`
 	padding: 72px;
 	@media (max-width: 611px) {
 		padding: 19px 0px;
-    }
+  }
 `;
 const TimelineContent = styled.div`
 	width: 611px;

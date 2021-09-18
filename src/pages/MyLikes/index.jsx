@@ -29,8 +29,6 @@ export default function Hashtag(){
 	}
 	
 	useEffect(()=>{
-		// Tem um delay para atualizar o token com o LocalStorage,
-		// por isso fica verificando quando o token não é undefined
 		if (userInfo.token) loadHashtagPosts();
 	},[userInfo.token]);
 
@@ -40,7 +38,6 @@ export default function Hashtag(){
 			<Background>
 				<TimelineContent>
 					<h1># my likes</h1>
-					{/* TODO: Seria bacana colocar o nome dessa função para somente um loadPosts */}
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (likedPostsList.length)
