@@ -78,7 +78,9 @@ export default function Post({postInfo}){
 				}
 				<a href={link} target="_blank" rel="noreferrer" >
 					<LinkContainer >
-						<LinkPreviewTexts isLongDescription={linkDescription.length > 120}>
+						<LinkPreviewTexts
+							isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+						>
 							<h4>{linkTitle}</h4>						
 							<p>{linkDescription}</p>
 							<a href={link} target="_blank" rel="noreferrer" >{link}</a>
@@ -165,7 +167,7 @@ const UserIcon = styled.img`
 const PostContent = styled.div `
 	font-family: 'Lato';
 	width: 513px;
-    h3{
+	h3{
 		color: #fff;
 		font-size: 19px;
 		line-height: 23px;
@@ -174,8 +176,8 @@ const PostContent = styled.div `
 			font-size: 17px;
 			line-height: 20px;
 		}
-    }
-    p {
+	}
+	p {
 		color: #b7b7b7;
 		font-size: 17px;
 		line-height: 20px;
@@ -185,7 +187,7 @@ const PostContent = styled.div `
 			font-size: 15px;
 			line-height: 18px;
 		}
-    }
+	}
 	a {
 		color: #fff;
 		font-weight: bold;
@@ -225,7 +227,7 @@ const LinkPreviewTexts = styled.div `
 	flex-direction: column;
 	justify-content: space-between;
 	width: 350px;
-	h4{
+	h4 {
 		font-size: 16px;
 		color: #CECECE;
 		line-height: 19px;
@@ -240,7 +242,7 @@ const LinkPreviewTexts = styled.div `
 			line-height: 13px;
     }
 	}			
-	p{
+	p {
 		font-size: 11px;
 		color: #9B9595;
 		line-height: 13px;
@@ -253,7 +255,7 @@ const LinkPreviewTexts = styled.div `
 			line-height: 11px;
     }
 	}
-	a{
+	a {
 		font-size: 11px;
 		color: #CECECE;
 		line-height: 13px;		
