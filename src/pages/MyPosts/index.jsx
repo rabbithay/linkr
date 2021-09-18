@@ -5,7 +5,7 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
-import HashtagTrending from '../shared/HashtagTrending';
+import Trending from '../shared/Trending';
 import NoPostMessage from '../shared/NoPostMessage';
 import { getUserPosts } from '../../service/service.posts';
 
@@ -50,7 +50,7 @@ export default function MyPosts(){
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					<HashtagTrending/>
+					<Trending/>
 				</HashtagContainer>
 			</Background>
 		</>

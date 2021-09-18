@@ -6,7 +6,7 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
-import HashtagTrending from '../shared/HashtagTrending';
+import Trending from '../shared/Trending';
 import NoPostMessage from '../shared/NoPostMessage';
 import { useParams, useHistory } from 'react-router-dom';
 
@@ -68,7 +68,7 @@ export default function SomeonesPosts() {
 				</TimelineContent>
 				<HashtagContainer>
 					{userInfo.token ?
-						<HashtagTrending />
+						<Trending />
 						:
 						<></>
 					}
@@ -91,7 +91,7 @@ const Background = styled.div`
 	padding: 72px;
 	@media (max-width: 611px) {
 		padding: 19px 0px;
-    }
+  }
 `;
 const TimelineContent = styled.div`
 	width: 611px;

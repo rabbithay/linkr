@@ -149,7 +149,7 @@ const PostContainer = styled.div`
 		width: 100vw;
 		border-radius: 0px;
 		padding: 10px 18px 15px 15px;		
-    }
+  }
 `;
 
 const UserIcon = styled.img`
@@ -180,6 +180,7 @@ const PostContent = styled.div `
 		font-size: 17px;
 		line-height: 20px;
 		margin-bottom: 14px;
+		word-break: break-word;
 		@media (max-width: 611px) {
 			font-size: 15px;
 			line-height: 18px;
@@ -215,7 +216,7 @@ const LinkContainer = styled.div `
 	@media (max-width: 611px) {
 		width: calc(100vw - 87px);
 		height: 115px;
-    }
+  }
 	
 `;
 const LinkPreviewTexts = styled.div `
@@ -228,20 +229,26 @@ const LinkPreviewTexts = styled.div `
 		font-size: 16px;
 		color: #CECECE;
 		line-height: 19px;
+		word-break: break-word;
+		text-overflow: ellipsis;
+		overflow: hidden;
 		@media (max-width: 611px) {
 			font-size: 11px;
 			line-height: 13px;
-    	}
+    }
 	}			
 	p{
 		font-size: 11px;
 		color: #9B9595;
 		line-height: 13px;
 		max-height: 40px;
+		word-break: break-word;
+		overflow: hidden;
+		text-overflow: ellipsis;
 		@media (max-width: 611px) {
 			font-size: 9px;
 			line-height: 11px;
-    	}
+    }
 	}
 	a{
 		font-size: 11px;
@@ -255,12 +262,12 @@ const LinkPreviewTexts = styled.div `
 			font-size: 9px;
 			line-height: 11px;
 			width: 100%;			
-    	}
+    }
 	}
 	@media (max-width: 611px) {
 		width: 72%;
 		padding: 7px 7px 8px 11px;
-    }
+  }
 `;
 
 const InputEdit = styled.textarea`
@@ -318,7 +325,7 @@ const LinkPreviewImage = styled.img `
 	border-radius: 0px 12px 13px 0px;
 	@media (max-width: 611px) {
 		width: 28%;
-    }
+  }
 	display: flex;
 	justify-content: center;
 	align-items: center;
