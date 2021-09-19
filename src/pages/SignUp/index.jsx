@@ -22,8 +22,7 @@ function SignUp() {
 		const modalObj = 
 		{
 			icon: 'error',
-			title: 'Quase lá!',
-			description: text
+			title: text
 		};
 		ModalAlert(modalObj);
 	};
@@ -53,8 +52,13 @@ function SignUp() {
 		setLoading(true);
 		signUpAPI(email, password, name, imgUrl)
 			.then(() => history.push('/'))
-			.catch(() => {
-				throwSwalError('Esse e-mail já está cadastrado');
+			.catch((e) => {
+				if (e.response.data.message === 'Invalid param: pictureUrl') {
+					throwSwalError('Infelizmente não conseguimos utilizar essa imagem. Você poderia selecionar outra? 🥺');
+				}
+				else {
+					throwSwalError('Esse e-mail já está cadastrado');
+				}
 				setLoading(false);
 			});
 	};

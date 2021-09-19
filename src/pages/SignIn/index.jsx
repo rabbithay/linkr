@@ -22,8 +22,7 @@ function SignIn(){
 		const modalObj = 
 		{
 			icon: 'error',
-			title: 'Algo deu errado...',
-			description: text
+			title: text
 		};
 		ModalAlert(modalObj);
 	};
