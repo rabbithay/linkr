@@ -50,7 +50,7 @@ function SignIn(){
 		setLoading(true);
 		signInAPI(email, password)
 			.then(({ data: { token, user }}) => {
-				let userInfo =  
+				const userInfo =  
 				{
 					token: token,
 					userImg: user.avatar,
@@ -59,8 +59,7 @@ function SignIn(){
 				};
 				setUserInfo(userInfo);
 
-				userInfo = JSON.stringify(userInfo);
-				localStorage.setItem('userInfo', userInfo);
+				localStorage.setItem('userInfo', JSON.stringify(userInfo));
 				
 				history.push('/timeline');
 			})

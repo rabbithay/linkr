@@ -4,22 +4,22 @@ import styled from 'styled-components';
 import UserContext from '../../contexts/UserContext';
 import { getMyLikedPosts } from '../../service/service.posts';
 
-import Post from '../shared/Post';
-import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
-import Trending from '../shared/Trending';
+import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
+import Post from '../shared/Post';
+import Trending from '../shared/Trending';
 
 
 export default function Hashtag(){
 	const [likedPostsList, setLikedPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const { userInfo } = useContext(UserContext);
+	const { userInfo: { token } } = useContext(UserContext);
 
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
-		getMyLikedPosts(userInfo.token).then(({ data: { posts } })=>{
+		getMyLikedPosts(token).then(({ data: { posts } })=>{
 			setLikedPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
@@ -29,15 +29,15 @@ export default function Hashtag(){
 	}
 	
 	useEffect(()=>{
-		if (userInfo.token) loadHashtagPosts();
-	},[userInfo.token]);
+		if (token) loadHashtagPosts();
+	},[token]);
 
 	return(
 		<>	
 			<Header/>
 			<Background>
 				<TimelineContent>
-					<h1># my likes</h1>
+					<h1>my likes</h1>
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (likedPostsList.length)
