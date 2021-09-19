@@ -64,7 +64,7 @@ export default function Post({ postInfo }) {
 					''
 				}
 
-				{/* <Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	 */}
+				{/* <Link to={`/user/${user.id}`}><h3>{username}</h3></Link> */}
 				<Link to={`/teste/user/${user.id}`}><h3>{username}</h3></Link>	
 
 				{edit ? 
@@ -81,7 +81,7 @@ export default function Post({ postInfo }) {
 				<a href={link} target="_blank" rel="noreferrer" >
 					<LinkContainer >
 						<LinkPreviewTexts
-							isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+							isLongDescription={linkDescription ? linkDescription.length > 110 : false}
 						>
 							<h4>{linkTitle}</h4>						
 							<p>{linkDescription}</p>

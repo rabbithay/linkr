@@ -12,7 +12,7 @@ import Post from '../shared/Post';
 import Trending from '../shared/Trending';
 
 
-export default function SomeonesPosts(props) {
+export default function MainPage(props) {
 	let {
 		// TODO: Não tem jeito melhor de deixar isso? Coloquei
 		// como let porque a 'titleText' não pode ser const
@@ -40,7 +40,6 @@ export default function SomeonesPosts(props) {
 			getPosts({ token, userId, hashtag, someonesId })
 				.then(({ data: { posts } }) => {
 					if (isSomeonesPage) {
-						console.log('ta aqui');
 						// TODO: Tirar esse if daqui. Achei ele meio bizarro, mas não pensei em nada
 						// que dê para tirar ele, porque ele depende da resposta do server, e a resposta
 						// eu não queria jogar para a página em si
@@ -74,6 +73,7 @@ export default function SomeonesPosts(props) {
 						? <h1>Carregando...</h1>
 						: <h1>{titleText}</h1>
 					}
+
 					{CreatePost
 						? <CreatePost loadTimelinePosts={loadPosts}/>
 						: <></>
@@ -86,12 +86,12 @@ export default function SomeonesPosts(props) {
 							: <NoPostMessage />
 					}
 				</TimelineContent>
+				
 				<HashtagContainer>
 					{token
 						? <Trending loaderIsActive={loaderIsActive} />
 						:	<></>
 					}
-
 				</HashtagContainer>
 			</Background>
 		</>
