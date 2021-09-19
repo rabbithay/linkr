@@ -5,7 +5,7 @@ import ModalAlert from '../shared/ModalAlert';
 import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 
-export default function CreatePost({loadTimelinePosts}) {
+export default function CreatePost({ loadTimelinePosts }) {
 	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');

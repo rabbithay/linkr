@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import UserContext from '../../contexts/UserContext';
-import { getPosts } from '../../service/service.posts';
+import { getTimelinePosts } from '../../service/service.posts';
 
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
@@ -19,10 +19,7 @@ export default function Timeline(){
 
 	function loadTimelinePosts(){		
 		setLoaderIsActive(true);
-		const config = {headers: 
-			{ 'Authorization': `Bearer ${token}` }
-		};
-		getPosts(config).then((res)=>{
+		getTimelinePosts({ token }).then((res)=>{
 			setTimelinePostsList(res.data.posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();

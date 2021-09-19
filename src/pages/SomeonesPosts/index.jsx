@@ -26,7 +26,7 @@ export default function SomeonesPosts() {
 	const loadPosts = () => {
 		setLoaderIsActive(true);
 		if (token) {
-			getSomeonesPosts(someonesId, token).then((res) => {
+			getSomeonesPosts({ someonesId, token }).then((res) => {
 				setUserName(res.data.posts[0].user.username);
 				if (Number(someonesId) === userId) history.push('/my-posts');
 				setPostsList(res.data.posts);

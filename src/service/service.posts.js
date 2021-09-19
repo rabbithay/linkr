@@ -12,13 +12,13 @@ const makeConfig = (token) => {
 	return config;
 };
 
-function getPosts (config) {
-	return axios.get(`${BASE_URL}/posts`, config);
-}
+const getTimelinePosts = ({ token }) => {
+	return axios.get(`${BASE_URL}/posts`, makeConfig(token));
+};
 
-function getUserPosts(config, userId){
-	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
-}
+const getUserPosts = ({ token, userId }) => {
+	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
+};
 
 const createPostAPI = (text, link, token) => {
 	const body = {
@@ -35,19 +35,25 @@ const editPost = (token, text, id) => {
 	const promise = axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
 	return promise;
 };
-const getSomeonesPosts = (userId, token) => {
-	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
+
+const getSomeonesPosts = ({ token, someonesId }) => {
+	return axios.get(`${BASE_URL}/users/${someonesId}/posts`, makeConfig(token));
 };
 
-const getMyLikedPosts = (token) => {
+const getMyLikedPosts = ({ token }) => {
 	return axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
 };
 
+const getHashtagPosts = ({ token, hashtag }) => {
+	return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, makeConfig(token));
+};
+
 export {
-	getPosts,
+	getTimelinePosts,
 	createPostAPI,
 	getUserPosts,
 	getSomeonesPosts,
 	getMyLikedPosts,
-	editPost
+	editPost,
+	getHashtagPosts
 };

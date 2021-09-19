@@ -18,10 +18,7 @@ export default function MyPosts(){
 
 	function loadTimelinePosts(){		
 		setLoaderIsActive(true);
-		const config = {headers: 
-			{ 'Authorization': `Bearer ${token}` }
-		};
-		getUserPosts(config, userId).then((res)=>{
+		getUserPosts({ token, userId }).then((res)=>{
 			setTimelinePostsList(res.data.posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();

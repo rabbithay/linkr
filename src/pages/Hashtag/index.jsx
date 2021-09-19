@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import UserContext from '../../contexts/UserContext';
-import { getHashtagPosts } from '../../service/service.hashtag';
+import { getHashtagPosts } from '../../service/service.posts';
 
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
@@ -20,7 +20,7 @@ export default function Hashtag(){
 
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
-		getHashtagPosts(token, hashtag).then(({ data: { posts } })=>{
+		getHashtagPosts({ token, hashtag }).then(({ data: { posts } })=>{
 			setHashtagPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();

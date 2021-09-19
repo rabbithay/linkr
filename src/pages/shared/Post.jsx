@@ -7,11 +7,10 @@ import UserContext from '../../contexts/UserContext';
 import { editPost } from '../../service/service.posts';
 import ModalAlert from './ModalAlert';
 
-export default function Post({postInfo}){
-	const {userInfo} = useContext(UserContext);
-	const {userId, token} = userInfo;
-	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
-	const postId = postInfo.id;
+export default function Post({ postInfo }) {
+	const { userInfo } = useContext(UserContext);
+	const { userId, token } = userInfo;
+	const { text, link, user, linkImage, linkTitle, linkDescription, id:postId } = postInfo;
 	const { avatar, username, id } = user;
 	const [edit, setEdit] = useState(false);
 	const [editValue, setEditValue] = useState(text);
@@ -19,7 +18,8 @@ export default function Post({postInfo}){
 	const editRef = useRef();
 
 	function hashtag(text){
-		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
+		// const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
+		const repl = text.replace(/#(\w+)/g, '<a href="/teste/hashtag/$1">#$1</a>');
 		return repl;
 	}
 
@@ -49,7 +49,8 @@ export default function Post({postInfo}){
 	
 	return (
 		<PostContainer>
-			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+			{/* <Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link> */}
+			<Link to={`/teste/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
 
 			<PostContent>
 				{userId === id ? 
@@ -63,7 +64,8 @@ export default function Post({postInfo}){
 					''
 				}
 
-				<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	
+				{/* <Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	 */}
+				<Link to={`/teste/user/${user.id}`}><h3>{username}</h3></Link>	
 
 				{edit ? 
 					<InsertEditInput 

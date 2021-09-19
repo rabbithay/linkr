@@ -19,7 +19,7 @@ export default function Hashtag(){
 
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
-		getMyLikedPosts(token).then(({ data: { posts } })=>{
+		getMyLikedPosts({ token }).then(({ data: { posts } })=>{
 			setLikedPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();

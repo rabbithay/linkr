@@ -2,12 +2,13 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import ModalAlert from './ModalAlert';
 import UserContext from '../../contexts/UserContext';
 import { getTrending } from '../../service/service.hashtag';
 
+import ModalAlert from './ModalAlert';
 
-export default function Trending(){
+
+export default function Trending({ loaderIsActive }){
 	const { userInfo: { token } } = useContext(UserContext);
 	const [hashtagList, setHashtagList] = useState([]);
 
@@ -32,13 +33,17 @@ export default function Trending(){
 	return(
 		<Container>
 			<div className='Title'>
-				<h1>trending</h1>
+				{loaderIsActive
+					? <h1>Carregando...</h1>
+					: <h1>trending</h1>
+				}
 			</div>
 	
 			<HashtagsBox>
 				{hashtagList.map(({ id, name }) => {
 					return (
-						<Link key={id} to={`/hashtag/${name}`}>
+						// <Link key={id} to={`/hashtag/${name}`}>
+						<Link key={id} to={`/teste/hashtag/${name}`}>
 							<li>{`# ${name}`}</li>
 						</Link>
 					);

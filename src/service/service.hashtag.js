@@ -18,9 +18,5 @@ const getTrending = (token) => {
 	return axios.get(`${API_HASHTAG}/trending`, makeConfig(token));
 };
 
-const getHashtagPosts = (token, hashtag) => {
-	return axios.get(`${API_HASHTAG}/${hashtag}/posts`, makeConfig(token));
-};
 
-
-export { getTrending, getHashtagPosts };
+export { getTrending };
