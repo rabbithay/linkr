@@ -14,6 +14,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-tooltip": "^4.2.21",
+    "react-transition-group": "^4.4.2",
     "styled-components": "^5.3.1",
     "sweetalert2": "^11.1.5",
     "sweetalert2-react-content": "^4.1.1"
@@ -42,8 +43,7 @@
       "last 1 safari version"
     ]
   },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "a link-sharing social networking",
   "main": "index.js",
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }
