@@ -69,6 +69,7 @@ export default function Post({postInfo}){
 				});
 
 		};
+		//create delete pop-up
 		const modalObj =
 		{
 			title: 'Tem certeza que deseja excluir essa publicação?',
