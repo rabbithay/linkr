@@ -17,7 +17,9 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 		});
 	}
 
-	const peopleWhoLiked = likes.filter((l)=>{if (l.userId!==userInfo.userId) return l.username;});
+	const peopleWhoLiked = likes.filter(l=>l.userId !== userInfo.userId).map(l=>l.username);
+
+	console.log(likes);
 	function dataTip(){
 		if (!peopleWhoLiked.length){
 			return (liked) ? 'You' : 'Nobody';
