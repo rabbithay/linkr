@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.4",
     "get-youtube-id": "^1.0.1",
     "react": "^17.0.2",
@@ -16,6 +13,7 @@
     "react-loader-spinner": "^4.0.0",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-tooltip": "^4.2.21",
     "react-transition-group": "^4.4.2",
     "styled-components": "^5.3.1",
     "sweetalert2": "^11.1.5",
@@ -45,8 +43,7 @@
       "last 1 safari version"
     ]
   },
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "description": "a link-sharing social networking",
   "main": "index.js",
-  "author": "",
-  "license": "ISC"
+  "author": ""
 }

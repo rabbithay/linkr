@@ -12,13 +12,17 @@ const makeConfig = (token) => {
 	return config;
 };
 
-function getPosts (config) {
+const getPosts = (config) => {
 	return axios.get(`${BASE_URL}/posts`, config);
-}
+};
 
-function getUserPosts(config, userId){
+const getUserPosts = (config, userId) => {
 	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
-}
+};
+
+const postLikeOrDislike = (config, postId, action) => {
+	return axios.post(`${BASE_URL}/posts/${postId}/${action}`,{}, config);
+};
 
 const createPostAPI = (text, link, token) => {
 	const body = {
@@ -59,6 +63,7 @@ export {
 	deletePostAPI,
 	getUserPosts,
 	getSomeonesPosts,
+	postLikeOrDislike,
+	editPost,
 	getMyLikedPosts,
-	editPost
 };

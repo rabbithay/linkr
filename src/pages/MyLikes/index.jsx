@@ -107,4 +107,3 @@ const HashtagContainer = styled.div`
 	position: sticky;
 	top: 80px;
 `;
-

@@ -4,22 +4,23 @@ import styled from 'styled-components';
 import { Pencil, TrashOutline } from 'react-ionicons';
 import { deletePostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
+import Like from './Like';
 import { editPost } from '../../service/service.posts';
 import ModalAlert from './ModalAlert';
 import CirclesLoader from './CirclesLoader';
 
 export default function Post({postInfo}){
+	const { text, link, user, linkImage, linkTitle, linkDescription, likes } = postInfo;
+	const { avatar, username, id } = user;
 	const {userInfo} = useContext(UserContext);
 	const {userId, token} = userInfo;
-	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
 	const postId = postInfo.id;
-	const { avatar, username, id } = user;
 	const [edit, setEdit] = useState(false);
 	const [editValue, setEditValue] = useState(text);
 	const [postDeleted, setPostDeleted] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
-
+	
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
@@ -127,6 +128,8 @@ export default function Post({postInfo}){
 						</a>
 					</PostContent>
 			}
+			<Like  likes={likes} id={postId} userInfo={userInfo} />
+
 		</PostContainer>
 	);
 }
@@ -191,7 +194,8 @@ const PostContainer = styled.div`
 		width: 100vw;
 		border-radius: 0px;
 		padding: 10px 18px 15px 15px;		
-  }
+    }
+	position: relative;
 `;
 
 const UserIcon = styled.img`
