@@ -28,6 +28,19 @@ const createPostAPI = (text, link, token) => {
 	return promise;
 };
 
+const editPost = (token, text, id) => {
+	const body = {
+		text,
+	};
+	const config = {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	};
+	console.log(BASE_URL + `/${id}`, body, config);
+	const promise = axios.put(BASE_URL + `/posts/${id}`, body, config);
+	return promise;
+};
 const getSomeonesPosts = (userId, token) => {
 	const config = {
 		headers: {
@@ -38,11 +51,11 @@ const getSomeonesPosts = (userId, token) => {
 	return promise;
 };
 
-
 export {
 	getPosts,
 	createPostAPI,
 	getUserPosts,
 	getSomeonesPosts,
 	postLikeOrDislike,
+	editPost,
 };

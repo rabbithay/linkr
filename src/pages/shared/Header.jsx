@@ -49,8 +49,8 @@ function Header () {
 			<Link to='/timeline'>
 				<P>linkr</P>
 			</Link>
-			<Container ref={dropdownRef}>
-				<Dropdown onClick={toggleDropdown}>
+			<Container ref={dropdownRef} onClick={toggleDropdown}>
+				<Dropdown >
 					<DropdownButton>
 						{enabled ? 
 							<ChevronUpOutline
@@ -81,7 +81,7 @@ function Header () {
 					</DropdownContent>
 				</Dropdown>
 
-				<ProfilePhoto src={userProfilePhoto} onClick={toggleDropdown}/>
+				<ProfilePhoto src={userProfilePhoto} />
 			</Container>
 		</Topbar>
 	);
@@ -119,6 +119,7 @@ const Container = styled.div`
 	justify-content: space-around;
 	align-items: center;
 	position: relative;
+	cursor: pointer;
 
 	@media(max-width: 600px) {
 		width: 100px;
@@ -128,7 +129,6 @@ const Container = styled.div`
 
 const Dropdown = styled.div`
 	display: inline-block;
-	cursor: pointer;
 `;
 
 const DropdownButton = styled.button`
@@ -169,7 +169,6 @@ const ProfilePhoto = styled.img`
 	height: 53px;
 	border-radius: 27px;
 	margin-left: 10px;
-	cursor: pointer;
 
 	@media(max-width: 600px) {
         width: 44px;

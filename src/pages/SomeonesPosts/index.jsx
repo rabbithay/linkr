@@ -6,62 +6,73 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
-import HashtagTrending from '../shared/HashtagTrending';
+import Trending from '../shared/Trending';
 import NoPostMessage from '../shared/NoPostMessage';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 
-export default function SomeonesPosts(){
+export default function SomeonesPosts() {
 	const [postsList, setPostsList] = useState([]);
 	const [userName, setUserName] = useState('');
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const {userInfo} = useContext(UserContext);
+	const { userInfo } = useContext(UserContext);
 	const params = useParams();
-	const {id:someonesId} = params;
+	const { id: someonesId } = params;
+	window.scrollTo(0, 0);
+	const history = useHistory();
 
-	function loadPosts(){		
+	const loadPosts = () => {
 		setLoaderIsActive(true);
-		if(userInfo.token){
-			getSomeonesPosts(someonesId ,userInfo.token).then((res)=>{
+		if (userInfo.token) {
+			getSomeonesPosts(someonesId, userInfo.token).then((res) => {
 				setUserName(res.data.posts[0].user.username);
+				if (res.data.posts[0].user.id === userInfo.userId) //check if is user's posts
+					history.push('/my-posts');
 				setPostsList(res.data.posts);
-			}).catch(()=>{
-				
+			}).catch(() => {
+
 				pageReloadErrorAlert();
-			}).finally(()=>{
+			}).finally(() => {
 				setLoaderIsActive(false);
 			});
 		}
-	}
-	
-	useEffect(()=>{		
-		loadPosts();
-	},[userInfo]);
+	};
 
-	return(
-		<>	
-			<Header/>
+	useEffect(() => {
+		loadPosts();
+	}, [userInfo]);
+
+	return (
+		<>
+			<Header />
 			<Background>
 				<TimelineContent>
-					<h1>{`${userName}'s posts`}</h1>
-					{loaderIsActive 
-						? <CirclesLoader/>
-						: (postsList.length)
-							?  postsList.map((p)=>{
+					{loaderIsActive ?
+						<h1>Carregando...</h1>
+						:
+						<h1>{`${userName}'s posts`}</h1>
+					}
+
+					{loaderIsActive? 
+						<CirclesLoader />
+						: 
+						(postsList.length)? 
+							postsList.map((p) => {
 								return (
 									<Post key={p.id} postInfo={p} />
 								);
 							})
-							: <NoPostMessage/>
+							: 
+							<NoPostMessage />
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					{userInfo.token?
-						<HashtagTrending/>
+					{userInfo.token ?
+						<Trending />
 						:
 						<></>
 					}
-					
+
 				</HashtagContainer>
 			</Background>
 		</>
@@ -80,7 +91,7 @@ const Background = styled.div`
 	padding: 72px;
 	@media (max-width: 611px) {
 		padding: 19px 0px;
-    }
+  }
 `;
 const TimelineContent = styled.div`
 	width: 611px;

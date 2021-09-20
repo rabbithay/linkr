@@ -2,7 +2,9 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
-import Swal from 'sweetalert2';
+import ModalAlert from '../shared/ModalAlert';
+import Loader from 'react-loader-spinner';
+
 
 import { signInAPI } from '../../service/service.auth';
 import UserContext from '../../contexts/UserContext';
@@ -17,11 +19,13 @@ function SignIn(){
 	const ruleRegexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	
 	const throwSwalError = (text) => {
-		Swal.fire({
+		const modalObj = 
+		{
 			icon: 'error',
-			title: 'Quase lá!',
-			text: text,
-		});
+			title: 'Algo deu errado...',
+			description: text
+		};
+		ModalAlert(modalObj);
 	};
 
 	const regex = (str, rule) => {
@@ -35,7 +39,7 @@ function SignIn(){
 		}
 
 		if (!regex(email, ruleRegexEmail)) {
-			throwSwalError('Insira um e-mail é válido');
+			throwSwalError('Insira um e-mail válido');
 		}
 		else {
 			handleResponseFromAPI();
@@ -71,7 +75,7 @@ function SignIn(){
 			<Disclaimer>
 				<Title>linkr</Title>
 				<Description>
-                    save, share and discover<br />the best links on the web
+                    save, share and discover the best links on the web
 				</Description>
 			</Disclaimer>
 			<Form >
@@ -89,9 +93,20 @@ function SignIn(){
 					onChange={(e) => setPassword(e.target.value)} value={password}
 				/>
 
-				<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
-                    Sign Up
-				</Button>
+				{!loading ? 
+					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
+						Sign In
+					</Button>
+					:
+					<Button type='submit' loading={loading ? 1 : 0} onClick={validateInputs}>
+						<Loader
+							type="ThreeDots"
+							color="#FFFFFF"
+							height={50}
+							width={50}
+						/>
+					</Button>
+				}
 
 				<Link to='/sign-up'>
 					<P>First time? Create an account!</P>
@@ -146,9 +161,12 @@ const Title = styled.p`
 const Description = styled.p`
     font-size: 43px;
     font-family: 'Oswald';
+	max-width: 442px;
+	width: 80%;
     
     @media(max-width: 600px) {
         font-size: 23px;
+		width: unset;
     }
 `;
 

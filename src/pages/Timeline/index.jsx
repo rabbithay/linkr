@@ -7,7 +7,7 @@ import UserContext from '../../contexts/UserContext';
 import Header from '../shared/Header';
 import CreatePost from './CreatePost';
 import CirclesLoader from '../shared/CirclesLoader';
-import HashtagTrending from '../shared/HashtagTrending';
+import Trending from '../shared/Trending';
 import NoPostMessage from '../shared/NoPostMessage';
 
 export default function Timeline(){
@@ -52,7 +52,7 @@ export default function Timeline(){
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					<HashtagTrending/>
+					<Trending/>
 				</HashtagContainer>
 			</Background>
 		</>
@@ -61,7 +61,6 @@ export default function Timeline(){
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;
