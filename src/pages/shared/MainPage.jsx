@@ -33,7 +33,7 @@ export default function MainPage(props) {
 
 	window.scrollTo(0, 0);
 
-		
+
 	const loadPosts = () => {
 		setLoaderIsActive(true);
 		if (token) {

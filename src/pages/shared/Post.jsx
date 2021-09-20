@@ -31,8 +31,8 @@ export default function Post({ postInfo }) {
 	const editRef = useRef();
 	
 	function hashtag(text){
-		// const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
-		const repl = text.replace(/#(\w+)/g, '<a href="/teste/hashtag/$1">#$1</a>');
+		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
+		// const repl = text.replace(/#(\w+)/g, '<a href="/teste/hashtag/$1">#$1</a>');
 		return repl;
 	}
 
@@ -49,8 +49,7 @@ export default function Post({ postInfo }) {
 					setEdit(false);
 				})
 				.catch(() => {
-					const modalObj = 
-					{
+					const modalObj = {
 						icon: 'error',
 						title: 'An error occurred on editing this post, please, try again later'
 					};
@@ -89,8 +88,8 @@ export default function Post({ postInfo }) {
 	
 	return (
 		<PostContainer postDeleted={postDeleted ? 1 : 0}>
-			{/* <Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link> */}
-			<Link to={`/teste/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+			{/* <Link to={`/teste/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link> */}
 			{
 				loading ?
 					<Loading>
@@ -110,8 +109,8 @@ export default function Post({ postInfo }) {
 							''
 						}
 
-						{/* <Link to={`/user/${user.id}`}><h3>{username}</h3></Link> */}
-						<Link to={`/teste/user/${user.id}`}><h3>{username}</h3></Link>	
+						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+						{/* <Link to={`/teste/user/${user.id}`}><h3>{username}</h3></Link>	 */}
 
 						{edit ?
 							<InsertEditInput
@@ -226,6 +225,7 @@ const PostContent = styled.div `
 		font-size: 19px;
 		line-height: 23px;
 		margin-bottom: 7px;
+		word-break: break-word;
 		@media (max-width: 611px) {
 			font-size: 17px;
 			line-height: 20px;

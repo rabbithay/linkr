@@ -21,7 +21,7 @@ const getUserPosts = ({ token, userId }) => {
 };
 
 const postLikeOrDislike = (token, postId, action) => {
-	return axios.post(`${BASE_URL}/posts/${postId}/${action}`,{}, makeConfig(token));
+	return axios.post(`${BASE_URL}/posts/${postId}/${action}`, {}, makeConfig(token));
 };
 
 const createPostAPI = (text, link, token) => {
@@ -29,25 +29,20 @@ const createPostAPI = (text, link, token) => {
 		text,
 		link
 	};
+
 	return axios.post(`${BASE_URL}/posts`, body, makeConfig(token));
 };
 
-const deletePostAPI = (id, token) =>{
-	const config = {
-		headers: {
-			'Authorization': `Bearer ${token}`
-		}
-	};
-	const promise = axios.delete(`${BASE_URL}/posts/${id}`, config);
-	return promise;
+const deletePostAPI = (id, token) => {
+	return axios.delete(`${BASE_URL}/posts/${id}`, makeConfig(token));
 };
 
 const editPost = (token, text, id) => {
 	const body = {
 		text,
 	};
-	const promise = axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
-	return promise;
+
+	return axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
 };
 
 const getSomeonesPosts = ({ token, someonesId }) => {

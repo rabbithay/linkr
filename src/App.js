@@ -35,9 +35,9 @@ function App() {
 			<Router>
 				<GlobalStyle/>
 				<Switch>
-					{/* <Route path="/" exact> 
+					<Route path="/" exact> 
 						{userInfo.token ? <Redirect to="/timeline" /> : <SignIn />}
-					</Route> */}
+					</Route>
 					<Route path="/sign-up" exact component={SignUp} />
 					<Route path="/timeline" exact>
 						{userInfo.token ? <Timeline /> : <Redirect to="/" />}
@@ -50,9 +50,9 @@ function App() {
 					<Route path="/my-likes" exact component={MyLikes} />
 					
 					{/* REFACTORING */}
-					<Route path="/" exact> 
+					{/* <Route path="/" exact> 
 						{userInfo.token ? <Redirect to="/teste/timeline" /> : <SignIn />}
-					</Route>
+					</Route> */}
 					<Route path="/teste/timeline" exact>
 						{userInfo.token ? <TimelineTest /> : <Redirect to="/" />}
 					</Route>

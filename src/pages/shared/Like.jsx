@@ -10,17 +10,16 @@ export default function Like ({id, userInfo, likes}) {
 
 	function likeOrDislike(){
 		const action = (liked) ? 'dislike' : 'like';
-		const config = {headers: 
-			{ 'Authorization': `Bearer ${userInfo.token}` }
-		};
 		setLiked(!liked);
-		postLikeOrDislike(config, id, action).then().catch(()=>{
-			setLiked(!liked);
-		});
+		postLikeOrDislike(userInfo.token, id, action)
+			.then()
+			.catch(() => {
+				setLiked(!liked);
+			});
 	}
 
 	function checkLike(){
-		return !! likes.find((l)=>{
+		return !! likes.find((l) => {
 			return l.userId===userInfo.userId;
 		});
 	}
