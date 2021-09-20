@@ -1,21 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getSomeonesPosts } from '../../service/service.posts';
-import Post from '../shared/Post';
-import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
+import { useParams, useHistory } from 'react-router-dom';
+
 import UserContext from '../../contexts/UserContext';
+import { getSomeonesPosts } from '../../service/service.posts';
+
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
-import Trending from '../shared/Trending';
+import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import { useParams, useHistory } from 'react-router-dom';
+import Post from '../shared/Post';
+import Trending from '../shared/Trending';
 
 
 export default function SomeonesPosts() {
 	const [postsList, setPostsList] = useState([]);
 	const [userName, setUserName] = useState('');
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const { userInfo } = useContext(UserContext);
+	const { userInfo: { token, userId } } = useContext(UserContext);
 	const params = useParams();
 	const { id: someonesId } = params;
 	window.scrollTo(0, 0);
@@ -23,14 +25,12 @@ export default function SomeonesPosts() {
 
 	const loadPosts = () => {
 		setLoaderIsActive(true);
-		if (userInfo.token) {
-			getSomeonesPosts(someonesId, userInfo.token).then((res) => {
+		if (token) {
+			getSomeonesPosts(someonesId, token).then((res) => {
 				setUserName(res.data.posts[0].user.username);
-				if (res.data.posts[0].user.id === userInfo.userId) //check if is user's posts
-					history.push('/my-posts');
+				if (Number(someonesId) === userId) history.push('/my-posts');
 				setPostsList(res.data.posts);
 			}).catch(() => {
-
 				pageReloadErrorAlert();
 			}).finally(() => {
 				setLoaderIsActive(false);
@@ -40,7 +40,7 @@ export default function SomeonesPosts() {
 
 	useEffect(() => {
 		loadPosts();
-	}, [userInfo]);
+	}, [token]);
 
 	return (
 		<>
@@ -67,7 +67,7 @@ export default function SomeonesPosts() {
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					{userInfo.token ?
+					{token ?
 						<Trending />
 						:
 						<></>
@@ -81,7 +81,7 @@ export default function SomeonesPosts() {
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
+	min-width: 100%;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;

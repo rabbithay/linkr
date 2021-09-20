@@ -1,25 +1,26 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import {
 	BrowserRouter as Router, Switch, Route, Redirect
 } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import GlobalStyle from './styles/GlobalStyle';
+
 import UserContext from './contexts/UserContext';
+
+import GlobalStyle from './styles/GlobalStyle';
+
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Timeline from './pages/Timeline';
-import MyLikes from './pages/MyLikes';
 import MyPosts from './pages/MyPosts';
-import Hashtag from './pages/Hashtag';
 import SomeonesPosts from './pages/SomeonesPosts';
+import Hashtag from './pages/Hashtag';
+import MyLikes from './pages/MyLikes';
 
 function App() {
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
 	const [userInfo, setUserInfo] = useState('');
 	useEffect(() => {
-		if (infoFromLocalStorage !== null) {
-			setUserInfo(infoFromLocalStorage);
-		}
+		if (infoFromLocalStorage) setUserInfo(infoFromLocalStorage);
 	}, []);
 
 
@@ -29,14 +30,14 @@ function App() {
 				<GlobalStyle/>
 				<Switch>
 					<Route path="/" exact> 
-						{userInfo.token !== undefined ? <Redirect to="/timeline" /> : <SignIn />}
+						{userInfo.token ? <Redirect to="/timeline" /> : <SignIn />}
 					</Route>
 					<Route path="/sign-up" exact component={SignUp} />
 					<Route path="/timeline" exact>
-						{userInfo.token === undefined ? <Redirect to="/" /> : <Timeline />}
+						{userInfo.token ? <Timeline /> : <Redirect to="/" />}
 					</Route>
 					<Route path="/my-posts" exact >
-						{userInfo.token === undefined ? <Redirect to="/" /> : <MyPosts />}
+						{userInfo.token ? <MyPosts /> : <Redirect to="/" />}
 					</Route>
 					<Route path="/user/:id" exact component={SomeonesPosts}/>
 					<Route path="/hashtag/:hashtag" exact component={Hashtag} />

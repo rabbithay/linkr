@@ -63,7 +63,7 @@ function SignUp() {
 			<Disclaimer>
 				<Title>linkr</Title>
 				<Description>
-                    save, share and discover the best links on the web
+          save, share and discover the best links on the web
 				</Description>
 			</Disclaimer>
 			<Form >
@@ -124,7 +124,7 @@ const SignUpPage = styled.div`
     font-weight: bold;
 
     @media(max-width: 600px) {
-        flex-direction: column;
+			flex-direction: column;
     }
 `;
 
@@ -141,10 +141,10 @@ const Disclaimer = styled.div`
     padding-left: 10%;
 
     @media(max-width: 600px) {
-        align-items: center;
-        padding-left: 0px;
-        width: 100%;
-        height: 25%;
+			align-items: center;
+			padding-left: 0px;
+			width: 100%;
+			height: 25%;
     }
 `;
 
@@ -154,20 +154,22 @@ const Title = styled.p`
     font-family: 'Passion one';
 
     @media(max-width: 600px) {
-        margin-bottom: 0px;
-        font-size: 85px;
+			margin-bottom: 0px;
+			font-size: 85px;
     }
 `;
 
 const Description = styled.p`
     font-size: 43px;
     font-family: 'Oswald';
-	max-width: 442px;
-	width: 80%;
+		max-width: 442px;
+		width: 80%;
     
     @media(max-width: 600px) {
-        font-size: 23px;
-		width: unset;
+			font-size: 23px;
+			text-align: center;
+			width: unset;
+			max-width: 240px;
     }
 `;
 
@@ -180,11 +182,14 @@ const Form = styled.div`
     justify-content: center;
     align-items: center;
     @media(max-width: 600px) {
-        justify-content: flex-start;
-        padding-top: 10%;
-        width: 100%;
-        height: 75%;
+			justify-content: flex-start;
+			padding-top: 10%;
+			width: 100%;
+			height: 75%;
     }
+		p {
+			text-align: center;
+		}
 `;
 
 const Input = styled.input`

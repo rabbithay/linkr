@@ -1,24 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getPosts } from '../../service/service.posts';
-import Post from '../shared/Post';
-import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
+
 import UserContext from '../../contexts/UserContext';
+import { getPosts } from '../../service/service.posts';
+
 import Header from '../shared/Header';
-import CreatePost from './CreatePost';
 import CirclesLoader from '../shared/CirclesLoader';
-import Trending from '../shared/Trending';
+import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
+import CreatePost from './CreatePost';
+import Post from '../shared/Post';
+import Trending from '../shared/Trending';
 
 export default function Timeline(){
 	const [timelinePostsList, setTimelinePostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const {userInfo} = useContext(UserContext);
+	const { userInfo: { token } } = useContext(UserContext);
 
 	function loadTimelinePosts(){		
 		setLoaderIsActive(true);
 		const config = {headers: 
-			{ 'Authorization': `Bearer ${userInfo.token}` }
+			{ 'Authorization': `Bearer ${token}` }
 		};
 		getPosts(config).then((res)=>{
 			setTimelinePostsList(res.data.posts);
@@ -31,7 +33,7 @@ export default function Timeline(){
 	
 	useEffect(()=>{		
 		loadTimelinePosts();
-	},[userInfo]);
+	},[token]);
 
 	return(
 		<>	
