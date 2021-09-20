@@ -1,13 +1,18 @@
 import axios from 'axios';
 const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr';
 
-function getPosts (config) {
+const getPosts = (config) => {
 	return axios.get(`${BASE_URL}/posts`, config);
-}
+};
 
-function getUserPosts(config, userId){
+const getUserPosts = (config, userId) => {
 	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
-}
+};
+
+const postLikeOrDislike = (config, postId, action) => {
+	console.log(`${BASE_URL}/posts/${postId}/${action}`, config);
+	return axios.post(`${BASE_URL}/posts/${postId}/${action}`,{}, config);
+};
 
 const createPostAPI = (text, link, token) => {
 	const body = {
@@ -38,5 +43,6 @@ export {
 	getPosts,
 	createPostAPI,
 	getUserPosts,
-	getSomeonesPosts
+	getSomeonesPosts,
+	postLikeOrDislike,
 };

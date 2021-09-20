@@ -1,16 +1,25 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import UserContext from '../../contexts/UserContext';
+import Like from './Like';
 
 export default function Post({postInfo}){
-	const { text, link, user, linkImage, linkTitle, linkDescription } = postInfo;
+	const { text, link, user, linkImage, linkTitle, linkDescription, likes, id } = postInfo;
 	const { avatar, username } = user;
-
-	function hashtag(text){
+	const {userInfo} = useContext(UserContext);
+	const [liked, setLiked] = useState(checkLike());
+	const hashtag = (text) => {
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
+	};
+
+	function checkLike(){
+		return !! likes.find((l)=>{
+			return l.userId===userInfo.userId;
+		});
 	}
-	
+		
 	return (
 		<PostContainer>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
@@ -28,8 +37,8 @@ export default function Post({postInfo}){
 					</LinkContainer>
 				</a>
 			</PostContent>
+			<Like liked={liked} setLiked={setLiked} checkLike={checkLike} id={id} token={userInfo.token} />
 		</PostContainer>
-
 	);
 }
 
@@ -48,6 +57,7 @@ const PostContainer = styled.div`
 		border-radius: 0px;
 		padding: 10px 18px 15px 15px;		
     }
+	position: relative;
 `;
 
 const UserIcon = styled.img`
