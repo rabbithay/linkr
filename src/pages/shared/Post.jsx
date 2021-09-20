@@ -2,10 +2,11 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Pencil, TrashOutline } from 'react-ionicons';
-
+import { deletePostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 import { editPost } from '../../service/service.posts';
 import ModalAlert from './ModalAlert';
+import CirclesLoader from './CirclesLoader';
 
 export default function Post({postInfo}){
 	const {userInfo} = useContext(UserContext);
@@ -15,6 +16,7 @@ export default function Post({postInfo}){
 	const { avatar, username, id } = user;
 	const [edit, setEdit] = useState(false);
 	const [editValue, setEditValue] = useState(text);
+	const [postDeleted, setPostDeleted] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
 
@@ -45,54 +47,91 @@ export default function Post({postInfo}){
 				});
 		}
 	};
+
+	const deletePost = () => {
+		const sendDeleteToAPI = () => {
+			setLoading(true);
+			deletePostAPI(postId, token)
+				.then(()=>{
+					setLoading(false);
+					setPostDeleted(true);
+				})
+				.catch(()=>{
+					const modalObj = 
+					{
+						icon: 'error',
+						title: 'Oops...',
+						description: 'Ocorreu um erro ao deletar publicação'
+					};
+					ModalAlert(modalObj);
+					setLoading(false);
+				});
+
+		};
+		//create delete pop-up
+		const modalObj =
+		{
+			title: 'Tem certeza que deseja excluir essa publicação?',
+			buttonOptions: true,
+			functionOnConfirm: sendDeleteToAPI
+		};
+		ModalAlert(modalObj);
+	};
 	
 	return (
-		<PostContainer>
+		<PostContainer postDeleted={postDeleted ? 1 : 0}>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
-
-			<PostContent>
-				{userId === id ? 
-					<WrapperDeleteAndEdit 
-						edit={edit}
-						setEdit={setEdit}
-						setEditValue={setEditValue}
-						text={text}
-					/> 
-					: 
-					''
-				}
-
-				<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>	
-
-				{edit ? 
-					<InsertEditInput 
-						editValue={editValue}
-						setEditValue={setEditValue}
-						editRef={editRef}
-						handleEditMode={handleEditMode}
-						loading={loading ? 1 : 0}
-					/>			
+			{
+				loading ?
+					<Loading>
+						<CirclesLoader />
+					</Loading>
 					:
-					<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
-				}
-				<a href={link} target="_blank" rel="noreferrer" >
-					<LinkContainer >
-						<LinkPreviewTexts
-							isLongDescription={linkDescription ? linkDescription.length > 120 : false}
-						>
-							<h4>{linkTitle}</h4>						
-							<p>{linkDescription}</p>
-							<a href={link} target="_blank" rel="noreferrer" >{link}</a>
-						</LinkPreviewTexts>
-						<LinkPreviewImage alt="link preview image" src={linkImage} />
-					</LinkContainer>
-				</a>
-			</PostContent>
+					<PostContent>
+						{userId === id ?
+							<WrapperDeleteAndEdit
+								edit={edit}
+								setEdit={setEdit}
+								setEditValue={setEditValue}
+								text={text}
+								deletePost={deletePost}
+							/>
+							:
+							''
+						}
+
+						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+
+						{edit ?
+							<InsertEditInput
+								editValue={editValue}
+								setEditValue={setEditValue}
+								editRef={editRef}
+								handleEditMode={handleEditMode}
+								loading={loading ? 1 : 0}
+							/>
+							:
+							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
+						}
+						<a href={link} target="_blank" rel="noreferrer" >
+							<LinkContainer >
+								<LinkPreviewTexts
+									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+								>
+									<h4>{linkTitle}</h4>
+									<p>{linkDescription}</p>
+									<a href={link} target="_blank" rel="noreferrer" >{link}</a>
+								</LinkPreviewTexts>
+								<LinkPreviewImage alt="link preview image" src={linkImage} />
+							</LinkContainer>
+						</a>
+					</PostContent>
+			}
 		</PostContainer>
 	);
 }
 
-function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text}) {
+function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text, deletePost}) {
 	return (
 		<WrapperOptions>
 			<Pencil 
@@ -108,6 +147,7 @@ function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text}) {
 				}}
 			/>
 			<TrashOutline
+				onClick = {deletePost}
 				color={'#ffffff'} 
 				height="20px"
 				width="20px"
@@ -136,6 +176,7 @@ function InsertEditInput({editValue, setEditValue, editRef, handleEditMode, load
 }
 
 
+
 const PostContainer = styled.div`
 	width: 611px;
 	height: auto;
@@ -143,7 +184,7 @@ const PostContainer = styled.div`
 	background-color: #171717;
 	margin-top: 16px;
 	padding: 17px 21px 20px 18px;
-	display: inline-flex;
+	display: ${props => props.postDeleted? 'none':'inline-flex'};
 	gap: 18px;
 	position: relative;
 	@media (max-width: 611px) {
@@ -334,3 +375,11 @@ const LinkPreviewImage = styled.img `
 	justify-content: center;
 	align-items: center;
 `; 
+
+const Loading = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	padding-bottom: 10px;
+`;
