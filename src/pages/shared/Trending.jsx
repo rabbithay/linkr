@@ -22,8 +22,8 @@ export default function Trending(){
 	const loadingTrendingError = () => {
 		const modalObj = {
 			icon: 'error',
-			title: 'Erro nosso >.<',
-			description: 'Erro ao carregar a trending :/'
+			title: 'Our mistake >.<',
+			description: 'An error occurred on loading the trendings'
 		};
 		ModalAlert(modalObj);
 	};

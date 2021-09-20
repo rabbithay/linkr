@@ -39,8 +39,7 @@ export default function Post({postInfo}){
 					const modalObj = 
 					{
 						icon: 'error',
-						title: 'Oops...',
-						description: 'Ocorreu um erro ao fazer essa edição'
+						title: 'An error occurred on editing this post, please, try again later'
 					};
 					ModalAlert(modalObj);
 				});
