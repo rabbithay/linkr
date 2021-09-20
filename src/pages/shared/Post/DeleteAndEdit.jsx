@@ -4,7 +4,6 @@ import { Pencil, TrashOutline } from 'react-ionicons';
 import { useEffect } from 'react';
 
 export default function WrapperDeleteAndEdit ({ edit, setEdit, setEditValue, text, deletePost }) {
-	console.log(text);
 	return (
 		<WrapperOptions>
 			<Pencil

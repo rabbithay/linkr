@@ -1,14 +1,14 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { deletePostAPI } from '../../service/service.posts';
-import UserContext from '../../contexts/UserContext';
-import Like from './Like';
-import { editPost } from '../../service/service.posts';
-import ModalAlert from './ModalAlert';
-import CirclesLoader from './CirclesLoader';
-import WrapperDeleteAndEdit from './Post/DeleteAndEdit';
-import {InsertEditInput} from './Post/DeleteAndEdit';
+import { deletePostAPI } from '../../../service/service.posts';
+import UserContext from '../../../contexts/UserContext';
+import Like from '../Like';
+import { editPost } from '../../../service/service.posts';
+import ModalAlert from '../ModalAlert';
+import CirclesLoader from '../CirclesLoader';
+import WrapperDeleteAndEdit from './DeleteAndEdit';
+import {InsertEditInput} from './DeleteAndEdit';
 
 export default function Post({postInfo}){
 	const { text, link, user, linkImage, linkTitle, linkDescription, likes } = postInfo;
