@@ -37,7 +37,7 @@ export default function Post({postInfo}){
 					</LinkContainer>
 				</a>
 			</PostContent>
-			<Like liked={liked} setLiked={setLiked} checkLike={checkLike} id={id} token={userInfo.token} />
+			<Like liked={liked} likes={likes} setLiked={setLiked} checkLike={checkLike} id={id} userInfo={userInfo} />
 		</PostContainer>
 	);
 }
