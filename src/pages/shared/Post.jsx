@@ -11,23 +11,16 @@ export default function Post({postInfo}){
 	const { text, link, user, linkImage, linkTitle, linkDescription, likes } = postInfo;
 	const { avatar, username, id } = user;
 	const {userInfo} = useContext(UserContext);
-	const [liked, setLiked] = useState(checkLike());
 	const {userId, token} = userInfo;
 	const postId = postInfo.id;
 	const [edit, setEdit] = useState(false);
 	const [editValue, setEditValue] = useState(text);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
-
+	
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
-	}
-
-	function checkLike(){
-		return !! likes.find((l)=>{
-			return l.userId===userInfo.userId;
-		});
 	}
 
 	const handleEditMode = (key) => {
@@ -96,7 +89,7 @@ export default function Post({postInfo}){
 					</LinkContainer>
 				</a>
 			</PostContent>
-			<Like liked={liked} likes={likes} setLiked={setLiked} checkLike={checkLike} id={postId} userInfo={userInfo} />
+			<Like  likes={likes} id={postId} userInfo={userInfo} />
 		</PostContainer>
 	);
 }

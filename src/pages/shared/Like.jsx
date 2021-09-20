@@ -1,10 +1,12 @@
-import React from 'react';
+import React , {useState} from 'react';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { postLikeOrDislike } from '../../service/service.posts';
 
-export default function Like ({liked, setLiked, id, userInfo, likes}) {
+export default function Like ({id, userInfo, likes}) {
+	const [liked, setLiked] = useState(checkLike());
+
 
 	function likeOrDislike(){
 		const action = (liked) ? 'dislike' : 'like';
@@ -14,6 +16,12 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 		setLiked(!liked);
 		postLikeOrDislike(config, id, action).then().catch(()=>{
 			setLiked(!liked);
+		});
+	}
+
+	function checkLike(){
+		return !! likes.find((l)=>{
+			return l.userId===userInfo.userId;
 		});
 	}
 
@@ -45,8 +53,8 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 	const text = dataTip();
 	
 	return (
-		<LikeContainer  onClick={likeOrDislike}>
-			<div data-tip={text}>
+		<LikeContainer >
+			<div data-tip={text}  onClick={likeOrDislike}>
 				{liked 
 					?<HeartSharp
 						color={'#ef2929'} 
@@ -79,6 +87,9 @@ const LikeContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	div {
+		cursor: pointer;
+	}
 `;
 const LikesQntt = styled.p`
 	color: #fff;
