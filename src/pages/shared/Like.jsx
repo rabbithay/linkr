@@ -12,13 +12,11 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 			{ 'Authorization': `Bearer ${userInfo.token}` }
 		};
 		setLiked(!liked);
-		postLikeOrDislike(config, id, action).then((res)=>{
-			console.log(res);
-		}).catch((error)=>{
-			console.log(error);
+		postLikeOrDislike(config, id, action).then().catch(()=>{
 			setLiked(!liked);
 		});
 	}
+
 	const peopleWhoLiked = likes.filter((l)=>{if (l.userId!==userInfo.userId) return l.username;});
 	function dataTip(){
 		if (!peopleWhoLiked.length){
@@ -44,6 +42,7 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 			: `${peopleWhoLiked[0]}, ${peopleWhoLiked[1]} and ${peopleWhoLiked.length - 2} others`;
 	}
 	const text = dataTip();
+	
 	return (
 		<LikeContainer  onClick={likeOrDislike}>
 			<div data-tip={text}>
@@ -64,7 +63,6 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 					textColor="#505050"
 					place="bottom"
 					effect="solid"
-					border="5"			
 				/>
 			</div>
 			<LikesQntt>{`${(liked) ? peopleWhoLiked.length + 1 : peopleWhoLiked.length} likes`}</LikesQntt>
@@ -80,8 +78,6 @@ const LikeContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	
-	
 `;
 const LikesQntt = styled.p`
 	color: #fff;

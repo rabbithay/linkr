@@ -42,7 +42,6 @@ export default function Post({postInfo}){
 	);
 }
 
-
 const PostContainer = styled.div`
 	width: 611px;
 	height: auto;
