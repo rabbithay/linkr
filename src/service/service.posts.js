@@ -10,7 +10,6 @@ const getUserPosts = (config, userId) => {
 };
 
 const postLikeOrDislike = (config, postId, action) => {
-	console.log(`${BASE_URL}/posts/${postId}/${action}`, config);
 	return axios.post(`${BASE_URL}/posts/${postId}/${action}`,{}, config);
 };
 
