@@ -5,7 +5,7 @@ import { getMyLikedPosts } from '../../service/service.posts';
 import MainPage from '../shared/MainPage';
 
 
-export default function MyLikesTest() {
+export default function MyLikes() {
 	return (
 		<MainPage 
 			getPosts={getMyLikedPosts}

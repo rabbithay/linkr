@@ -6,7 +6,7 @@ import MainPage from '../shared/MainPage';
 import CreatePost from '../Timeline/CreatePost';
 
 
-export default function TimelineTest() {
+export default function Timeline() {
 	return (
 		<MainPage 
 			getPosts={getTimelinePosts}

@@ -6,7 +6,7 @@ import { getSomeonesPosts } from '../../service/service.posts';
 import MainPage from '../shared/MainPage';
 
 
-export default function SomeonesPostsTest() {
+export default function SomeonesPosts() {
 	const { id: someonesId } = useParams();
 	return (
 		<MainPage 

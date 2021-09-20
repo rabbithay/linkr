@@ -6,7 +6,7 @@ import { getHashtagPosts } from '../../service/service.posts';
 import MainPage from '../shared/MainPage';
 
 
-export default function HashtagTest() {
+export default function Hashtag() {
 	const { hashtag } = useParams();
 	return (
 		<MainPage 
