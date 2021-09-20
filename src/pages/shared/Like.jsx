@@ -19,8 +19,6 @@ export default function Like ({liked, setLiked, id, userInfo, likes}) {
 
 	const peopleWhoLiked = likes.filter(l=>l.userId !== userInfo.userId).map(l=>l['user.username']);
 
-
-	console.log(peopleWhoLiked);
 	function dataTip(){
 		if (!peopleWhoLiked.length){
 			return (liked) ? 'You' : 'Nobody';
