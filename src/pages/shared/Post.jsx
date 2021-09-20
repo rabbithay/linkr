@@ -116,7 +116,9 @@ export default function Post({postInfo}){
 						}
 						<a href={link} target="_blank" rel="noreferrer" >
 							<LinkContainer >
-								<LinkPreviewTexts>
+								<LinkPreviewTexts
+									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+								>
 									<h4>{linkTitle}</h4>
 									<p>{linkDescription}</p>
 									<a href={link} target="_blank" rel="noreferrer" >{link}</a>
@@ -169,7 +171,7 @@ function InsertEditInput({editValue, setEditValue, editRef, handleEditMode, load
 			onChange={(e) => setEditValue(e.target.value)}
 			onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
 			ref={editRef}
-			loadind={loading ? 1 : 0}
+			loading={loading ? 1 : 0}
 		/> 
 	);	
 }
@@ -206,7 +208,7 @@ const UserIcon = styled.img`
 const PostContent = styled.div `
 	font-family: 'Lato';
 	width: 513px;
-    h3{
+	h3{
 		color: #fff;
 		font-size: 19px;
 		line-height: 23px;
@@ -215,8 +217,8 @@ const PostContent = styled.div `
 			font-size: 17px;
 			line-height: 20px;
 		}
-    }
-    p {
+	}
+	p {
 		color: #b7b7b7;
 		font-size: 17px;
 		line-height: 20px;
@@ -226,7 +228,7 @@ const PostContent = styled.div `
 			font-size: 15px;
 			line-height: 18px;
 		}
-    }
+	}
 	a {
 		color: #fff;
 		font-weight: bold;
@@ -266,19 +268,22 @@ const LinkPreviewTexts = styled.div `
 	flex-direction: column;
 	justify-content: space-between;
 	width: 350px;
-	h4{
+	h4 {
 		font-size: 16px;
 		color: #CECECE;
 		line-height: 19px;
 		word-break: break-word;
 		text-overflow: ellipsis;
 		overflow: hidden;
+		display: ${(p) => p.isLongDescription ? '-webkit-box' : 'flex'};
+		-webkit-line-clamp: 2; /* number of lines to show */
+  	-webkit-box-orient: vertical;
 		@media (max-width: 611px) {
 			font-size: 11px;
 			line-height: 13px;
     }
 	}			
-	p{
+	p {
 		font-size: 11px;
 		color: #9B9595;
 		line-height: 13px;
@@ -291,7 +296,7 @@ const LinkPreviewTexts = styled.div `
 			line-height: 11px;
     }
 	}
-	a{
+	a {
 		font-size: 11px;
 		color: #CECECE;
 		line-height: 13px;		
@@ -324,7 +329,7 @@ const InputEdit = styled.textarea`
 	font-family: 'Lato';
 	font-size: 14px;
 	line-height: 17px;
-	pointer-events: ${props => props.loadind ? 'none' : 'all'};
+	pointer-events: ${props => props.loading ? 'none' : 'all'};
 	
 	:focus {
 		outline: none;

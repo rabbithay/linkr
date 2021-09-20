@@ -1,24 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { getHashtagPosts } from '../../service/service.hashtag';
-import Post from '../shared/Post';
-import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
+import { useParams } from 'react-router-dom';
+
 import UserContext from '../../contexts/UserContext';
+import { getHashtagPosts } from '../../service/service.hashtag';
+
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
-import Trending from '../shared/Trending';
+import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
+import Post from '../shared/Post';
+import Trending from '../shared/Trending';
 
 export default function Hashtag(){
 	const [hashtagPostsList, setHashtagPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const { userInfo } = useContext(UserContext);
+	const { userInfo: { token } } = useContext(UserContext);
 	const { hashtag } = useParams();
 
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
-		getHashtagPosts(userInfo.token, hashtag).then(({ data: { posts } })=>{
+		getHashtagPosts(token, hashtag).then(({ data: { posts } })=>{
 			setHashtagPostsList(posts);
 		}).catch(()=>{
 			pageReloadErrorAlert();
@@ -28,16 +30,20 @@ export default function Hashtag(){
 	}
 	
 	useEffect(()=>{
-		if (userInfo.token) loadHashtagPosts();
-	},[userInfo.token, hashtag]);
+		if (token) loadHashtagPosts();
+	}, [token, hashtag]);
 
 	return(
 		<>	
 			<Header/>
 			<Background>
 				<TimelineContent>
-					<h1># {hashtag}</h1>
-					{/* TODO: Seria bacana colocar o nome dessa função para somente um loadPosts */}
+					{loaderIsActive ?
+						<h1>Carregando...</h1>
+						:
+						<h1># {hashtag}</h1>
+					}
+
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (hashtagPostsList.length)
@@ -59,7 +65,7 @@ export default function Hashtag(){
 
 const Background = styled.div`
 	width: 100%;
-	min-width: 100vw;
+	min-width: 100%;
 	height: auto;
 	min-height: 100vh;
 	display: inline-flex;
@@ -69,7 +75,7 @@ const Background = styled.div`
 	padding: 72px;
 	@media (max-width: 611px) {
 		padding: 19px 0px;
-    }
+  }
 `;
 const TimelineContent = styled.div`
 	width: 611px;

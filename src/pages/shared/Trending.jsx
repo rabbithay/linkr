@@ -20,8 +20,7 @@ export default function Trending(){
 	}, [token]);
 
 	const loadingTrendingError = () => {
-		const modalObj = 
-		{
+		const modalObj = {
 			icon: 'error',
 			title: 'Erro nosso >.<',
 			description: 'Erro ao carregar a trending :/'
@@ -35,7 +34,7 @@ export default function Trending(){
 			<div className='Title'>
 				<h1>trending</h1>
 			</div>
-
+	
 			<HashtagsBox>
 				{hashtagList.map(({ id, name }) => {
 					return (
@@ -45,8 +44,7 @@ export default function Trending(){
 					);
 				})}
 			</HashtagsBox>
-			
-		</Container>
+		</Container>	
 	);
 }
 
@@ -72,7 +70,7 @@ const Container = styled.div`
 			font-size: 27px;
 			line-height: 40px;
 		}
-	}	
+	}
 `;
 
 const HashtagsBox = styled.ul`

@@ -49,18 +49,17 @@ function SignIn(){
 	const handleResponseFromAPI = () => {
 		setLoading(true);
 		signInAPI(email, password)
-			.then((response) => {
-				let userInfo =  
+			.then(({ data: { token, user }}) => {
+				const userInfo =  
 				{
-					token: response.data.token,
-					userImg: response.data.user.avatar,
-					userId: response.data.user.id,
-					userName: response.data.user.username
+					token: token,
+					userImg: user.avatar,
+					userId: user.id,
+					userName: user.username
 				};
 				setUserInfo(userInfo);
 
-				userInfo = JSON.stringify(userInfo);
-				localStorage.setItem('userInfo', userInfo);
+				localStorage.setItem('userInfo', JSON.stringify(userInfo));
 				
 				history.push('/timeline');
 			})
@@ -75,7 +74,7 @@ function SignIn(){
 			<Disclaimer>
 				<Title>linkr</Title>
 				<Description>
-                    save, share and discover the best links on the web
+          save, share and discover the best links on the web
 				</Description>
 			</Disclaimer>
 			<Form >
@@ -140,10 +139,10 @@ const Disclaimer = styled.div`
     padding-left: 10%;
 
     @media(max-width: 600px) {
-        align-items: center;
-        padding-left: 0px;
-        width: 100%;
-        height: 25%;
+			align-items: center;
+			padding-left: 0px;
+			width: 100%;
+			height: 25%;
     }
 `;
 
@@ -161,12 +160,14 @@ const Title = styled.p`
 const Description = styled.p`
     font-size: 43px;
     font-family: 'Oswald';
-	max-width: 442px;
-	width: 80%;
+		max-width: 442px;
+		width: 80%;
     
     @media(max-width: 600px) {
-        font-size: 23px;
-		width: unset;
+			font-size: 23px;
+			text-align: center;
+			width: unset;
+			max-width: 240px;
     }
 `;
 
@@ -179,11 +180,14 @@ const Form = styled.div`
     justify-content: center;
     align-items: center;
     @media(max-width: 600px) {
-        justify-content: flex-start;
-        padding-top: 10%;
-        width: 100%;
-        height: 75%;
+			justify-content: flex-start;
+			padding-top: 10%;
+			width: 100%;
+			height: 75%;
     }
+		p {
+			text-align: center;
+		}
 `;
 
 const Input = styled.input`
@@ -194,7 +198,7 @@ const Input = styled.input`
     border-radius: 6px;
     margin-bottom: 13px;
     padding-left: 12px;
-	pointer-events: ${props => props.loading ? 'none' : 'all'};
+		pointer-events: ${props => props.loading ? 'none' : 'all'};
     font-size: 20px;
     font-weight: bold;
     font-family: 'Oswald';
