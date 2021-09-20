@@ -4,8 +4,7 @@ export default function pageReloadErrorAlert() {
 	const modalObj = 
 	{
 		icon: 'error',
-		title: 'Oops...',
-		description: 'Erro ao carregar a página, por favor, tente recarregá-la'
+		title: 'An error occurred on loading the page, please, try realoading it',
 	};
 	
 	ModalAlert(modalObj);

@@ -20,12 +20,26 @@ const getUserPosts = ({ token, userId }) => {
 	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
 };
 
+const postLikeOrDislike = (token, postId, action) => {
+	return axios.post(`${BASE_URL}/posts/${postId}/${action}`,{}, makeConfig(token));
+};
+
 const createPostAPI = (text, link, token) => {
 	const body = {
 		text,
 		link
 	};
 	return axios.post(`${BASE_URL}/posts`, body, makeConfig(token));
+};
+
+const deletePostAPI = (id, token) =>{
+	const config = {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	};
+	const promise = axios.delete(`${BASE_URL}/posts/${id}`, config);
+	return promise;
 };
 
 const editPost = (token, text, id) => {
@@ -51,9 +65,11 @@ const getHashtagPosts = ({ token, hashtag }) => {
 export {
 	getTimelinePosts,
 	createPostAPI,
+	deletePostAPI,
 	getUserPosts,
 	getSomeonesPosts,
-	getMyLikedPosts,
+	postLikeOrDislike,
 	editPost,
+	getMyLikedPosts,
 	getHashtagPosts
 };

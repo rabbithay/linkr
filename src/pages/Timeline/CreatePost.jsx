@@ -16,7 +16,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 		if (link === '') {
 			const modalObj = 
 				{
-					title: 'O link não pode estar vazio 🙄',
+					title: 'The link field cannot be empty 🙄',
 				};
 			ModalAlert(modalObj);
 			return;
@@ -33,7 +33,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 				setLoading(false);
 				const modalObj = 
 				{
-					title: 'Houve um erro ao publicar seu link 😥',
+					title: 'An error occurred on posting your link 😥',
 				};
 				ModalAlert(modalObj);
 			});
@@ -55,7 +55,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 							loading={loading? 1:0}
 						/>
 						<LinkDescription
-							placeholder='Comente alguma coisa sobre esse link'
+							placeholder='Say something about this link'
 							value={linkDescription}
 							onChange={e => setLinkDescription(e.target.value)}
 							loading={loading? 1:0}

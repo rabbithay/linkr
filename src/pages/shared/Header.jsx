@@ -101,6 +101,21 @@ const Topbar = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	&& a {
+		height: 100%;
+		display: flex;
+		align-items: center;
+	}
+
+	&& * {
+		-webkit-touch-callout: none;
+    	-webkit-user-select: none;
+     	-khtml-user-select: none;
+       	-moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+	}
 `;
 
 const P = styled.p`
@@ -147,7 +162,9 @@ const DropdownContent = styled.div`
 	height: 90px;
 	background-color: #151515;
 	border-bottom-left-radius: 20px;
-	display: ${props => props.enabled ? 'block' : 'none'};
+	display: ${props => props.enabled ? 'flex' : 'none'};
+	flex-direction: column;
+	justify-content: space-around;
 	position: absolute;
 	right: 0;
 	top: 100%;
@@ -159,10 +176,10 @@ const DropdownContent = styled.div`
 `;
 
 const DropwdownOption = styled.p`
+	height: 30%;
 	font-size: 17px;
 	font-weight: bold;
 	text-align: center;
-	margin-top: 8px;
 	color: #FFFFFF;
 	font-family: 'Lato';
 `;

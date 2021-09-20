@@ -22,8 +22,7 @@ function SignUp() {
 		const modalObj = 
 		{
 			icon: 'error',
-			title: 'Quase lá!',
-			description: text
+			title: text
 		};
 		ModalAlert(modalObj);
 	};
@@ -34,15 +33,15 @@ function SignUp() {
 
 	const validateInputs = () => {
 		if (email.length === 0 || password.length === 0 || name.length === 0 || imgUrl.length === 0) {
-			throwSwalError('Você deve preencher todos os campos');
+			throwSwalError('You must fill all the fields');
 			return;
 		}
 
 		if (!regex(email, ruleRegexEmail)) {
-			throwSwalError('Insira um e-mail é válido');
+			throwSwalError('Insert a valid e-mail');
 		}
 		else if (!regex(imgUrl, ruleRegexURL)) {
-			throwSwalError('Insira uma url válida');
+			throwSwalError('Insert a valid url');
 		}
 		else {
 			handleResponseFromAPI();
@@ -53,8 +52,13 @@ function SignUp() {
 		setLoading(true);
 		signUpAPI(email, password, name, imgUrl)
 			.then(() => history.push('/'))
-			.catch(() => {
-				throwSwalError('Esse e-mail já está cadastrado');
+			.catch((e) => {
+				if (e.response.data.message === 'Invalid param: pictureUrl') {
+					throwSwalError('Unfortunately we cannot use this image, could you use another one? 🥺');
+				}
+				else {
+					throwSwalError('This e-mail is already registered');
+				}
 				setLoading(false);
 			});
 	};
