@@ -47,7 +47,6 @@ function Header () {
 	return (
 		<Topbar >
 			<Link to='/timeline'>
-				{/* <Link to='/teste/timeline'> */}
 				<P>linkr</P>
 			</Link>
 			<Container ref={dropdownRef} onClick={toggleDropdown}>
@@ -69,12 +68,10 @@ function Header () {
 
 					<DropdownContent enabled={enabled ? 1 : 0}>
 						<DropwdownOption onClick={() => redirect('/my-posts')}>
-							{/* <DropwdownOption onClick={() => redirect('/teste/my-posts')}> */}
 							My posts
 						</DropwdownOption>
 
 						<DropwdownOption onClick={() => redirect('/my-likes')}>
-							{/* <DropwdownOption onClick={() => redirect('/teste/my-likes')}> */}
 							My likes
 						</DropwdownOption>
 

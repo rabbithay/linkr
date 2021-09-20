@@ -42,8 +42,7 @@ export default function Trending({ loaderIsActive }){
 			<HashtagsBox>
 				{hashtagList.map(({ id, name }) => {
 					return (
-						// <Link key={id} to={`/hashtag/${name}`}>
-						<Link key={id} to={`/teste/hashtag/${name}`}>
+						<Link key={id} to={`/hashtag/${name}`}>
 							<li>{`# ${name}`}</li>
 						</Link>
 					);
@@ -54,7 +53,6 @@ export default function Trending({ loaderIsActive }){
 }
 
 
-// Styled components
 const Container = styled.div`
 	width: 301px;
 	height: 406px;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { postLikeOrDislike } from '../../service/service.posts';
 
-export default function Like ({id, userInfo, likes}) {
+export default function Like ({ id, userInfo, likes }) {
 	const [liked, setLiked] = useState(checkLike());
 
 

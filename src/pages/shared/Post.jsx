@@ -32,7 +32,6 @@ export default function Post({ postInfo }) {
 	
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
-		// const repl = text.replace(/#(\w+)/g, '<a href="/teste/hashtag/$1">#$1</a>');
 		return repl;
 	}
 
@@ -77,7 +76,7 @@ export default function Post({ postInfo }) {
 				});
 
 		};
-		//create delete pop-up
+		// create delete pop-up
 		const modalObj = {
 			title: 'Tem certeza que deseja excluir essa publicação?',
 			buttonOptions: true,
@@ -89,53 +88,50 @@ export default function Post({ postInfo }) {
 	return (
 		<PostContainer postDeleted={postDeleted ? 1 : 0}>
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
-			{/* <Link to={`/teste/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link> */}
-			{
-				loading ?
-					<Loading>
-						<CirclesLoader />
-					</Loading>
-					:
-					<PostContent>
-						{userId === id ?
-							<WrapperDeleteAndEdit
-								edit={edit}
-								setEdit={setEdit}
-								setEditValue={setEditValue}
-								text={text}
-								deletePost={deletePost}
-							/>
-							:
-							''
-						}
+			{loading ?
+				<Loading>
+					<CirclesLoader />
+				</Loading>
+				:
+				<PostContent>
+					{userId === id ?
+						<WrapperDeleteAndEdit
+							edit={edit}
+							setEdit={setEdit}
+							setEditValue={setEditValue}
+							text={text}
+							deletePost={deletePost}
+						/>
+						:
+						''
+					}
 
-						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
-						{/* <Link to={`/teste/user/${user.id}`}><h3>{username}</h3></Link>	 */}
+					<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
 
-						{edit ?
-							<InsertEditInput
-								editValue={editValue}
-								setEditValue={setEditValue}
-								editRef={editRef}
-								handleEditMode={handleEditMode}
-								loading={loading ? 1 : 0}
-							/>
-							:
-							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
-						}
-						<a href={link} target="_blank" rel="noreferrer" >
-							<LinkContainer >
-								<LinkPreviewTexts
-									isLongDescription={linkDescription ? linkDescription.length > 100 : false}
-								>
-									<h4>{linkTitle}</h4>
-									<p>{linkDescription}</p>
-									<a href={link} target="_blank" rel="noreferrer" >{link}</a>
-								</LinkPreviewTexts>
-								<LinkPreviewImage alt="link preview image" src={linkImage} />
-							</LinkContainer>
-						</a>
-					</PostContent>
+					{edit ?
+						<InsertEditInput
+							editValue={editValue}
+							setEditValue={setEditValue}
+							editRef={editRef}
+							handleEditMode={handleEditMode}
+							loading={loading ? 1 : 0}
+						/>
+						:
+						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
+					}
+					<a href={link} target="_blank" rel="noreferrer" >
+						<LinkContainer >
+							<LinkPreviewTexts
+								isLongDescription={linkDescription ? linkDescription.length > 100 : false}
+							>
+								<h4>{linkTitle}</h4>
+								<p>{linkDescription}</p>
+								<a href={link} target="_blank" rel="noreferrer" >{link}</a>
+							</LinkPreviewTexts>
+							<LinkPreviewImage alt="link preview image" src={linkImage} />
+						</LinkContainer>
+					</a>
+				</PostContent>
 			}
 			<Like likes={likes} id={postId} userInfo={userInfo} />
 
@@ -143,7 +139,7 @@ export default function Post({ postInfo }) {
 	);
 }
 
-function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text, deletePost}) {
+function WrapperDeleteAndEdit({ edit, setEdit, setEditValue, text, deletePost }) {
 	return (
 		<WrapperOptions>
 			<Pencil 
@@ -171,7 +167,7 @@ function WrapperDeleteAndEdit({edit, setEdit, setEditValue, text, deletePost}) {
 	);
 }
 
-function InsertEditInput({editValue, setEditValue, editRef, handleEditMode, loading}) {
+function InsertEditInput({ editValue, setEditValue, editRef, handleEditMode, loading }) {
 	useEffect(() => {
 		editRef.current.focus();
 	}, []);
