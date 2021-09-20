@@ -23,8 +23,8 @@ export default function Trending(){
 		const modalObj = 
 		{
 			icon: 'error',
-			title: 'Erro nosso >.<',
-			description: 'Erro ao carregar a trending :/'
+			title: 'Our mistake >.<',
+			description: 'An error occurred on loading the trendings'
 		};
 		ModalAlert(modalObj);
 	};

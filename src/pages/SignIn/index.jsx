@@ -33,12 +33,12 @@ function SignIn(){
 
 	const validateInputs = () => {
 		if (email.length === 0 || password.length === 0) {
-			throwSwalError('Você deve preencher todos os campos');
+			throwSwalError('You must fill all the fields');
 			return;
 		}
 
 		if (!regex(email, ruleRegexEmail)) {
-			throwSwalError('Insira um e-mail válido');
+			throwSwalError('Insert a valid e-mail');
 		}
 		else {
 			handleResponseFromAPI();
@@ -64,7 +64,7 @@ function SignIn(){
 				history.push('/timeline');
 			})
 			.catch(() => {
-				throwSwalError('Email/senha incorretos');
+				throwSwalError('Incorrect e-mail/password');
 				setLoading(false);
 			});
 	};

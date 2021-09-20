@@ -33,15 +33,15 @@ function SignUp() {
 
 	const validateInputs = () => {
 		if (email.length === 0 || password.length === 0 || name.length === 0 || imgUrl.length === 0) {
-			throwSwalError('Você deve preencher todos os campos');
+			throwSwalError('You must fill all the fields');
 			return;
 		}
 
 		if (!regex(email, ruleRegexEmail)) {
-			throwSwalError('Insira um e-mail é válido');
+			throwSwalError('Insert a valid e-mail');
 		}
 		else if (!regex(imgUrl, ruleRegexURL)) {
-			throwSwalError('Insira uma url válida');
+			throwSwalError('Insert a valid url');
 		}
 		else {
 			handleResponseFromAPI();
@@ -54,10 +54,10 @@ function SignUp() {
 			.then(() => history.push('/'))
 			.catch((e) => {
 				if (e.response.data.message === 'Invalid param: pictureUrl') {
-					throwSwalError('Infelizmente não conseguimos utilizar essa imagem. Você poderia selecionar outra? 🥺');
+					throwSwalError('Unfortunately we cannot use this image, could you use another one? 🥺');
 				}
 				else {
-					throwSwalError('Esse e-mail já está cadastrado');
+					throwSwalError('This e-mail is already registered');
 				}
 				setLoading(false);
 			});
