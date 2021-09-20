@@ -89,6 +89,11 @@ const LikeContainer = styled.div`
 	div {
 		cursor: pointer;
 	}
+	@media (max-width: 600px) {
+		left: 12px;
+		top: 60px;
+	}
+
 `;
 const LikesQntt = styled.p`
 	color: #fff;
