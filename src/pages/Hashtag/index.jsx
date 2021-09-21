@@ -49,7 +49,7 @@ export default function Hashtag(){
 						: (hashtagPostsList.length)
 							?  hashtagPostsList.map((p)=>{
 								return (
-									<Post key={p.id} postInfo={p} />
+									<Post key={p.repostId !== undefined ? p.repostId : p.id} postInfo={p} />
 								);
 							})
 							: <NoPostMessage/>
