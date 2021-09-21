@@ -9,7 +9,7 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import Post from '../shared/Post';
+import Post from '../shared/Post/Post';
 import Trending from '../shared/Trending';
 
 
@@ -59,7 +59,7 @@ export default function SomeonesPosts() {
 						(postsList.length)? 
 							postsList.map((p) => {
 								return (
-									<Post key={p.id} postInfo={p} />
+									<Post key={p.repostId !== undefined ? p.repostId : p.id} postInfo={p} />
 								);
 							})
 							: 
