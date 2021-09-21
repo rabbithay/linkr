@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState, useRef, useContext } from 'react';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 import UserContext from '../../contexts/UserContext';
+
+import SearchBar from './SearchBar';
+
 
 function Header () {
 	const [enabled, setEnabled] = useState(false);
@@ -49,6 +51,9 @@ function Header () {
 			<Link to='/timeline'>
 				<P>linkr</P>
 			</Link>
+
+			<SearchBar />
+
 			<Container ref={dropdownRef} onClick={toggleDropdown}>
 				<Dropdown >
 					<DropdownButton>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 import UserContext from '../../contexts/UserContext';
 import { getHashtagPosts } from '../../service/service.hashtag';
@@ -17,6 +17,8 @@ export default function Hashtag(){
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const { userInfo: { token } } = useContext(UserContext);
 	const { hashtag } = useParams();
+
+	console.log(useLocation());
 
 	function loadHashtagPosts(){		
 		setLoaderIsActive(true);
