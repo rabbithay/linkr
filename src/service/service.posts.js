@@ -49,6 +49,12 @@ const editPost = (token, text, id) => {
 	const promise = axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
 	return promise;
 };
+
+const sharePost = (token, id) => {
+	const promise = axios.post(`${BASE_URL}/posts/${id}/share`, {}, makeConfig(token));
+	return promise;
+};
+
 const getSomeonesPosts = (userId, token) => {
 	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
 };
@@ -66,4 +72,5 @@ export {
 	postLikeOrDislike,
 	editPost,
 	getMyLikedPosts,
+	sharePost,
 };

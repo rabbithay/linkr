@@ -59,7 +59,7 @@ export default function SomeonesPosts() {
 						(postsList.length)? 
 							postsList.map((p) => {
 								return (
-									<Post key={p.id} postInfo={p} />
+									<Post key={p.repostId !== undefined ? p.repostId : p.id} postInfo={p} />
 								);
 							})
 							: 
