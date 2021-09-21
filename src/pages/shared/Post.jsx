@@ -230,6 +230,10 @@ const UserIcon = styled.img`
 const PostContent = styled.div `
 	font-family: 'Lato';
 	width: 513px;
+	min-height: 219px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	h3{
 		color: #fff;
 		font-size: 19px;
