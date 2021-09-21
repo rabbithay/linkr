@@ -45,9 +45,9 @@ export default function Timeline(){
 					{loaderIsActive 
 						? <CirclesLoader/>
 						: (timelinePostsList.length)
-							?  timelinePostsList.map((p)=>{
+							?  timelinePostsList.map((p, index)=>{
 								return (
-									<Post key={p.id} postInfo={p} />
+									<Post key={index} postInfo={p} />
 								);
 							})
 							: <NoPostMessage/>

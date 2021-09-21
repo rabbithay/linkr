@@ -1,6 +1,6 @@
 import Swal from 'sweetalert2';
 
-function ModalAlert({icon, title, description, buttonOptions, functionOnConfirm}) {
+function ModalAlert({icon, title, description, buttonOptions, functionOnConfirm, share}) {
 	let viewportWidth = window.innerWidth;
 	const obj = 
 	{
@@ -18,8 +18,8 @@ function ModalAlert({icon, title, description, buttonOptions, functionOnConfirm}
 	if (buttonOptions) {
 		obj.showConfirmButton = true;
 		obj.showCancelButton = true;
-		obj.confirmButtonText = '<span style="font-family: lato; font-weight: 700;">Sim, excluir</span>';
-		obj.cancelButtonText = '<span style="color:#1877F2; font-family: lato; font-weight: bold;">Não, cancelar<span>';
+		obj.confirmButtonText = `<span style="font-family: lato; font-weight: 700;">${share ? 'Yes, share' : 'Yes, delete'}</span>`;
+		obj.cancelButtonText = '<span style="color:#1877F2; font-family: lato; font-weight: bold;">No, cancel<span>';
 	}
 
 	Swal.fire(obj).then((result) => {

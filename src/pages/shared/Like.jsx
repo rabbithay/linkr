@@ -74,15 +74,12 @@ export default function Like ({id, userInfo, likes}) {
 					effect="solid"
 				/>
 			</div>
-			<LikesQntt>{`${(liked) ? peopleWhoLiked.length + 1 : peopleWhoLiked.length} likes`}</LikesQntt>
+			<LikesQntt>{`${(liked) ? peopleWhoLiked.length + 1 : peopleWhoLiked.length} like${peopleWhoLiked.length > 1 || liked && peopleWhoLiked.length + 1 > 1 ? 's' : ''}`}</LikesQntt>
 		</LikeContainer>		
 	);
 }
 
 const LikeContainer = styled.div`
-	position: absolute;
-	top: 86px;
-	left: 20px;
 	font-family: "Lato";
 	display: flex;
 	flex-direction: column;
