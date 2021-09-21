@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { RepeatOutline } from 'react-ionicons';
-import { sharePost } from '../../service/service.posts';
-import ModalAlert from './ModalAlert';
+import { sharePost } from '../../../service/service.posts';
+import ModalAlert from '../ModalAlert';
 
 function SharePost({shareCount, token, postId}) {
 	const [shared, setShared] = useState(shareCount);

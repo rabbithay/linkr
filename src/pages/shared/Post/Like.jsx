@@ -2,7 +2,7 @@ import React , {useState} from 'react';
 import { HeartOutline, HeartSharp } from 'react-ionicons';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
-import { postLikeOrDislike } from '../../service/service.posts';
+import { postLikeOrDislike } from '../../../service/service.posts';
 
 export default function Like ({id, userInfo, likes}) {
 	const [liked, setLiked] = useState(checkLike());
