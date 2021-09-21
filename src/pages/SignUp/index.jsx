@@ -62,6 +62,13 @@ function SignUp() {
 				setLoading(false);
 			});
 	};
+
+	const loginOnEnter = (key) => {
+		if (key === 'Enter') {
+			validateInputs();
+		}
+	};
+
 	return (
 		<SignUpPage>
 			<Disclaimer>
@@ -76,6 +83,7 @@ function SignUp() {
 					type='email'
 					placeholder='e-mail'
 					onChange={(e) => setEmail(e.target.value)}
+					onKeyUp={(key) => loginOnEnter(key.nativeEvent.key)}
 					value={email}
 				/>
 				<Input
@@ -83,12 +91,14 @@ function SignUp() {
 					type='password'
 					placeholder='password'
 					onChange={(e) => setPassword(e.target.value)} value={password}
+					onKeyUp={(key) => loginOnEnter(key.nativeEvent.key)}
 				/>
 				<Input
 					loading={loading ? 1 : 0}
 					type='text'
 					placeholder='name'
 					onChange={(e) => setName(e.target.value)}
+					onKeyUp={(key) => loginOnEnter(key.nativeEvent.key)}
 					value={name}
 				/>
 				<Input
@@ -96,6 +106,7 @@ function SignUp() {
 					type='url'
 					placeholder='picture url'
 					onChange={(e) => setImgUrl(e.target.value)}
+					onKeyUp={(key) => loginOnEnter(key.nativeEvent.key)}
 					value={imgUrl}
 				/>
 				{!loading ?
