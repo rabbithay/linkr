@@ -17,7 +17,8 @@ export default function Post({postInfo}){
 	const {userId, token} = userInfo;
 	const postId = postInfo.id;
 	const [edit, setEdit] = useState(false);
-	const [editValue, setEditValue] = useState(text);
+	const [postText, setPostText] = useState(text);
+	const [editPostText, setEditPostText] = useState(postText);
 	const [postDeleted, setPostDeleted] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
@@ -30,14 +31,14 @@ export default function Post({postInfo}){
 	const handleEditMode = (key) => {
 		if (key === 'Escape') {
 			setEdit(false);
-			setEditValue(text);
 		}
 		else if (key === 'Enter') {
 			setLoading(true);
-			editPost(token, editValue, postId)
+			editPost(token, postText, postId)
 				.then(() => {
 					setLoading(false);
 					setEdit(false);
+					setPostText(editPostText);
 				})
 				.catch(() => {
 					const modalObj = 
@@ -94,7 +95,7 @@ export default function Post({postInfo}){
 							<WrapperDeleteAndEdit
 								edit={edit}
 								setEdit={setEdit}
-								setEditValue={setEditValue}
+								setPostText={setPostText}
 								text={text}
 								deletePost={deletePost}
 							/>
@@ -106,14 +107,14 @@ export default function Post({postInfo}){
 
 						{edit ?
 							<InsertEditInput
-								editValue={editValue}
-								setEditValue={setEditValue}
+								editPostText={editPostText}
+								setEditPostText={setEditPostText}
 								editRef={editRef}
 								handleEditMode={handleEditMode}
 								loading={loading ? 1 : 0}
 							/>
 							:
-							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
+							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 						}
 						<a href={link} target="_blank" rel="noreferrer" >
 							<LinkContainer >

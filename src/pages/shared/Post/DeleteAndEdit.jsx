@@ -3,15 +3,14 @@ import styled from 'styled-components';
 import { Pencil, TrashOutline } from 'react-ionicons';
 import { useEffect } from 'react';
 
-export default function WrapperDeleteAndEdit ({ edit, setEdit, setEditValue, text, deletePost }) {
+export default function WrapperDeleteAndEdit ({edit, setEdit, deletePost}) {
 	return (
 		<WrapperOptions>
-			<Pencil
+			<Pencil 
 				onClick={() => {
 					edit ? setEdit(false) : setEdit(true);
-					setEditValue(text);
 				}}
-				color={'#ffffff'}
+				color={'#ffffff'} 
 				height="20px"
 				width="20px"
 				style={{
@@ -19,8 +18,8 @@ export default function WrapperDeleteAndEdit ({ edit, setEdit, setEditValue, tex
 				}}
 			/>
 			<TrashOutline
-				onClick={deletePost}
-				color={'#ffffff'}
+				onClick = {deletePost}
+				color={'#ffffff'} 
 				height="20px"
 				width="20px"
 				style={{
@@ -32,20 +31,20 @@ export default function WrapperDeleteAndEdit ({ edit, setEdit, setEditValue, tex
 }
 
 
-const InsertEditInput = ({ editValue, setEditValue, editRef, handleEditMode, loading }) => {
+const InsertEditInput = ({editPostText, setEditPostText, editRef, handleEditMode, loading}) => {
 	useEffect(() => {
 		editRef.current.focus();
 	}, []);
 
 	return (
-		<InputEdit
-			value={editValue}
-			onChange={(e) => setEditValue(e.target.value)}
+		<InputEdit 
+			value={editPostText}
+			onChange={(e) => setEditPostText(e.target.value)}
 			onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
 			ref={editRef}
 			loading={loading ? 1 : 0}
-		/>
-	);
+		/> 
+	);	
 };
 
 export {

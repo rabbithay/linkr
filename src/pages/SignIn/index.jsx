@@ -68,6 +68,12 @@ function SignIn(){
 			});
 	};
 
+	const loginOnEnter = (key) => {
+		if (key === 'Enter') {
+			validateInputs();
+		}
+	};
+
 	return(
 		<SignInPage>
 			<Disclaimer>
@@ -82,6 +88,7 @@ function SignIn(){
 					type='email'
 					placeholder='e-mail'
 					onChange={(e) => setEmail(e.target.value)}
+					onKeyUp={(key) => loginOnEnter(key.nativeEvent.key)}
 					value={email}
 				/>
 				<Input
@@ -89,6 +96,7 @@ function SignIn(){
 					type='password'
 					placeholder='password'
 					onChange={(e) => setPassword(e.target.value)} value={password}
+					onKeyUp={(key) => loginOnEnter(key.nativeEvent.key)}
 				/>
 
 				{!loading ? 
