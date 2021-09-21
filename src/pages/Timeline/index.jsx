@@ -9,7 +9,7 @@ import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
 import CreatePost from './CreatePost';
-import Post from '../shared/Post';
+import Post from '../shared/Post/Post';
 import Trending from '../shared/Trending';
 
 export default function Timeline(){
