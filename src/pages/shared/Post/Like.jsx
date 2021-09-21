@@ -53,8 +53,8 @@ export default function Like ({id, userInfo, likes}) {
 	const text = dataTip();
 	
 	return (
-		<LikeContainer >
-			<div data-tip={text}  onClick={likeOrDislike}>
+		<LikeContainer onClick={likeOrDislike}>
+			<div data-tip={text} >
 				{liked 
 					?<HeartSharp
 						color={'#ef2929'} 
@@ -84,9 +84,8 @@ const LikeContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	div {
-		cursor: pointer;
-	}
+	cursor: pointer;
+	
 	@media (max-width: 600px) {
 		left: 12px;
 		top: 60px;

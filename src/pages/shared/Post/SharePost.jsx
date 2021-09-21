@@ -24,15 +24,11 @@ function SharePost({shareCount, token, postId}) {
 	};
 
 	return (
-		<ShareContainer >
+		<ShareContainer onClick={rePost}>
 			<RepeatOutline
-				onClick={rePost}
 				color={'#ffffff'} 
 				height="20px"
 				width="20px"
-				style={{
-					cursor: 'pointer'
-				}}
 			/>
 			<ShareQty>{`${shared} re-post${shared > 1 ? 's' : ''}`}</ShareQty>
 		</ShareContainer>
@@ -45,9 +41,7 @@ const ShareContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	div {
-		cursor: pointer;
-	}
+	cursor: pointer;
 	@media (max-width: 600px) {
 		left: 12px;
 		top: 60px;
