@@ -259,6 +259,9 @@ const PostContent = styled.div `
 		color: #fff;
 		font-weight: bold;
 	}
+	@media (max-width: 611px) {
+		min-height: 174px;
+	}
 `;
 
 const WrapperOptions = styled.div`
@@ -422,6 +425,12 @@ const ActionsHolder = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	@media (max-width: 611px) {
+		top: 60px;
+		left: 0;
+		height: calc(100% - 60px);
+		padding-bottom: 15px;
+	}
 `;
 
 const RepostDiv = styled.div`
@@ -442,5 +451,9 @@ const RepostDiv = styled.div`
 	&& span {
 		margin-left: 4px;
 		font-weight: 700;
+	}
+
+	@media (max-width: 611px) {
+		top: -30px;
 	}
 `;

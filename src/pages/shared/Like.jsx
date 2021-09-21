@@ -58,13 +58,13 @@ export default function Like ({id, userInfo, likes}) {
 				{liked 
 					?<HeartSharp
 						color={'#ef2929'} 
-						height="22px"
-						width="22px"
+						height="20px"
+						width="20px"
 					/>
 					:<HeartOutline
 						color={'#fff'} 
-						height="22px"
-						width="22px"
+						height="20px"
+						width="20px"
 					/>
 				}
 				<ReactTooltip 
@@ -96,6 +96,7 @@ const LikeContainer = styled.div`
 const LikesQntt = styled.p`
 	color: #fff;
 	margin-top: 3px;
+	font-size: 14px;
 `;
 
 
