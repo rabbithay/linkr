@@ -13,14 +13,12 @@ import Trending from '../shared/Trending';
 
 
 export default function MainPage(props) {
-	let {
-		// TODO: Não tem jeito melhor de deixar isso? Coloquei
-		// como let porque a 'titleText' não pode ser const
+	const {
 		getPosts,
 		titleText,
 		CreatePost,
 		params={},
-		isSomeonesPage
+		updateTitle
 	} = props;
 	const { hashtag, someonesId } = params;
 
@@ -28,7 +26,6 @@ export default function MainPage(props) {
 	
 	const [postsList, setPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
-	const [someonesName, setSomeonesName] = useState('');
 	const history = useHistory();
 
 	window.scrollTo(0, 0);
@@ -38,20 +35,16 @@ export default function MainPage(props) {
 		setLoaderIsActive(true);
 		if (token) {
 			getPosts({ token, userId, hashtag, someonesId })
-				.then(({ data: { posts } }) => {
-					if (isSomeonesPage) {
-						// TODO: Tirar esse if daqui. Achei ele meio bizarro, mas não pensei em nada
-						// que dê para tirar ele, porque ele depende da resposta do server, e a resposta
-						// eu não queria jogar para a página em si
-						setSomeonesName(posts[0].user.username);
-						if (Number(someonesId) === userId) history.push('/teste/my-posts');
-					}
-					setPostsList(posts);
-				})
+				.then(({ data: { posts } }) => setPostsList(posts))
 				.catch(pageReloadErrorAlert)
 				.finally(() => setLoaderIsActive(false));
 		}
 	};
+
+	if (updateTitle) {
+		if (Number(someonesId) === userId) history.push('/teste/my-posts');
+		useEffect(() => updateTitle(token, someonesId), [token]);
+	}
 
 	useEffect(loadPosts, [token, hashtag]);
 
@@ -60,16 +53,12 @@ export default function MainPage(props) {
 	};
 
 
-	if (isSomeonesPage) {
-		titleText = `${someonesName}'s posts`;
-	}
-
 	return (
 		<>
 			<Header />
 			<Background>
 				<TimelineContent>
-					{loaderIsActive
+					{loaderIsActive && !titleText
 						? <h1>Carregando...</h1>
 						: <h1>{titleText}</h1>
 					}

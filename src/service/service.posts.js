@@ -57,6 +57,11 @@ const getHashtagPosts = ({ token, hashtag }) => {
 	return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, makeConfig(token));
 };
 
+const getSomeonesName = (token, someonesId) => {
+	return axios.get(`${BASE_URL}/users/${someonesId}`, makeConfig(token));
+};
+
+
 export {
 	getTimelinePosts,
 	createPostAPI,
@@ -66,5 +71,6 @@ export {
 	postLikeOrDislike,
 	editPost,
 	getMyLikedPosts,
-	getHashtagPosts
+	getHashtagPosts,
+	getSomeonesName
 };
