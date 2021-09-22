@@ -9,6 +9,7 @@ import { editPost, deletePostAPI } from '../../../service/service.posts';
 import ModalAlert from '../ModalAlert';
 import CirclesLoader from '../CirclesLoader';
 import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
+import LinkPreview from './LinkPreview';
 
 export default function Post({ postInfo }) {
 	const { userInfo } = useContext(UserContext);
@@ -31,6 +32,7 @@ export default function Post({ postInfo }) {
 	const [postText, setPostText] = useState(text);
 	const [editPostText, setEditPostText] = useState(postText);
 	const [postDeleted, setPostDeleted] = useState(false);
+	const [readPreview, setReadPreview] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
 	
@@ -126,14 +128,15 @@ export default function Post({ postInfo }) {
 						:
 						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 					}
-					<a href={link} target="_blank" rel="noreferrer" >
-						<LinkContainer >
+					{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
+					<a style={{cursor: 'pointer'}}>
+						<LinkContainer onClick={() => setReadPreview(true)}>
 							<LinkPreviewTexts
-								isLongDescription={linkDescription ? linkDescription.length > 100 : false}
+								isLongDescription={linkDescription ? linkDescription.length > 120 : false}
 							>
 								<h4>{linkTitle}</h4>
 								<p>{linkDescription}</p>
-								<a href={link} target="_blank" rel="noreferrer" >{link}</a>
+								<p>{link}</p>
 							</LinkPreviewTexts>
 							<LinkPreviewImage alt="link preview image" src={linkImage} />
 						</LinkContainer>
