@@ -43,7 +43,7 @@ export default function Post({ postInfo }) {
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
-
+	
 	const handleEditMode = (key) => {
 		if (key === 'Escape') {
 			setEdit(false);
@@ -144,7 +144,14 @@ export default function Post({ postInfo }) {
 						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 					}
 					{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
-					{viewUserLocation ? <UserLocation setViewUserLocation={setViewUserLocation} /> : ''}
+					{viewUserLocation ? 
+						<UserLocation 
+							setViewUserLocation={setViewUserLocation} 
+							username={username} 
+							coord={geolocation}
+						/>
+						: 
+						''}
 					<a style={{cursor: 'pointer'}}>
 						<LinkContainer onClick={() => setReadPreview(true)}>
 							<LinkPreviewTexts
