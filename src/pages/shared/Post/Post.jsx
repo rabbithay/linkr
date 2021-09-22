@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { RepeatOutline } from 'react-ionicons';
+import { RepeatOutline, Location } from 'react-ionicons';
 import UserContext from '../../../contexts/UserContext';
 import Like from './Like';
 import SharePost from './SharePost';
@@ -10,6 +10,7 @@ import ModalAlert from '../ModalAlert';
 import CirclesLoader from '../CirclesLoader';
 import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
 import LinkPreview from './LinkPreview';
+import UserLocation from './UserLocation';
 
 export default function Post({ postInfo }) {
 	const { userInfo } = useContext(UserContext);
@@ -24,7 +25,8 @@ export default function Post({ postInfo }) {
 		id: postId,
 		likes,
 		repostCount,
-		repostedBy
+		repostedBy,
+		geolocation
 	} = postInfo;
 	const { avatar, username, id } = user;
 
@@ -33,6 +35,7 @@ export default function Post({ postInfo }) {
 	const [editPostText, setEditPostText] = useState(postText);
 	const [postDeleted, setPostDeleted] = useState(false);
 	const [readPreview, setReadPreview] = useState(false);
+	const [viewUserLocation, setViewUserLocation] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
 	
@@ -115,7 +118,19 @@ export default function Post({ postInfo }) {
 						''
 					}
 
-					<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+					<Wrapper>
+						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+						{geolocation !== undefined ?
+							<Location
+								onClick={() => setViewUserLocation(true)}
+								color='#FFFFFF'
+								height="20px"
+								width="20px"
+							/>
+							: 
+							''
+						}
+					</Wrapper>
 
 					{edit ?
 						<InsertEditInput
@@ -129,6 +144,7 @@ export default function Post({ postInfo }) {
 						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 					}
 					{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
+					{viewUserLocation ? <UserLocation setViewUserLocation={setViewUserLocation} /> : ''}
 					<a style={{cursor: 'pointer'}}>
 						<LinkContainer onClick={() => setReadPreview(true)}>
 							<LinkPreviewTexts
@@ -362,4 +378,8 @@ const RepostDiv = styled.div`
 	@media (max-width: 611px) {
 		top: -30px;
 	}
+`;
+
+const Wrapper = styled.div`
+	display: flex;
 `;
