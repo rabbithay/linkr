@@ -5,13 +5,15 @@ import ModalAlert from '../shared/ModalAlert';
 import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 
-export default function CreatePost({loadTimelinePosts}) {
+export default function CreatePost({ loadTimelinePosts }) {
 	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const publishPost = () => {
+	const publishPost = (event) => {
+		if (event) event.preventDefault();
+		
 		if (link === '') {
 			const modalObj = 
 				{
@@ -36,7 +38,6 @@ export default function CreatePost({loadTimelinePosts}) {
 				};
 				ModalAlert(modalObj);
 			});
-
 	};
 
 	const postOnEnter = (key) => {

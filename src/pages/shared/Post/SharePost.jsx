@@ -4,7 +4,7 @@ import { RepeatOutline } from 'react-ionicons';
 import { sharePost } from '../../../service/service.posts';
 import ModalAlert from '../ModalAlert';
 
-function SharePost({shareCount, token, postId}) {
+export default function SharePost({ shareCount, token, postId }) {
 	const [shared, setShared] = useState(shareCount);
 
 	const rePost = () => {
@@ -53,9 +53,3 @@ const ShareQty = styled.p`
 	margin-top: 3px;
 	font-size: 14px;
 `;
-
-
-
-
-
-export default SharePost;

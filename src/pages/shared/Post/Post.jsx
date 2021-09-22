@@ -10,12 +10,23 @@ import ModalAlert from '../ModalAlert';
 import CirclesLoader from '../CirclesLoader';
 import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
 
-export default function Post({postInfo}){
-	const { text, link, user, linkImage, linkTitle, linkDescription, likes, repostCount, repostedBy } = postInfo;
+export default function Post({ postInfo }) {
+	const { userInfo } = useContext(UserContext);
+	const { userId, token } = userInfo;
+	const {
+		text,
+		link,
+		user,
+		linkImage,
+		linkTitle,
+		linkDescription,
+		id: postId,
+		likes,
+		repostCount,
+		repostedBy
+	} = postInfo;
 	const { avatar, username, id } = user;
-	const {userInfo} = useContext(UserContext);
-	const {userId, token} = userInfo;
-	const postId = postInfo.id;
+
 	const [edit, setEdit] = useState(false);
 	const [postText, setPostText] = useState(text);
 	const [editPostText, setEditPostText] = useState(postText);
@@ -41,8 +52,7 @@ export default function Post({postInfo}){
 					setPostText(editPostText);
 				})
 				.catch(() => {
-					const modalObj = 
-					{
+					const modalObj = {
 						icon: 'error',
 						title: 'An error occurred on editing this post, please, try again later'
 					};
@@ -55,13 +65,12 @@ export default function Post({postInfo}){
 		const sendDeleteToAPI = () => {
 			setLoading(true);
 			deletePostAPI(postId, token)
-				.then(()=>{
+				.then(() => {
 					setLoading(false);
 					setPostDeleted(true);
 				})
-				.catch(()=>{
-					const modalObj = 
-					{
+				.catch(() => {
+					const modalObj = {
 						icon: 'error',
 						title: 'An error occurred on deleting this post'
 					};
@@ -71,8 +80,7 @@ export default function Post({postInfo}){
 
 		};
 		//create delete pop-up
-		const modalObj =
-		{
+		const modalObj = {
 			title: 'Are you sure you want to delete this post?',
 			buttonOptions: true,
 			functionOnConfirm: sendDeleteToAPI
@@ -87,51 +95,50 @@ export default function Post({postInfo}){
 				:
 				''}
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
-			{
-				loading ?
-					<Loading>
-						<CirclesLoader />
-					</Loading>
-					:
-					<PostContent>
-						{userId === id ?
-							<WrapperDeleteAndEdit
-								edit={edit}
-								setEdit={setEdit}
-								setPostText={setPostText}
-								text={text}
-								deletePost={deletePost}
-							/>
-							:
-							''
-						}
+			{ loading ?
+				<Loading>
+					<CirclesLoader />
+				</Loading>
+				:
+				<PostContent>
+					{userId === id ?
+						<WrapperDeleteAndEdit
+							edit={edit}
+							setEdit={setEdit}
+							setPostText={setPostText}
+							text={text}
+							deletePost={deletePost}
+						/>
+						:
+						''
+					}
 
-						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+					<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
 
-						{edit ?
-							<InsertEditInput
-								editPostText={editPostText}
-								setEditPostText={setEditPostText}
-								editRef={editRef}
-								handleEditMode={handleEditMode}
-								loading={loading ? 1 : 0}
-							/>
-							:
-							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
-						}
-						<a href={link} target="_blank" rel="noreferrer" >
-							<LinkContainer >
-								<LinkPreviewTexts
-									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
-								>
-									<h4>{linkTitle}</h4>
-									<p>{linkDescription}</p>
-									<a href={link} target="_blank" rel="noreferrer" >{link}</a>
-								</LinkPreviewTexts>
-								<LinkPreviewImage alt="link preview image" src={linkImage} />
-							</LinkContainer>
-						</a>
-					</PostContent>
+					{edit ?
+						<InsertEditInput
+							editPostText={editPostText}
+							setEditPostText={setEditPostText}
+							editRef={editRef}
+							handleEditMode={handleEditMode}
+							loading={loading ? 1 : 0}
+						/>
+						:
+						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
+					}
+					<a href={link} target="_blank" rel="noreferrer" >
+						<LinkContainer >
+							<LinkPreviewTexts
+								isLongDescription={linkDescription ? linkDescription.length > 100 : false}
+							>
+								<h4>{linkTitle}</h4>
+								<p>{linkDescription}</p>
+								<a href={link} target="_blank" rel="noreferrer" >{link}</a>
+							</LinkPreviewTexts>
+							<LinkPreviewImage alt="link preview image" src={linkImage} />
+						</LinkContainer>
+					</a>
+				</PostContent>
 			}
 			<ActionsHolder>
 				<Like likes={likes} id={postId} userInfo={userInfo} />
@@ -196,6 +203,7 @@ const PostContent = styled.div `
 		font-size: 19px;
 		line-height: 23px;
 		margin-bottom: 7px;
+		word-break: break-word;
 		@media (max-width: 611px) {
 			font-size: 17px;
 			line-height: 20px;
