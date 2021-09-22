@@ -11,8 +11,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 	const [linkDescription, setLinkDescription] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const publishPost = (e) => {
-		e.preventDefault();
+	const publishPost = () => {
 		if (link === '') {
 			const modalObj = 
 				{
@@ -40,6 +39,12 @@ export default function CreatePost({ loadTimelinePosts }) {
 
 	};
 
+	const postOnEnter = (key) => {
+		if (key === 'Enter') {
+			publishPost();
+		}
+	};
+
 	return (
 		<Container>
 			<img src={userInfo.userImg} alt='perfil' />
@@ -52,12 +57,14 @@ export default function CreatePost({ loadTimelinePosts }) {
 							placeholder='http:// ...'
 							value={link}
 							onChange={e => setLink(e.target.value)}
+							onKeyUp={(key) => postOnEnter(key.nativeEvent.key)}
 							loading={loading? 1:0}
 						/>
 						<LinkDescription
 							placeholder='Say something about this link'
 							value={linkDescription}
 							onChange={e => setLinkDescription(e.target.value)}
+							onKeyUp={(key) => postOnEnter(key.nativeEvent.key)}
 							loading={loading? 1:0}
 						/>
 						{loading?

@@ -1,13 +1,14 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Pencil, TrashOutline } from 'react-ionicons';
-import { deletePostAPI } from '../../service/service.posts';
-import UserContext from '../../contexts/UserContext';
+import { RepeatOutline } from 'react-ionicons';
+import UserContext from '../../../contexts/UserContext';
 import Like from './Like';
-import { editPost } from '../../service/service.posts';
-import ModalAlert from './ModalAlert';
-import CirclesLoader from './CirclesLoader';
+import SharePost from './SharePost';
+import { editPost, deletePostAPI } from '../../../service/service.posts';
+import ModalAlert from '../ModalAlert';
+import CirclesLoader from '../CirclesLoader';
+import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
 
 export default function Post({ postInfo }) {
 	const { userInfo } = useContext(UserContext);
@@ -20,12 +21,15 @@ export default function Post({ postInfo }) {
 		linkTitle,
 		linkDescription,
 		id: postId,
-		likes
+		likes,
+		repostCount,
+		repostedBy
 	} = postInfo;
 	const { avatar, username, id } = user;
 
 	const [edit, setEdit] = useState(false);
-	const [editValue, setEditValue] = useState(text);
+	const [postText, setPostText] = useState(text);
+	const [editPostText, setEditPostText] = useState(postText);
 	const [postDeleted, setPostDeleted] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
@@ -38,14 +42,14 @@ export default function Post({ postInfo }) {
 	const handleEditMode = (key) => {
 		if (key === 'Escape') {
 			setEdit(false);
-			setEditValue(text);
 		}
 		else if (key === 'Enter') {
 			setLoading(true);
-			editPost(token, editValue, postId)
+			editPost(token, postText, postId)
 				.then(() => {
 					setLoading(false);
 					setEdit(false);
+					setPostText(editPostText);
 				})
 				.catch(() => {
 					const modalObj = {
@@ -68,27 +72,30 @@ export default function Post({ postInfo }) {
 				.catch(() => {
 					const modalObj = {
 						icon: 'error',
-						title: 'Oops...',
-						description: 'Ocorreu um erro ao deletar publicação'
+						title: 'An error occurred on deleting this post'
 					};
 					ModalAlert(modalObj);
 					setLoading(false);
 				});
 
 		};
-		// create delete pop-up
+		//create delete pop-up
 		const modalObj = {
-			title: 'Tem certeza que deseja excluir essa publicação?',
+			title: 'Are you sure you want to delete this post?',
 			buttonOptions: true,
 			functionOnConfirm: sendDeleteToAPI
 		};
 		ModalAlert(modalObj);
 	};
-	
+
 	return (
-		<PostContainer postDeleted={postDeleted ? 1 : 0}>
+		<PostContainer postDeleted={postDeleted ? 1 : 0} postReposted={repostedBy !== undefined}>
+			{repostedBy ?
+				<RepostInfo user={repostedBy.id === userId ? 'you' : repostedBy.username}/>
+				:
+				''}
 			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
-			{loading ?
+			{ loading ?
 				<Loading>
 					<CirclesLoader />
 				</Loading>
@@ -98,7 +105,7 @@ export default function Post({ postInfo }) {
 						<WrapperDeleteAndEdit
 							edit={edit}
 							setEdit={setEdit}
-							setEditValue={setEditValue}
+							setPostText={setPostText}
 							text={text}
 							deletePost={deletePost}
 						/>
@@ -110,14 +117,14 @@ export default function Post({ postInfo }) {
 
 					{edit ?
 						<InsertEditInput
-							editValue={editValue}
-							setEditValue={setEditValue}
+							editPostText={editPostText}
+							setEditPostText={setEditPostText}
 							editRef={editRef}
 							handleEditMode={handleEditMode}
 							loading={loading ? 1 : 0}
 						/>
 						:
-						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(editValue)}</p>` }} />
+						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 					}
 					<a href={link} target="_blank" rel="noreferrer" >
 						<LinkContainer >
@@ -133,64 +140,35 @@ export default function Post({ postInfo }) {
 					</a>
 				</PostContent>
 			}
-			<Like likes={likes} id={postId} userInfo={userInfo} />
-
+			<ActionsHolder>
+				<Like likes={likes} id={postId} userInfo={userInfo} />
+				<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId}/>
+			</ActionsHolder>
 		</PostContainer>
 	);
 }
 
-function WrapperDeleteAndEdit({ edit, setEdit, setEditValue, text, deletePost }) {
+function RepostInfo({user}) {
 	return (
-		<WrapperOptions>
-			<Pencil 
-				onClick={() => {
-					edit ? setEdit(false) : setEdit(true);
-					setEditValue(text);
-				}}
+		<RepostDiv >
+			<RepeatOutline
 				color={'#ffffff'} 
 				height="20px"
 				width="20px"
 				style={{
-					cursor: 'pointer'
+					marginRight: '10px'
 				}}
 			/>
-			<TrashOutline
-				onClick = {deletePost}
-				color={'#ffffff'} 
-				height="20px"
-				width="20px"
-				style={{
-					cursor: 'pointer'
-				}}
-			/>
-		</WrapperOptions>
+			Re-posted by <span>{user}</span>
+		</RepostDiv>
 	);
 }
-
-function InsertEditInput({ editValue, setEditValue, editRef, handleEditMode, loading }) {
-	useEffect(() => {
-		editRef.current.focus();
-	}, []);
-
-	return (
-		<InputEdit 
-			value={editValue}
-			onChange={(e) => setEditValue(e.target.value)}
-			onKeyUp={(key) => handleEditMode(key.nativeEvent.key)}
-			ref={editRef}
-			loading={loading ? 1 : 0}
-		/> 
-	);	
-}
-
-
-
 const PostContainer = styled.div`
 	width: 611px;
 	height: auto;
 	border-radius: 16px;
 	background-color: #171717;
-	margin-top: 16px;
+	margin-top: ${props => props.postReposted? '36px':'16px'};
 	padding: 17px 21px 20px 18px;
 	display: ${props => props.postDeleted? 'none':'inline-flex'};
 	gap: 18px;
@@ -216,6 +194,10 @@ const UserIcon = styled.img`
 const PostContent = styled.div `
 	font-family: 'Lato';
 	width: 513px;
+	min-height: 219px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 	h3{
 		color: #fff;
 		font-size: 19px;
@@ -242,20 +224,8 @@ const PostContent = styled.div `
 		color: #fff;
 		font-weight: bold;
 	}
-`;
-
-const WrapperOptions = styled.div`
-	width: 60px;
-	height: 20px;
-	display: flex;
-	justify-content: space-around;
-	position: absolute;
-	top: 18px;
-	right: 15px;
-
-	@media (max-width: 600px) {
-		top: 10px;
-		right: 10px;
+	@media (max-width: 611px) {
+		min-height: 174px;
 	}
 `;
 
@@ -325,53 +295,6 @@ const LinkPreviewTexts = styled.div `
   }
 `;
 
-const InputEdit = styled.textarea`
-	width: 100%;
-	background: #FFFFFF;
-	color: #4C4C4C;
-	word-break: break-all;
-	resize: none;
-	padding: 8px;
-	height: 100px;
-	margin-bottom: 14px;
-	border-radius: 7px;
-	font-family: 'Lato';
-	font-size: 14px;
-	line-height: 17px;
-	pointer-events: ${props => props.loading ? 'none' : 'all'};
-	
-	:focus {
-		outline: none;
-	}
-	
-	@media (min-width: 600px) {
-		::-webkit-scrollbar {
-			width: 5px;
-		}
-		
-		/* Track */
-		::-webkit-scrollbar-track {
-			background: #f1f1f1; 
-			border-radius: 5px;
-		}
-		
-		/* Handle */
-		::-webkit-scrollbar-thumb {
-			background: #888; 
-			border-radius: 5px;
-		}
-
-		/* Handle on hover */
-		::-webkit-scrollbar-thumb:hover {
-			background: #555; 
-		}
-	}
-
-	@media (max-width: 600px) {
-		font-size: 11px;
-		line-height: 13px;
-	}
-`;
 
 const LinkPreviewImage = styled.img `
 	width: 155px;
@@ -392,4 +315,48 @@ const Loading = styled.div`
 	display: flex;
 	justify-content: center;
 	padding-bottom: 10px;
+`;
+
+const ActionsHolder = styled.div`
+  	width: 70px;
+	height: calc(100% - 86px);
+	padding-bottom: 20px;
+	max-height: 160px;
+	position: absolute;
+	top: 86px;
+	left: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	@media (max-width: 611px) {
+		top: 60px;
+		left: 0;
+		height: calc(100% - 60px);
+		padding-bottom: 15px;
+	}
+`;
+
+const RepostDiv = styled.div`
+	height: 33px;
+	width: 100%;
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	position: absolute;
+	top: -20px;
+	left: 0;
+	color: white;
+	font-family: 'Lato';
+	background-color: #1E1E1E;
+	display: flex;
+	align-items: center;
+	padding-left: 10px;
+
+	&& span {
+		margin-left: 4px;
+		font-weight: 700;
+	}
+
+	@media (max-width: 611px) {
+		top: -30px;
+	}
 `;

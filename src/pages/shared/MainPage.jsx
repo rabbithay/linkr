@@ -8,7 +8,7 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import Post from '../shared/Post';
+import Post from '../shared/Post/Post';
 import Trending from '../shared/Trending';
 
 
@@ -42,7 +42,7 @@ export default function MainPage(props) {
 	};
 
 	if (updateTitle) {
-		if (Number(someonesId) === userId) history.push('/teste/my-posts');
+		if (Number(someonesId) === userId) history.push('/my-posts');
 		useEffect(() => updateTitle(token, someonesId), [token]);
 	}
 
@@ -58,7 +58,7 @@ export default function MainPage(props) {
 			<Header />
 			<Background>
 				<TimelineContent>
-					{loaderIsActive && !titleText
+					{loaderIsActive || !titleText
 						? <h1>Carregando...</h1>
 						: <h1>{titleText}</h1>
 					}

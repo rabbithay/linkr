@@ -49,6 +49,10 @@ const getSomeonesPosts = ({ token, someonesId }) => {
 	return axios.get(`${BASE_URL}/users/${someonesId}/posts`, makeConfig(token));
 };
 
+const sharePost = (token, id) => {
+	return axios.post(`${BASE_URL}/posts/${id}/share`, {}, makeConfig(token));
+};
+
 const getMyLikedPosts = ({ token }) => {
 	return axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
 };
@@ -72,5 +76,6 @@ export {
 	editPost,
 	getMyLikedPosts,
 	getHashtagPosts,
-	getSomeonesName
+	getSomeonesName,
+	sharePost
 };
