@@ -12,12 +12,20 @@ const makeConfig = (token) => {
 	return config;
 };
 
-const getTimelinePosts = ({ token }) => {
-	return axios.get(`${BASE_URL}/posts`, makeConfig(token));
+const getTimelinePosts = ({ token, lastPostId }) => {
+	if (lastPostId) {
+		console.log(lastPostId);
+		return axios.get(`${BASE_URL}/posts?olderThan=${lastPostId}`, makeConfig(token));
+	}
+	else
+		return axios.get(`${BASE_URL}/posts`, makeConfig(token));
 };
 
-const getUserPosts = ({ token, userId }) => {
-	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
+const getUserPosts = ({ token, userId, lastPostId }) => {
+	if (lastPostId)
+		return axios.get(`${BASE_URL}/users/${userId}/posts?olderThan=${lastPostId}`, makeConfig(token));
+	else
+		return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
 };
 
 const postLikeOrDislike = (token, postId, action) => {
@@ -45,20 +53,29 @@ const editPost = (token, text, id) => {
 	return axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
 };
 
-const getSomeonesPosts = ({ token, someonesId }) => {
-	return axios.get(`${BASE_URL}/users/${someonesId}/posts`, makeConfig(token));
+const getSomeonesPosts = ({ token, someonesId, lastPostId }) => {
+	if(lastPostId)
+		return axios.get(`${BASE_URL}/users/${someonesId}/posts?olderThan=${lastPostId}`, makeConfig(token));
+	else
+		return axios.get(`${BASE_URL}/users/${someonesId}/posts`, makeConfig(token));
 };
 
 const sharePost = (token, id) => {
 	return axios.post(`${BASE_URL}/posts/${id}/share`, {}, makeConfig(token));
 };
 
-const getMyLikedPosts = ({ token }) => {
-	return axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
+const getMyLikedPosts = ({ token, lastPostId }) => {
+	if (lastPostId)
+		return axios.get(`${BASE_URL}/posts/liked?olderThan=${lastPostId}`, makeConfig(token));
+	else
+		return axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
 };
 
-const getHashtagPosts = ({ token, hashtag }) => {
-	return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, makeConfig(token));
+const getHashtagPosts = ({ token, hashtag, lastPostId }) => {
+	if (lastPostId)
+		return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts?olderThan=${lastPostId}`, makeConfig(token));
+	else
+		return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, makeConfig(token));
 };
 
 const getSomeonesName = (token, someonesId) => {
