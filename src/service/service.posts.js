@@ -13,10 +13,8 @@ const makeConfig = (token) => {
 };
 
 const getTimelinePosts = ({ token, lastPostId }) => {
-	if (lastPostId) {
-		console.log(lastPostId);
+	if (lastPostId) 
 		return axios.get(`${BASE_URL}/posts?olderThan=${lastPostId}`, makeConfig(token));
-	}
 	else
 		return axios.get(`${BASE_URL}/posts`, makeConfig(token));
 };

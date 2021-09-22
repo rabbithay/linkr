@@ -43,7 +43,7 @@ export default function MainPage(props) {
 
 	const loadMorePosts = () => {
 		let index = postsList.length - 1;
-		let lastPostId = postsList[index].id;
+		let lastPostId = postsList[index].repostId !== undefined ? postsList[index].repostId : postsList[index].id; 
 		getPosts({ token, userId, hashtag, someonesId, lastPostId })
 			.then((res) => {
 				if (res.data.posts.length === 0) {
@@ -94,14 +94,14 @@ export default function MainPage(props) {
 					{loaderIsActive
 						? <CirclesLoader />
 						: (postsList.length)
-							?<Scroller
+							?<InfiniteScroll
 								dataLength={postsList.length}
 								next={loadMorePosts}
 								hasMore={hasMore}
 								loader={<CirclesLoader />}
 							>
 								{postListJSX(postsList)}
-							</Scroller>
+							</InfiniteScroll>
 							: <NoPostMessage />
 					}
 				</TimelineContent>
@@ -173,11 +173,4 @@ const HashtagContainer = styled.div`
 	}
 `;
 
-const Scroller = styled(InfiniteScroll)`
-
-	div{
-		overflow: hidden;
-	}
-	
-`;
 
