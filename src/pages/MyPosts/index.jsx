@@ -45,7 +45,7 @@ export default function MyPosts(){
 						: (timelinePostsList.length)
 							?  timelinePostsList.map((p)=>{
 								return (
-									<Post key={p.id} postInfo={p} />
+									<Post key={p.repostId !== undefined ? p.repostId : p.id} postInfo={p} />
 								);
 							})
 							: <NoPostMessage/>
