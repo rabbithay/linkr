@@ -12,16 +12,16 @@ const makeConfig = (token) => {
 	return config;
 };
 
-const getPosts = (config) => {
-	return axios.get(`${BASE_URL}/posts`, config);
+const getTimelinePosts = ({ token }) => {
+	return axios.get(`${BASE_URL}/posts`, makeConfig(token));
 };
 
-const getUserPosts = (config, userId) => {
-	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
+const getUserPosts = ({ token, userId }) => {
+	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
 };
 
-const postLikeOrDislike = (config, postId, action) => {
-	return axios.post(`${BASE_URL}/posts/${postId}/${action}`,{}, config);
+const postLikeOrDislike = (token, postId, action) => {
+	return axios.post(`${BASE_URL}/posts/${postId}/${action}`, {}, makeConfig(token));
 };
 
 const createPostAPI = (text, link, token) => {
@@ -29,36 +29,45 @@ const createPostAPI = (text, link, token) => {
 		text,
 		link
 	};
+
 	return axios.post(`${BASE_URL}/posts`, body, makeConfig(token));
 };
 
-const deletePostAPI = (id, token) =>{
-	const config = {
-		headers: {
-			'Authorization': `Bearer ${token}`
-		}
-	};
-	const promise = axios.delete(`${BASE_URL}/posts/${id}`, config);
-	return promise;
+const deletePostAPI = (id, token) => {
+	return axios.delete(`${BASE_URL}/posts/${id}`, makeConfig(token));
 };
 
 const editPost = (token, text, id) => {
 	const body = {
 		text,
 	};
-	const promise = axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
-	return promise;
-};
-const getSomeonesPosts = (userId, token) => {
-	return axios.get(`${BASE_URL}/users/${userId}/posts`, makeConfig(token));
+
+	return axios.put(`${BASE_URL}/posts/${id}`, body, makeConfig(token));
 };
 
-const getMyLikedPosts = (token) => {
+const getSomeonesPosts = ({ token, someonesId }) => {
+	return axios.get(`${BASE_URL}/users/${someonesId}/posts`, makeConfig(token));
+};
+
+const sharePost = (token, id) => {
+	return axios.post(`${BASE_URL}/posts/${id}/share`, {}, makeConfig(token));
+};
+
+const getMyLikedPosts = ({ token }) => {
 	return axios.get(`${BASE_URL}/posts/liked`, makeConfig(token));
 };
 
+const getHashtagPosts = ({ token, hashtag }) => {
+	return axios.get(`${BASE_URL}/hashtags/${hashtag}/posts`, makeConfig(token));
+};
+
+const getSomeonesName = (token, someonesId) => {
+	return axios.get(`${BASE_URL}/users/${someonesId}`, makeConfig(token));
+};
+
+
 export {
-	getPosts,
+	getTimelinePosts,
 	createPostAPI,
 	deletePostAPI,
 	getUserPosts,
@@ -66,4 +75,7 @@ export {
 	postLikeOrDislike,
 	editPost,
 	getMyLikedPosts,
+	getHashtagPosts,
+	getSomeonesName,
+	sharePost
 };

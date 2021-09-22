@@ -5,13 +5,15 @@ import ModalAlert from '../shared/ModalAlert';
 import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
 
-export default function CreatePost({loadTimelinePosts}) {
+export default function CreatePost({ loadTimelinePosts }) {
 	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const publishPost = () => {
+	const publishPost = (event) => {
+		if (event) event.preventDefault();
+		
 		if (link === '') {
 			const modalObj = 
 				{
@@ -36,7 +38,6 @@ export default function CreatePost({loadTimelinePosts}) {
 				};
 				ModalAlert(modalObj);
 			});
-
 	};
 
 	const postOnEnter = (key) => {
@@ -191,6 +192,26 @@ const LinkDescription = styled.textarea`
 		color: #4a4a4a;
 		pointer-events: ${ props => props.loading? 'none':'initial'};
 		resize: none;
+
+		::-webkit-scrollbar {
+			width: 5px;
+		}
+		::-webkit-scrollbar-track {
+			background: #f1f1f1; 
+			border-radius: 5px;
+		}
+		::-webkit-scrollbar-thumb {
+			background: #888; 
+			border-radius: 5px;
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: #555; 
+		}
+		
+		&:focus {
+			outline: none;
+		}
+
 		@media(max-width: 600px){
 			height: 47px;
 			width: 100%;
