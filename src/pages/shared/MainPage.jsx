@@ -8,7 +8,7 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import Post from '../shared/Post/Post';
+import Post from './Post/Post';
 import Trending from '../shared/Trending';
 
 
@@ -49,7 +49,13 @@ export default function MainPage(props) {
 	useEffect(loadPosts, [token, hashtag]);
 
 	const postListJSX = (postsList) => {
-		return postsList.map((post) => <Post key={post.id} postInfo={post} />);
+		return postsList.map((post) => {
+			return (
+				<Post
+					key={post.repostId !== undefined ? post.repostId : post.id}
+					postInfo={post}
+				/>
+			);});
 	};
 
 

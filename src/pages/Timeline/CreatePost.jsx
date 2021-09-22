@@ -11,7 +11,9 @@ export default function CreatePost({ loadTimelinePosts }) {
 	const [linkDescription, setLinkDescription] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	const publishPost = () => {
+	const publishPost = (event) => {
+		if (event) event.preventDefault();
+		
 		if (link === '') {
 			const modalObj = 
 				{
@@ -36,7 +38,6 @@ export default function CreatePost({ loadTimelinePosts }) {
 				};
 				ModalAlert(modalObj);
 			});
-
 	};
 
 	const postOnEnter = (key) => {
