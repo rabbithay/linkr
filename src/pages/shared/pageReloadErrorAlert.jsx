@@ -1,6 +1,6 @@
 import ModalAlert from './ModalAlert';
 
-export default function pageReloadErrorAlert(){
+export default function pageReloadErrorAlert() {
 	const modalObj = 
 	{
 		icon: 'error',
