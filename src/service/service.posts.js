@@ -16,6 +16,10 @@ const getPosts = (config) => {
 	return axios.get(`${BASE_URL}/posts`, config);
 };
 
+const getMorePosts = (token, lastId) =>{
+	return axios.get(`${BASE_URL}/posts?olderThan=${lastId}`, makeConfig(token));
+};
+
 const getUserPosts = (config, userId) => {
 	return axios.get(`${BASE_URL}/users/${userId}/posts`, config);
 };
@@ -65,6 +69,7 @@ const getMyLikedPosts = (token) => {
 
 export {
 	getPosts,
+	getMorePosts,
 	createPostAPI,
 	deletePostAPI,
 	getUserPosts,

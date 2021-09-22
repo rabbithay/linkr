@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 import UserContext from '../../contexts/UserContext';
-import { getPosts } from '../../service/service.posts';
-
+import { getPosts, getMorePosts } from '../../service/service.posts';
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
@@ -12,49 +11,74 @@ import CreatePost from './CreatePost';
 import Post from '../shared/Post/Post';
 import Trending from '../shared/Trending';
 
-export default function Timeline(){
+export default function Timeline() {
 	const [timelinePostsList, setTimelinePostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const { userInfo: { token } } = useContext(UserContext);
+	const [hasMore, setHasMore] = useState(true);
 
-	function loadTimelinePosts(){		
+	function loadTimelinePosts() {
 		setLoaderIsActive(true);
-		const config = {headers: 
-			{ 'Authorization': `Bearer ${token}` }
+		const config = {
+			headers:
+				{ 'Authorization': `Bearer ${token}` }
 		};
-		getPosts(config).then((res)=>{
+		getPosts(config).then((res) => {
 			setTimelinePostsList(res.data.posts);
-		}).catch(()=>{
+		}).catch(() => {
 			pageReloadErrorAlert();
-		}).finally(()=>{
+		}).finally(() => {
 			setLoaderIsActive(false);
 		});
 	}
-	
-	useEffect(()=>{		
-		loadTimelinePosts();
-	},[token]);
 
-	return(
-		<>	
-			<Header/>
+	const loadMorePosts = () => {
+		let index = timelinePostsList.length - 1;
+		let lastPostId = timelinePostsList[index].id;
+		getMorePosts(token, lastPostId).then((res) => {
+			if (res.data.posts.length === 0) {
+				setHasMore(false);
+			}
+			setTimelinePostsList([...timelinePostsList, ...res.data.posts]);
+		}).catch(() => {
+			pageReloadErrorAlert();
+		});
+	};
+
+	useEffect(() => {
+		loadTimelinePosts();
+	}, [token]);
+
+	return (
+		<>
+			<Header />
 			<Background>
 				<TimelineContent>
 					<h1>timeline</h1>
-					<CreatePost loadTimelinePosts={loadTimelinePosts}/>
-					{loaderIsActive 
-						? <CirclesLoader/>
+					<CreatePost loadTimelinePosts={loadTimelinePosts} />
+					{loaderIsActive
+						? <CirclesLoader />
 						: (timelinePostsList.length)
-							?  timelinePostsList.map((p)=>{
-								return (
-									<Post key={p.repostId !== undefined ? p.repostId : p.id} postInfo={p} />
-								);
-							})
-							: <NoPostMessage/>
+							?
+
+							<Scroller
+								dataLength={timelinePostsList.length}
+								next={loadMorePosts}
+								hasMore={hasMore}
+								loader={<CirclesLoader />}
+							>
+								{timelinePostsList.map((p) => {
+									return (
+										<Post key={p.repostId !== undefined ? p.repostId : p.id} postInfo={p} />
+									);
+								})}
+							</Scroller>
+
+							: <NoPostMessage />
 					}
 				</TimelineContent>
 				<HashtagContainer>
-					<Trending/>
+					<Trending />
 				</HashtagContainer>
 			</Background>
 		</>
@@ -108,4 +132,12 @@ const HashtagContainer = styled.div`
 	}
 	position: sticky;
 	top: 80px;
+`;
+
+const Scroller = styled(InfiniteScroll)`
+
+	div{
+		overflow-x: hidden;
+	}
+	
 `;
