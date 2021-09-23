@@ -42,10 +42,10 @@ export default function SearchBar() {
 	const orderFollowsList = (usersList) => {
 		const followUsers = [];
 		const unfollowUsers = [];
-		const followingIds = followsList.map(({ id }) => id);
+		const followIds = followsList.map(({ id }) => id);
 		
 		usersList.forEach((user) => {
-			if (followingIds.includes(user.id)) followUsers.push(user);
+			if (followIds.includes(user.id)) followUsers.push(user);
 			else unfollowUsers.push(user);
 		});
 		

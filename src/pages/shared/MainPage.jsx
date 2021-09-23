@@ -43,10 +43,10 @@ export default function MainPage(props) {
 
 	if (updateTitle) {
 		if (Number(someonesId) === userId) history.push('/my-posts');
-		useEffect(() => updateTitle(token, someonesId), [token]);
+		useEffect(() => updateTitle(token, someonesId), [token, someonesId]);
 	}
 
-	useEffect(loadPosts, [token, hashtag]);
+	useEffect(loadPosts, [token, hashtag, someonesId]);
 
 	const postListJSX = (postsList) => {
 		return postsList.map((post) => {
