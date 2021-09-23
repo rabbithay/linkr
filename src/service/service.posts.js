@@ -80,6 +80,15 @@ const getSomeonesName = (token, someonesId) => {
 	return axios.get(`${BASE_URL}/users/${someonesId}`, makeConfig(token));
 };
 
+const getComments = ({token, postId}) => {
+	axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, makeConfig(token));
+};
+
+const postComment = ({token, postId, text}) => {
+	const body = {text};
+	axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comment`, body ,makeConfig(token));
+};
+
 
 export {
 	getTimelinePosts,
@@ -92,5 +101,7 @@ export {
 	getMyLikedPosts,
 	getHashtagPosts,
 	getSomeonesName,
-	sharePost
+	sharePost,
+	getComments,
+	postComment
 };

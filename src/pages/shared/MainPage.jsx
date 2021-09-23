@@ -10,7 +10,7 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
 import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
-import axios from 'axios';
+import { getFollows } from '../../service/service.users';
 
 export default function MainPage(props) {
 
@@ -31,14 +31,8 @@ export default function MainPage(props) {
 	const history = useHistory();
 	const [peopleIFollow, setPeopleIFollow] = useState([]);
 
-
 	const checkWhoIFollow = () => {
-		const config = {
-			headers: {
-				'Authorization': `Bearer ${token}`
-			}
-		};
-		axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users/follows', config).then((res)=>{
+		getFollows().then((res)=>{
 			setPeopleIFollow(res.data.users);
 		}).catch();
 	};
@@ -64,8 +58,6 @@ export default function MainPage(props) {
 				setPostsList([...postsList, ...res.data.posts]);
 			}).catch(pageReloadErrorAlert);
 	};
-
-
 
 	if (updateTitle) {
 		if (Number(someonesId) === userId) history.push('/my-posts');

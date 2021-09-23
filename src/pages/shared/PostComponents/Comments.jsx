@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { PaperPlaneOutline } from 'react-ionicons';
-import axios from 'axios';
+import { getComments, postComment } from '../../../service/service.posts';
 
 export default function Comments({token, postId, userInfo, postUserId, peopleIFollow}){
 	const [text, setText] = useState('');
-	const [commentsList, setCommentsList] = useState([]);
-	const config = {
-		headers: {
-			'Authorization': `Bearer ${token}`
-		}
-	};
-    
+	const [commentsList, setCommentsList] = useState([]);    
 
 	useEffect(()=>{
-		axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, config).then((res)=>{
+		getComments(token, postId).then((res)=>{
 			setCommentsList(res.data.comments);
-		}).catch((error)=> console.log(error));
+		}).catch();
 	},[commentsList]);
 
 
-	function newComment(){axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comment`, {text}, config).then(()=>{
-		setText('');
-	}).catch((error)=> console.log(error));}
+	function newComment(){
+		postComment(token, postId, text).then(()=>{
+			setText('');
+		}).catch();
+	}
+    
 	return(
 		<CommentsContainer>
 			{(commentsList.length) ? commentsList.map((comment)=>{
