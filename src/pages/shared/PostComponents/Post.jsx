@@ -168,7 +168,7 @@ export default function Post({ postInfo }) {
 								>
 									<h4>{linkTitle}</h4>
 									<p>{linkDescription}</p>
-									<p>{link}</p>
+									<a>{link}</a>
 								</LinkPreviewTexts>
 								<LinkPreviewImage alt="link preview image" src={linkImage} />
 							</LinkContainer>
