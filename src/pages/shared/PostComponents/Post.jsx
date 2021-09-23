@@ -131,6 +131,10 @@ export default function Post({ postInfo }) {
 									color='#FFFFFF'
 									height="20px"
 									width="20px"
+									style={{
+										cursor: 'pointer',
+										marginLeft: '10px'
+									}}
 								/>
 								: 
 								''
@@ -183,6 +187,7 @@ export default function Post({ postInfo }) {
 					postUserId={id} 
 					token={token} 
 					postId={postId}
+					setCommentsTabIsOpen={setCommentsTabIsOpen}
 				/> : ''}
 		</>
 	);
@@ -405,4 +410,11 @@ const RepostDiv = styled.div`
 
 const Wrapper = styled.div`
 	display: flex;
+
+	&& h3 {
+		max-width: 420px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 `;
