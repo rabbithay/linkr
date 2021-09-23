@@ -93,7 +93,7 @@ const Topbar = styled.div`
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 3;
 	background-color: #151515;
 	display: flex;
 	justify-content: space-between;

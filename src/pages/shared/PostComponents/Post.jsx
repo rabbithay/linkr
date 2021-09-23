@@ -9,6 +9,8 @@ import { editPost, deletePostAPI } from '../../../service/service.posts';
 import ModalAlert from '../ModalAlert';
 import CirclesLoader from '../CirclesLoader';
 import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
+import Comments from './Comments';
+import CommentIcon from './CommentIcon';
 import LinkPreview from './LinkPreview';
 import UserLocation from './UserLocation';
 
@@ -26,6 +28,7 @@ export default function Post({ postInfo }) {
 		likes,
 		repostCount,
 		repostedBy,
+		commentCount,
 		geolocation
 	} = postInfo;
 	const { avatar, username, id } = user;
@@ -38,6 +41,7 @@ export default function Post({ postInfo }) {
 	const [viewUserLocation, setViewUserLocation] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
+	const [commentsTabIsOpen, setCommentsTabIsOpen] = useState(false);
 	
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
@@ -94,83 +98,93 @@ export default function Post({ postInfo }) {
 	};
 
 	return (
-		<PostContainer postDeleted={postDeleted ? 1 : 0} postReposted={repostedBy !== undefined}>
-			{repostedBy ?
-				<RepostInfo user={repostedBy.id === userId ? 'you' : repostedBy.username}/>
-				:
-				''}
-			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
-			{ loading ?
-				<Loading>
-					<CirclesLoader />
-				</Loading>
-				:
-				<PostContent>
-					{userId === id ?
-						<WrapperDeleteAndEdit
-							edit={edit}
-							setEdit={setEdit}
-							setPostText={setPostText}
-							text={text}
-							deletePost={deletePost}
-						/>
-						:
-						''
-					}
-
-					<Wrapper>
-						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
-						{geolocation !== undefined ?
-							<Location
-								onClick={() => setViewUserLocation(true)}
-								color='#FFFFFF'
-								height="20px"
-								width="20px"
+		<>
+			<PostContainer postDeleted={postDeleted ? 1 : 0} postReposted={repostedBy !== undefined}>
+				{repostedBy ?
+					<RepostInfo user={repostedBy.id === userId ? 'you' : repostedBy.username}/>
+					:
+					''}
+				<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+				{ loading ?
+					<Loading>
+						<CirclesLoader />
+					</Loading>
+					:
+					<PostContent>
+						{userId === id ?
+							<WrapperDeleteAndEdit
+								edit={edit}
+								setEdit={setEdit}
+								setPostText={setPostText}
+								text={text}
+								deletePost={deletePost}
 							/>
-							: 
+							:
 							''
 						}
-					</Wrapper>
 
-					{edit ?
-						<InsertEditInput
-							editPostText={editPostText}
-							setEditPostText={setEditPostText}
-							editRef={editRef}
-							handleEditMode={handleEditMode}
-							loading={loading ? 1 : 0}
-						/>
-						:
-						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
-					}
-					{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
-					{viewUserLocation ? 
-						<UserLocation 
-							setViewUserLocation={setViewUserLocation} 
-							username={username} 
-							coord={geolocation}
-						/>
-						: 
-						''}
-					<a style={{cursor: 'pointer'}}>
-						<LinkContainer onClick={() => setReadPreview(true)}>
-							<LinkPreviewTexts
-								isLongDescription={linkDescription ? linkDescription.length > 120 : false}
-							>
-								<h4>{linkTitle}</h4>
-								<p>{linkDescription}</p>
-								<p>{link}</p>
-							</LinkPreviewTexts>
-							<LinkPreviewImage alt="link preview image" src={linkImage} />
-						</LinkContainer>
-					</a>
-				</PostContent>
-			}
-			<ActionsHolder>
-				<Like likes={likes} id={postId} userInfo={userInfo} />
-				<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId}/>
-			</ActionsHolder>
-		</PostContainer>
+						<Wrapper>
+							<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+							{geolocation !== undefined ?
+								<Location
+									onClick={() => setViewUserLocation(true)}
+									color='#FFFFFF'
+									height="20px"
+									width="20px"
+								/>
+								: 
+								''
+							}
+						</Wrapper>
+
+						{edit ?
+							<InsertEditInput
+								editPostText={editPostText}
+								setEditPostText={setEditPostText}
+								editRef={editRef}
+								handleEditMode={handleEditMode}
+								loading={loading ? 1 : 0}
+							/>
+							:
+							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
+						}
+						{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
+						{viewUserLocation ? 
+							<UserLocation 
+								setViewUserLocation={setViewUserLocation} 
+								username={username} 
+								coord={geolocation}
+							/>
+							: 
+							''}
+						<a style={{cursor: 'pointer'}}>
+							<LinkContainer onClick={() => setReadPreview(true)}>
+								<LinkPreviewTexts
+									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+								>
+									<h4>{linkTitle}</h4>
+									<p>{linkDescription}</p>
+									<p>{link}</p>
+								</LinkPreviewTexts>
+								<LinkPreviewImage alt="link preview image" src={linkImage} />
+							</LinkContainer>
+						</a>
+					</PostContent>
+				}
+				<ActionsHolder>
+					<Like likes={likes} id={postId} userInfo={userInfo} />
+					<CommentIcon onClick={()=>setCommentsTabIsOpen(!commentsTabIsOpen)} commentCount={commentCount} />
+					<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId} />
+				</ActionsHolder>
+			</PostContainer>
+			{commentsTabIsOpen ? 
+				<Comments 
+					userInfo={userInfo} 
+					postUserId={id} 
+					token={token} 
+					postId={postId}
+				/> : ''}
+		</>
 	);
 }
 
@@ -282,11 +296,11 @@ const LinkPreviewTexts = styled.div `
 		overflow: hidden;
 		display: ${(p) => p.isLongDescription ? '-webkit-box' : 'flex'};
 		-webkit-line-clamp: 2; /* number of lines to show */
-  	-webkit-box-orient: vertical;
+  		-webkit-box-orient: vertical;
 		@media (max-width: 611px) {
 			font-size: 11px;
 			line-height: 13px;
-    }
+    	}
 	}			
 	p {
 		font-size: 11px;
@@ -299,7 +313,7 @@ const LinkPreviewTexts = styled.div `
 		@media (max-width: 611px) {
 			font-size: 9px;
 			line-height: 11px;
-    }
+    	}
 	}
 	a {
 		font-size: 11px;
@@ -320,7 +334,6 @@ const LinkPreviewTexts = styled.div `
 		padding: 7px 7px 8px 11px;
   }
 `;
-
 
 const LinkPreviewImage = styled.img `
 	width: 155px;
