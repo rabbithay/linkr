@@ -30,10 +30,10 @@ um gif da aplicação bem maneiro -->
 - [x] see my timeline posts
 - [x] publish a post with an interesting link and a cool description
 - [x] edit the posts I published
-- [ ] delete a post I published
+- [x] delete a post I published
 - [x] see my posts on my personal page
 - [x] see other users posts on their personal pages
-- [ ] like a post
+- [x] like a post
 - [x] see all the posts I liked on my likes page
 - [x] access my posts, my likes and leave the page in the header menu
 - [x] see the list of trending hashtags

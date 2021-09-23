@@ -4,6 +4,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SearchSharp } from 'react-ionicons';
+import { DebounceInput } from 'react-debounce-input';
 
 import { getSearching, getFollows } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
@@ -14,7 +15,7 @@ export default function SearchBar() {
 	// layout
 	// - [x]  A cada letra digitada na busca, deve ser disparada uma busca no
 	// servidor e os resultados devem ser exibidos conforme layout
-	// - [ ]  A busca só deve ser disparada quando o usuário digitou pelo menos 3
+	// - [x]  A busca só deve ser disparada quando o usuário digitou pelo menos 3
 	// caracteres e esperando o usuário ficar sem digitar por pelo menos 300ms.
 	// 		**Dica**: essa técnica se chama debounce, tem uma lib que pode te
 	// ajudar: **react-debounce-input**
@@ -24,6 +25,7 @@ export default function SearchBar() {
 	// ordenada
 	// - [x]  Ao clicar em um resultado, deve-se redirecionar o usuário para a
 	// página de perfil daquele usuário
+	// - [ ]  Adaptar layout para o mobile
 	const { userInfo: { token } } = useContext(UserContext);
 	const [searchText, setSearchText] = useState('');
 	const [searchList, setSearchList] = useState([]);
@@ -31,8 +33,6 @@ export default function SearchBar() {
 
 	
 	const updateSuggestionsList = () => {
-		if (searchText.length < 3) return setSearchList([]);
-		
 		if (token) {
 			getSearching({ token, searchText })
 				.then(({ data: { users } }) => orderFollowsList(users));
@@ -60,7 +60,7 @@ export default function SearchBar() {
 		}
 	};
 	
-	const makeSomeonesLi = ({ id, username, avatar }) => {
+	const makeSuggestion = ({ id, username, avatar }) => {
 		const isFollowing = followIdsList.includes(id);
 		return (
 			<Link key={id} to={`/user/${id}`}>
@@ -85,9 +85,14 @@ export default function SearchBar() {
 	return (
 		<Container>
 			<div>
-				<input
+				{/* TODO: Descobrir porque está matando duas letras quando
+				vou apagando o search */}
+				{/* TODO: Entender sobre onFocus no input */}
+				<DebounceInput
 					type="text"
 					placeholder='Search for people and friends'
+					minLength={3}
+					debounceTimeout={300}
 					onChange={({ target : { value }}) => setSearchText(value)}
 					value={searchText}
 				/>
@@ -106,8 +111,7 @@ export default function SearchBar() {
 				usuários, foi pensado nisso para o usuário saber que a lista continua
 				PS.: se não tiver nada a refazer nesse PR, pode aceitar que eu tiro
 				esse todo quando for mexer no próximo requisito \o/ */}
-				{searchList.map((searchOption) => makeSomeonesLi(searchOption))}
-
+				{searchList.map((searchUser) => makeSuggestion(searchUser))}
 			</SuggestionsWrapper>
 
 		</Container>
@@ -210,7 +214,7 @@ const SuggestionsWrapper = styled.ul`
 			color: #515151;
 			word-break: break-word;
 			display: -webkit-box;
-			-webkit-line-clamp: 2; /* number of lines to show */
+			-webkit-line-clamp: 2;  /* number of lines to show */
   		-webkit-box-orient: vertical;
 		}
 
