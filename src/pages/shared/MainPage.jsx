@@ -10,6 +10,7 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
 import Post from './Post/Post';
 import Trending from '../shared/Trending';
+import FollowUnfollow from './FollowUnfollow';
 
 
 export default function MainPage(props) {
@@ -80,17 +81,24 @@ export default function MainPage(props) {
 		<>
 			<Header />
 			<Background>
+				{someonesId
+					?<ButtonWrapper>
+						<FollowUnfollow 
+							someonesId={someonesId} 
+							token={token}>
+						</FollowUnfollow>
+					</ButtonWrapper>
+					: <></>
+				}
 				<TimelineContent>
 					{loaderIsActive || !titleText
 						? <h1>Carregando...</h1>
 						: <h1>{titleText}</h1>
 					}
-
 					{CreatePost
-						? <CreatePost loadTimelinePosts={loadPosts}/>
+						? <CreatePost loadTimelinePosts={loadPosts} />
 						: <></>
 					}
-
 					{loaderIsActive
 						? <CirclesLoader />
 						: (postsList.length)
@@ -127,10 +135,19 @@ const Background = styled.div`
 	justify-content: center;
 	gap: 25px;
 	padding: 72px;
+	position: relative;
+	top: 0;
+	left: 0;
 
 	@media (max-width: 611px) {
 		padding: 19px 0px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+	position: absolute;
+	top: 141px;
+	right: calc(100vh * 0.142);
 `;
 
 const TimelineContent = styled.div`
@@ -158,6 +175,7 @@ const TimelineContent = styled.div`
 		width: 100vw;    
 	}
 `;
+
 
 const HashtagContainer = styled.div`
 	width: 301px; 
