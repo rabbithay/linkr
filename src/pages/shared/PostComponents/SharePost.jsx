@@ -51,5 +51,5 @@ const ShareContainer = styled.div`
 const ShareQty = styled.p`
 	color: #fff;
 	margin-top: 3px;
-	font-size: 14px;
+	font-size: 11px;
 `;

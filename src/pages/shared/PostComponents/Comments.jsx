@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { PaperPlaneOutline } from 'react-ionicons';
 import axios from 'axios';
 
-export default function Comments({token, postId, userInfo, postUserId}){
+export default function Comments({token, postId, userInfo, postUserId, peopleIFollow}){
 	const [text, setText] = useState('');
 	const [commentsList, setCommentsList] = useState([]);
 	const config = {
@@ -11,12 +11,12 @@ export default function Comments({token, postId, userInfo, postUserId}){
 			'Authorization': `Bearer ${token}`
 		}
 	};
+    
 
 	useEffect(()=>{
 		axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, config).then((res)=>{
 			setCommentsList(res.data.comments);
-		}).catch((error)=> console.log(error)).finally(()=>{
-		});
+		}).catch((error)=> console.log(error));
 	},[commentsList]);
 
 
@@ -32,7 +32,15 @@ export default function Comments({token, postId, userInfo, postUserId}){
 							<UserIcon src={comment.user.avatar}/>
 							<CommentInfo>
 								<Username>{comment.user.username}</Username>
-								<UserTag>{(comment.user.id === postUserId) ? '• post\'s author' : '• following'}</UserTag>
+								<UserTag>
+									{(comment.user.id === postUserId) 
+										? '• post\'s author' 
+										: (peopleIFollow.includes(comment.user.id)
+											?'• following'
+											: ''
+										)
+									}
+								</UserTag>
 							</CommentInfo>
 							<CommentText>{comment.text}</CommentText>
 						</CommentBox>
@@ -139,6 +147,9 @@ const CommentInput = styled.input`
         font-weight: normal;
         font-size: 14px;
     }
+    @media (max-width: 600px) {
+        width: calc(100% + 20px);
+	}
 `;
 
 const SendComment = styled.button`

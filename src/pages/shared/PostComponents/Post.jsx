@@ -11,8 +11,9 @@ import CirclesLoader from '../CirclesLoader';
 import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
 import Comments from './Comments';
 import CommentIcon from './CommentIcon';
+import LinkPreview from './LinkPreview';
 
-export default function Post({ postInfo }) {
+export default function Post({ postInfo, peopleIFollow }) {
 	const { userInfo } = useContext(UserContext);
 	const { userId, token } = userInfo;
 	const {
@@ -34,6 +35,7 @@ export default function Post({ postInfo }) {
 	const [postText, setPostText] = useState(text);
 	const [editPostText, setEditPostText] = useState(postText);
 	const [postDeleted, setPostDeleted] = useState(false);
+	const [readPreview, setReadPreview] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
 	const [commentsTabIsOpen, setCommentsTabIsOpen] = useState(false);
@@ -131,14 +133,16 @@ export default function Post({ postInfo }) {
 							:
 							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 						}
-						<a href={link} target="_blank" rel="noreferrer" >
-							<LinkContainer >
+						{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
+						<a style={{cursor: 'pointer'}}>
+
+							<LinkContainer onClick={() => setReadPreview(true)}>
 								<LinkPreviewTexts
-									isLongDescription={linkDescription ? linkDescription.length > 100 : false}
+									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
 								>
 									<h4>{linkTitle}</h4>
 									<p>{linkDescription}</p>
-									<a href={link} target="_blank" rel="noreferrer" >{link}</a>
+									<a>{link}</a>
 								</LinkPreviewTexts>
 								<LinkPreviewImage alt="link preview image" src={linkImage} />
 							</LinkContainer>
@@ -152,9 +156,17 @@ export default function Post({ postInfo }) {
 					<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId} />
 				</ActionsHolder>
 			</PostContainer>
-			{commentsTabIsOpen ? <Comments userInfo={userInfo} postUserId={id} token={token} postId={postId} /> : ''}
+			{commentsTabIsOpen ? 
+				<Comments 
+					userInfo={userInfo} 
+					postUserId={id} 
+					token={token} 
+					postId={postId}
+					peopleIFollow={peopleIFollow.map((p)=>p.id)}
+				/> : ''}
 
 		</>
+
 	);
 }
 
@@ -306,7 +318,6 @@ const LinkPreviewTexts = styled.div `
   }
 `;
 
-
 const LinkPreviewImage = styled.img `
 	width: 155px;
 	height: 100%;
@@ -361,13 +372,17 @@ const RepostDiv = styled.div`
 	display: flex;
 	align-items: center;
 	padding-left: 10px;
-
+	overflow: hidden;
+	white-space: nowrap;
 	&& span {
 		margin-left: 4px;
 		font-weight: 700;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	@media (max-width: 611px) {
 		top: -30px;
 	}
 `;
+
