@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
 import UserContext from '../../contexts/UserContext';
-
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
@@ -26,9 +26,9 @@ export default function MainPage(props) {
 	
 	const [postsList, setPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
+	const [hasMore, setHasMore] = useState(true);
 	const history = useHistory();
 
-	window.scrollTo(0, 0);
 
 
 	const loadPosts = () => {
@@ -41,12 +41,29 @@ export default function MainPage(props) {
 		}
 	};
 
+	const loadMorePosts = () => {
+		let index = postsList.length - 1;
+		let lastPostId = postsList[index].repostId !== undefined ? postsList[index].repostId : postsList[index].id; 
+		getPosts({ token, userId, hashtag, someonesId, lastPostId })
+			.then((res) => {
+				if (res.data.posts.length === 0) {
+					setHasMore(false);
+				}
+				setPostsList([...postsList, ...res.data.posts]);
+			}).catch(pageReloadErrorAlert);
+	};
+
+
+
 	if (updateTitle) {
 		if (Number(someonesId) === userId) history.push('/my-posts');
 		useEffect(() => updateTitle(token, someonesId), [token]);
 	}
 
-	useEffect(loadPosts, [token, hashtag]);
+	useEffect(()=>{
+		loadPosts();
+		window.scrollTo(0, 0);
+	}, [token, hashtag]);
 
 	const postListJSX = (postsList) => {
 		return postsList.map((post) => {
@@ -77,7 +94,14 @@ export default function MainPage(props) {
 					{loaderIsActive
 						? <CirclesLoader />
 						: (postsList.length)
-							? postListJSX(postsList)
+							?<InfiniteScroll
+								dataLength={postsList.length}
+								next={loadMorePosts}
+								hasMore={hasMore}
+								loader={<CirclesLoader />}
+							>
+								{postListJSX(postsList)}
+							</InfiniteScroll>
 							: <NoPostMessage />
 					}
 				</TimelineContent>
@@ -148,3 +172,5 @@ const HashtagContainer = styled.div`
 		display: none;
 	}
 `;
+
+

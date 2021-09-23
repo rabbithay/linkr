@@ -376,10 +376,13 @@ const RepostDiv = styled.div`
 	display: flex;
 	align-items: center;
 	padding-left: 10px;
-
+	overflow: hidden;
+	white-space: nowrap;
 	&& span {
 		margin-left: 4px;
 		font-weight: 700;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	@media (max-width: 611px) {
