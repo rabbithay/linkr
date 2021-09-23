@@ -1,32 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { PaperPlaneOutline } from 'react-ionicons';
+import axios from 'axios';
 
-export default function Comments(){
-	
+export default function Comments({token, postId, userInfo, postUserId}){
+	const [text, setText] = useState('');
+	const [commentsList, setCommentsList] = useState([]);
+	const config = {
+		headers: {
+			'Authorization': `Bearer ${token}`
+		}
+	};
+
+	useEffect(()=>{
+		axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, config).then((res)=>{
+			setCommentsList(res.data.comments);
+		}).catch((error)=> console.log(error)).finally(()=>{
+		});
+	},[commentsList]);
+
+
+	function newComment(){axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comment`, {text}, config).then(()=>{
+		setText('');
+	}).catch((error)=> console.log(error));}
 	return(
 		<CommentsContainer>
-			
+			{(commentsList.length) ? commentsList.map((comment)=>{
 				return (
-			<>
-				<CommentBox>
-					<UserIcon />
-					<CommentInfo>
-						<Username>{}</Username>
-						<UserTag>• following</UserTag>
-					</CommentInfo>
-					<CommentText>{}</CommentText>
-				</CommentBox>
-				<Separator />
-			</>
+					<>
+						<CommentBox key={comment.id}>
+							<UserIcon src={comment.user.avatar}/>
+							<CommentInfo>
+								<Username>{comment.user.username}</Username>
+								<UserTag>{(comment.user.id === postUserId) ? '• post\'s author' : '• following'}</UserTag>
+							</CommentInfo>
+							<CommentText>{comment.text}</CommentText>
+						</CommentBox>
+						<Separator />
+					</>
 				); 
+			}): ''}			
 			<CommentBox>
-				<UserIcon />
+				<UserIcon src={userInfo.userImg} />
 				<CommentInput 
 					placeholder="write a comment..." 
 					type='text'
+					onChange={(e)=>setText(e.target.value)}
+					value={text}
 				/>
-				<SendComment  >
+				<SendComment onClick={newComment} >
 					<PaperPlaneOutline
 						color={'#fff'} 
 						height="17px"

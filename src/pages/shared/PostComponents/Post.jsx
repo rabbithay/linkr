@@ -26,6 +26,7 @@ export default function Post({ postInfo }) {
 		likes,
 		repostCount,
 		repostedBy,
+		commentCount
 	} = postInfo;
 	const { avatar, username, id } = user;
 
@@ -147,11 +148,11 @@ export default function Post({ postInfo }) {
 				}
 				<ActionsHolder>
 					<Like likes={likes} id={postId} userInfo={userInfo} />
-					<CommentIcon onClick={()=>setCommentsTabIsOpen(!commentsTabIsOpen)} />
+					<CommentIcon onClick={()=>setCommentsTabIsOpen(!commentsTabIsOpen)} commentCount={commentCount} />
 					<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId} />
 				</ActionsHolder>
 			</PostContainer>
-			{commentsTabIsOpen ? <Comments token={token} postId={postId} /> : ''}
+			{commentsTabIsOpen ? <Comments userInfo={userInfo} postUserId={id} token={token} postId={postId} /> : ''}
 
 		</>
 	);

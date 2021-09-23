@@ -8,9 +8,8 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import Post from './Post/Post';
+import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
-
 
 export default function MainPage(props) {
 	const {
@@ -55,6 +54,7 @@ export default function MainPage(props) {
 					key={post.repostId !== undefined ? post.repostId : post.id}
 					postInfo={post}
 				/>
+				
 			);});
 	};
 
@@ -79,7 +79,8 @@ export default function MainPage(props) {
 						: (postsList.length)
 							? postListJSX(postsList)
 							: <NoPostMessage />
-					}
+					}					
+					
 				</TimelineContent>
 				
 				<HashtagContainer>

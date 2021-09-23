@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ChatbubbleEllipsesOutline } from 'react-ionicons';
 
-export default function CommentIcon ({onClick}) {
+export default function CommentIcon ({onClick, commentCount}) {
 	return (
 		<ChatIconContainer onClick={onClick}>
 			<ChatbubbleEllipsesOutline
@@ -14,7 +14,7 @@ export default function CommentIcon ({onClick}) {
 				align-items= 'center'
 				cursor= 'pointer'
 			/>
-			<p>3 comments</p>
+			<p>{commentCount === 1 ? '1 comment' : `${commentCount} comments`}</p>
 		</ChatIconContainer>		
 	);
 }
