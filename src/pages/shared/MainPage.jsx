@@ -8,11 +8,11 @@ import Header from '../shared/Header';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import Post from './Post/Post';
+import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
 
-
 export default function MainPage(props) {
+
 	const {
 		getPosts,
 		titleText,
@@ -29,7 +29,7 @@ export default function MainPage(props) {
 	const [hasMore, setHasMore] = useState(true);
 	const history = useHistory();
 
-
+	
 
 	const loadPosts = () => {
 		setLoaderIsActive(true);
@@ -53,8 +53,6 @@ export default function MainPage(props) {
 			}).catch(pageReloadErrorAlert);
 	};
 
-
-
 	if (updateTitle) {
 		if (Number(someonesId) === userId) history.push('/my-posts');
 		useEffect(() => updateTitle(token, someonesId), [token]);
@@ -72,7 +70,9 @@ export default function MainPage(props) {
 					key={post.repostId !== undefined ? post.repostId : post.id}
 					postInfo={post}
 				/>
-			);});
+				
+			);
+		});
 	};
 
 
@@ -103,7 +103,8 @@ export default function MainPage(props) {
 								{postListJSX(postsList)}
 							</InfiniteScroll>
 							: <NoPostMessage />
-					}
+					}					
+					
 				</TimelineContent>
 				
 				<HashtagContainer>
