@@ -80,22 +80,27 @@ const PreviewContainer = styled.div`
 	
 	&& div {
 		width: 94%;
-		height: 90%;
+		height: calc(100% - 50px);
 		position: absolute;
-		bottom: 3%;
+		top: 40px;
 		left: 3%;
 		border-radius: 30px;
 
 		@media (max-width: 600px) {
-			bottom: 2%;
-			height: 94%;
-    	}
+			height: calc(100% - 35px);
+			top: 30px
+		}
+		
+		@media (max-width: 350px) {
+			height: calc(100% - 30px);
+			top: 25px
+		}
 	}
 `;
 
 const OpenNewTab = styled.span`
 	width: 80%;
-	height: 10%;
+	height: 70px;
 	display: flex;
 	position: absolute;
 	top: 15px;
@@ -107,7 +112,6 @@ const OpenNewTab = styled.span`
 
 	@media (max-width: 600px) {
 		width: 80%;
-		height: 5%;
 		font-size: 30px;
 		left: 25px;
 	}
@@ -125,9 +129,13 @@ const UserName = styled.span`
 	margin-right: 10px;
 
 	@media (max-width: 600px) {
-		width: 70%;
+		max-width: 50%;
 		font-size: 30px;
-		left: 25px;
+		margin-right: 5px;
+	}
+
+	@media (max-width: 350px) {
+		font-size: 22px;
 	}
 `;
 
@@ -139,6 +147,10 @@ const Location = styled.span`
 
 	@media (max-width: 600px) {
 		font-size: 30px;
+	}
+
+	@media (max-width: 350px) {
+		font-size: 22px;
 	}
 `;
 
