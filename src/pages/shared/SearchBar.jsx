@@ -27,7 +27,7 @@ export default function SearchBar() {
 	const { userInfo: { token } } = useContext(UserContext);
 	const [searchText, setSearchText] = useState('');
 	const [searchList, setSearchList] = useState([]);
-	const [followsList, setFollowsList] = useState([]);
+	const [followIdsList, setFollowIdsList] = useState([]);
 
 	
 	const updateSuggestionsList = () => {
@@ -42,37 +42,42 @@ export default function SearchBar() {
 	const orderFollowsList = (usersList) => {
 		const followUsers = [];
 		const unfollowUsers = [];
-		const followIds = followsList.map(({ id }) => id);
 		
 		usersList.forEach((user) => {
-			if (followIds.includes(user.id)) followUsers.push(user);
+			if (followIdsList.includes(user.id)) followUsers.push(user);
 			else unfollowUsers.push(user);
 		});
 		
 		setSearchList([...followUsers, ...unfollowUsers]);
 	};
 
-	const updateFollowList = () => {
+	const updateFollowIdsList = () => {
 		if (token) {
 			getFollows({ token })
-				.then(({ data: { users } }) => setFollowsList(users));
+				.then(({ data: { users } }) => {
+					setFollowIdsList(users.map(({ id }) => id));
+				});
 		}
 	};
 	
 	const makeSomeonesLi = ({ id, username, avatar }) => {
+		const isFollowing = followIdsList.includes(id);
 		return (
 			<Link key={id} to={`/user/${id}`}>
-				<li>
+				<li isFollowing={isFollowing}>
 					<img src={avatar} />
 					<h1>{username}</h1>
-					<h2>• following</h2>
+					{isFollowing
+						? <h2>• following</h2>
+						: <></>
+					}
 				</li>
 			</Link>
 		);
 	};
 	
 	
-	useEffect(updateFollowList, [token]);
+	useEffect(updateFollowIdsList, [token]);
 	
 	useEffect(updateSuggestionsList, [searchText]);
 
@@ -190,7 +195,13 @@ const SuggestionsWrapper = styled.ul`
 		}
 
 		h1 {
-			max-width: calc(40vw - (2 * 17px + 12px + 39px + 2 * 8px + 92px));
+			max-width: ${(p) => {
+		return (
+			p.isFollowing
+				? 'calc(40vw - (2 * 17px + 12px + 39px + 2 * 8px + 92px))'
+				: 'calc(40vw - (2 * 17px + 12px + 39px + 2 * 8px + 0px))'
+		);
+	}};
 			overflow: hidden;
 			text-overflow: ellipsis;
 			margin-right: 8px;
