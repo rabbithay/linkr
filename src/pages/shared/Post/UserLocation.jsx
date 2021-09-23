@@ -9,7 +9,12 @@ function UserLocation({setViewUserLocation, username, coord}) {
 		<PreviewBackground>
 			<PreviewContainer>
 				<OpenNewTab>
-					{`${username}'s location`}
+					<UserName>
+						{`${username}'s`}
+					</UserName>
+					<Location>
+						location
+					</Location>
 				</OpenNewTab>
 					
 				<CloseOutline
@@ -57,6 +62,10 @@ const PreviewBackground = styled.div`
 	justify-content: center;
 	align-items: center;
 
+	@media (max-width: 1025px) {
+		padding: 5% 10%;
+    }
+
 	@media (max-width: 600px) {
 		padding: 5%;
     }
@@ -71,9 +80,9 @@ const PreviewContainer = styled.div`
 	
 	&& div {
 		width: 94%;
-		height: 85%;
+		height: 90%;
 		position: absolute;
-		bottom: 6%;
+		bottom: 3%;
 		left: 3%;
 		border-radius: 30px;
 
@@ -86,13 +95,34 @@ const PreviewContainer = styled.div`
 
 const OpenNewTab = styled.span`
 	width: 80%;
-	color: #FFFFFF;
+	height: 10%;
+	display: flex;
 	position: absolute;
 	top: 15px;
-	left: 65px;
+	left: 6%;
+	color: #FFFFFF;
 	font-family: 'Oswald';
 	font-weight: 700;
 	font-size: 50px;
+
+	@media (max-width: 600px) {
+		width: 80%;
+		height: 5%;
+		font-size: 30px;
+		left: 25px;
+	}
+`;
+
+const UserName = styled.span`
+	max-width: 65%;
+	color: #FFFFFF;
+	font-family: 'Oswald';
+	font-weight: 700;
+	font-size: 50px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-right: 10px;
 
 	@media (max-width: 600px) {
 		width: 70%;
@@ -101,5 +131,15 @@ const OpenNewTab = styled.span`
 	}
 `;
 
+const Location = styled.span`
+	color: #FFFFFF;
+	font-family: 'Oswald';
+	font-weight: 700;
+	font-size: 50px;
+
+	@media (max-width: 600px) {
+		font-size: 30px;
+	}
+`;
 
 export default UserLocation;
