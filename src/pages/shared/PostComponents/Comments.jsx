@@ -5,21 +5,25 @@ import { getComments, postComment } from '../../../service/service.posts';
 import Comment from './CommentBox';
 import { CommentBox, UserIcon } from './CommentBox';
 
-export default function Comments({token, postId, userInfo, postUserId, peopleIFollow}){
+export default function Comments({token, postId, userInfo, postUserId}){
 	const [text, setText] = useState('');
 	const [commentsList, setCommentsList] = useState([]);    
 
 	useEffect(()=>{
-		getComments(token, postId).then((res)=>{
-			setCommentsList(res.data.comments);
-		}).catch();
-	},[commentsList]);
+		if (token){
+			getComments(token, postId).then((res)=>{
+				setCommentsList(res.data.comments);
+			}).catch();
+		}
+	},[commentsList, token]);
 
 
 	function newComment(){
-		postComment(token, postId, text).then(()=>{
-			setText('');
-		}).catch();
+		if (token){
+			postComment(token, postId, text).then(()=>{
+				setText('');
+			}).catch();
+		}
 	}
     
 	return(
@@ -30,7 +34,7 @@ export default function Comments({token, postId, userInfo, postUserId, peopleIFo
 						key={comment.id} 
 						comment={comment} 
 						postUserId={postUserId} 
-						peopleIFollow={peopleIFollow} />
+					/>
 				); 
 			}): ''}			
 			<CommentBox>

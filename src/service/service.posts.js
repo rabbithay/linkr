@@ -80,13 +80,12 @@ const getSomeonesName = (token, someonesId) => {
 	return axios.get(`${BASE_URL}/users/${someonesId}`, makeConfig(token));
 };
 
-const getComments = ({token, postId}) => {
-	axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, makeConfig(token));
+const getComments = (token, postId) => {
+	return axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, makeConfig(token));
 };
 
-const postComment = ({token, postId, text}) => {
-	const body = {text};
-	axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comment`, body ,makeConfig(token));
+const postComment = (token, postId, text) => {
+	return axios.post(`${BASE_URL}/posts/${postId}/comment`, {text} ,makeConfig(token));
 };
 
 

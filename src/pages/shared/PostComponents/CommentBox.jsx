@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
+import FollowsContext from '../../../contexts/FollowsContext';
 
-export default function Comment ({comment, postUserId, peopleIFollow}) {
+export default function Comment ({comment, postUserId}) {
+	const { peopleIFollow } = useContext(FollowsContext);
+	const peopleIFollowId = peopleIFollow.map(p=>p.id);
 	return (
 		<>
 			<CommentBox >
@@ -11,7 +14,7 @@ export default function Comment ({comment, postUserId, peopleIFollow}) {
 					<UserTag>
 						{(comment.user.id === postUserId) 
 							? '• post\'s author' 
-							: (peopleIFollow.includes(comment.user.id)
+							: (peopleIFollowId.includes(comment.user.id)
 								?'• following'
 								: ''
 							)

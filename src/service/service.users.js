@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/users';
 
 
@@ -13,7 +14,7 @@ const makeConfig = (token) => {
 };
 
 const getFollows = (token) => {
-	axios.get(`${BASE_URL}/follows`, makeConfig(token));
+	return axios.get(`${BASE_URL}/follows`, makeConfig(token));
 };
 
 export {

@@ -13,7 +13,7 @@ import Comments from './Comments';
 import CommentIcon from './CommentIcon';
 import LinkPreview from './LinkPreview';
 
-export default function Post({ postInfo, peopleIFollow }) {
+export default function Post({ postInfo }) {
 	const { userInfo } = useContext(UserContext);
 	const { userId, token } = userInfo;
 	const {
@@ -162,7 +162,6 @@ export default function Post({ postInfo, peopleIFollow }) {
 					postUserId={id} 
 					token={token} 
 					postId={postId}
-					peopleIFollow={peopleIFollow.map((p)=>p.id)}
 				/> : ''}
 
 		</>

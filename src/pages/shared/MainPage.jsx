@@ -10,7 +10,6 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
 import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
-import { getFollows } from '../../service/service.users';
 
 export default function MainPage(props) {
 
@@ -29,13 +28,8 @@ export default function MainPage(props) {
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
 	const history = useHistory();
-	const [peopleIFollow, setPeopleIFollow] = useState([]);
 
-	const checkWhoIFollow = () => {
-		getFollows().then((res)=>{
-			setPeopleIFollow(res.data.users);
-		}).catch();
-	};
+	
 
 	const loadPosts = () => {
 		setLoaderIsActive(true);
@@ -66,7 +60,6 @@ export default function MainPage(props) {
 
 	useEffect(()=>{
 		loadPosts();
-		checkWhoIFollow();
 		window.scrollTo(0, 0);
 	}, [token, hashtag]);
 
@@ -76,7 +69,6 @@ export default function MainPage(props) {
 				<Post
 					key={post.repostId !== undefined ? post.repostId : post.id}
 					postInfo={post}
-					peopleIFollow={peopleIFollow}
 				/>
 				
 			);
