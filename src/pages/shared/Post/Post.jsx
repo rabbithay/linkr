@@ -132,7 +132,7 @@ export default function Post({ postInfo }) {
 					<a style={{cursor: 'pointer'}}>
 						<LinkContainer onClick={() => setReadPreview(true)}>
 							<LinkPreviewTexts
-								isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+								isLongDescription={linkDescription ? linkDescription.length > 100 : false}
 							>
 								<h4>{linkTitle}</h4>
 								<p>{linkDescription}</p>
