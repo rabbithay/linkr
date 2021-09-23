@@ -69,6 +69,10 @@ const getSearching = ({ token, searchText }) => {
 	return axios.get(`${BASE_URL}/users/search?username=${searchText}`, makeConfig(token));
 };
 
+const getFollows = ({ token }) => {
+	return axios.get(`${BASE_URL}/users/follows`, makeConfig(token));
+};
+
 
 export {
 	getTimelinePosts,
@@ -82,5 +86,6 @@ export {
 	getHashtagPosts,
 	getSomeonesName,
 	sharePost,
-	getSearching
+	getSearching,
+	getFollows
 };
