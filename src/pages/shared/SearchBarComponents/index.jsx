@@ -174,6 +174,10 @@ const Container = styled.form`
 		@media (max-width: 611px) {
 			font-size: 17px;
 		}
+
+		@media (min-width: 612px) and (max-width: 1024px) {
+			font-size: 2.3vw;
+		}
 	}
 `;
 

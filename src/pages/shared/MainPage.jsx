@@ -110,7 +110,7 @@ export default function MainPage(props) {
 					<SearchBar />
 					
 					{loaderIsActive || !titleText
-						? <h1>Carregando...</h1>
+						? <h1>Loading...</h1>
 						: <h1>{titleText}</h1>
 					}
 
