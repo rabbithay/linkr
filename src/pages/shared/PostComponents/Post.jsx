@@ -42,7 +42,7 @@ export default function Post({ postInfo }) {
 	const [commentsTabIsOpen, setCommentsTabIsOpen] = useState(false);
 	
 	function hashtag(text){
-		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
+		const repl = text.replace(/#([a-zA-Z\u00C0-\u00FF]+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
 	
