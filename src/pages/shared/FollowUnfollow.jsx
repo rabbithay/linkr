@@ -1,9 +1,11 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import FollowsContext from '../../contexts/FollowsContext';
 
 
 export default function FollowUnfollow(){
 	const [content, setContent] = useState('carregando...');
+	const {peopleIFollow, setPeopleIFollow} = useContext(FollowsContext);
 
 	const toggleFollowStatus = () => {
 		if(content === 'Follow'){
