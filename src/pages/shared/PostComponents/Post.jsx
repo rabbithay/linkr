@@ -1,7 +1,7 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { RepeatOutline } from 'react-ionicons';
+import { RepeatOutline, Location } from 'react-ionicons';
 import UserContext from '../../../contexts/UserContext';
 import Like from './Like';
 import SharePost from './SharePost';
@@ -12,6 +12,7 @@ import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
 import Comments from './Comments';
 import CommentIcon from './CommentIcon';
 import LinkPreview from './LinkPreview';
+import UserLocation from './UserLocation';
 
 export default function Post({ postInfo }) {
 	const { userInfo } = useContext(UserContext);
@@ -27,7 +28,8 @@ export default function Post({ postInfo }) {
 		likes,
 		repostCount,
 		repostedBy,
-		commentCount
+		commentCount,
+		geolocation
 	} = postInfo;
 	const { avatar, username, id } = user;
 
@@ -36,6 +38,7 @@ export default function Post({ postInfo }) {
 	const [editPostText, setEditPostText] = useState(postText);
 	const [postDeleted, setPostDeleted] = useState(false);
 	const [readPreview, setReadPreview] = useState(false);
+	const [viewUserLocation, setViewUserLocation] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
 	const [commentsTabIsOpen, setCommentsTabIsOpen] = useState(false);
@@ -44,7 +47,7 @@ export default function Post({ postInfo }) {
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
 		return repl;
 	}
-
+	
 	const handleEditMode = (key) => {
 		if (key === 'Escape') {
 			setEdit(false);
@@ -120,7 +123,23 @@ export default function Post({ postInfo }) {
 							''
 						}
 
-						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+						<Wrapper>
+							<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+							{geolocation !== undefined ?
+								<Location
+									onClick={() => setViewUserLocation(true)}
+									color='#FFFFFF'
+									height="20px"
+									width="20px"
+									style={{
+										cursor: 'pointer',
+										marginLeft: '10px'
+									}}
+								/>
+								: 
+								''
+							}
+						</Wrapper>
 
 						{edit ?
 							<InsertEditInput
@@ -134,21 +153,27 @@ export default function Post({ postInfo }) {
 							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
 						}
 						{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
+						{viewUserLocation ? 
+							<UserLocation 
+								setViewUserLocation={setViewUserLocation} 
+								username={username} 
+								coord={geolocation}
+							/>
+							: 
+							''}
 						<a style={{cursor: 'pointer'}}>
-
 							<LinkContainer onClick={() => setReadPreview(true)}>
 								<LinkPreviewTexts
 									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
 								>
 									<h4>{linkTitle}</h4>
 									<p>{linkDescription}</p>
-									<a>{link}</a>
+									<p>{link}</p>
 								</LinkPreviewTexts>
 								<LinkPreviewImage alt="link preview image" src={linkImage} />
 							</LinkContainer>
 						</a>
 					</PostContent>
-
 				}
 				<ActionsHolder>
 					<Like likes={likes} id={postId} userInfo={userInfo} />
@@ -162,10 +187,9 @@ export default function Post({ postInfo }) {
 					postUserId={id} 
 					token={token} 
 					postId={postId}
+					setCommentsTabIsOpen={setCommentsTabIsOpen}
 				/> : ''}
-
 		</>
-
 	);
 }
 
@@ -200,7 +224,6 @@ const PostContainer = styled.div`
 		padding: 10px 18px 15px 15px;		
     }
 	position: relative;
-	z-index: 1;
 `;
 
 const UserIcon = styled.img`
@@ -385,3 +408,13 @@ const RepostDiv = styled.div`
 	}
 `;
 
+const Wrapper = styled.div`
+	display: flex;
+
+	&& h3 {
+		max-width: 420px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+`;
