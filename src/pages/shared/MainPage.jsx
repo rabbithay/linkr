@@ -81,20 +81,22 @@ export default function MainPage(props) {
 		<>
 			<Header />
 			<Background>
-				{someonesId
-					?<ButtonWrapper>
-						<FollowUnfollow 
-							someonesId={someonesId} 
-							token={token}>
-						</FollowUnfollow>
-					</ButtonWrapper>
-					: <></>
-				}
 				<TimelineContent>
-					{loaderIsActive || !titleText
-						? <h1>Carregando...</h1>
-						: <h1>{titleText}</h1>
-					}
+					<TopPageWrapper>
+						{loaderIsActive || !titleText
+							? <h1>Carregando...</h1>
+							: <h1>{titleText}</h1>
+						}
+						{someonesId
+							? <ButtonWrapper>
+								<FollowUnfollow
+									someonesId={someonesId}
+									token={token}>
+								</FollowUnfollow>
+							</ButtonWrapper>
+							: <></>
+						}
+					</TopPageWrapper>
 					{CreatePost
 						? <CreatePost loadTimelinePosts={loadPosts} />
 						: <></>
@@ -136,19 +138,33 @@ const Background = styled.div`
 	justify-content: center;
 	gap: 25px;
 	padding: 72px;
-	position: relative;
-	top: 0;
-	left: 0;
 
 	@media (max-width: 611px) {
 		padding: 19px 0px;
   }
 `;
 
+const TopPageWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	top: 0;
+	left: 0;
+`;
+
 const ButtonWrapper = styled.div`
 	position: absolute;
-	top: 141px;
-	right: calc(100vh * 0.142);
+	top: 69px;
+	left: 812px;
+
+	@media (max-width: 1024px){
+		left: 500px;
+	}
+
+	@media (max-width: 611px){
+		top: 100px;
+		left: 18px;
+	}
 `;
 
 const TimelineContent = styled.div`

@@ -78,4 +78,9 @@ const StyledButton = styled.button`
 	font-size: 14px;
 	font-weight: 700;
 	margin: auto;
+
+	@media (max-width: 611px){
+		font-size: 11px;
+		height: 16px;
+	}
 `;
