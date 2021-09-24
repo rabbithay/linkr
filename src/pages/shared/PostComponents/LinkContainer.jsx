@@ -15,7 +15,7 @@ export default function LinkContainer ({onClick, postInfo}) {
 						<ReactPlayer url={link} 
 							width='100%'
 							height='100%'
-							controls="true"
+							controls={true}
 							position="absolute"
 							top="0px"
 							right="0px"
@@ -44,7 +44,7 @@ const Video = styled.div `
 	height: 281px;
 	position: relative;
 	@media (max-width: 611px) {
-		width: 100%;
+		width: calc(100% );
 		height: auto;
 	}
 `;
