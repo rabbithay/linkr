@@ -36,6 +36,7 @@ export default function Post({ postInfo }) {
 	const [edit, setEdit] = useState(false);
 	const [postText, setPostText] = useState(text);
 	const [editPostText, setEditPostText] = useState(postText);
+	const [comments, setComments] = useState(commentCount);
 	const [postDeleted, setPostDeleted] = useState(false);
 	const [readPreview, setReadPreview] = useState(false);
 	const [viewUserLocation, setViewUserLocation] = useState(false);
@@ -177,7 +178,7 @@ export default function Post({ postInfo }) {
 				}
 				<ActionsHolder>
 					<Like likes={likes} id={postId} userInfo={userInfo} />
-					<CommentIcon onClick={()=>setCommentsTabIsOpen(!commentsTabIsOpen)} commentCount={commentCount} />
+					<CommentIcon onClick={()=>setCommentsTabIsOpen(!commentsTabIsOpen)} commentCount={comments} />
 					<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId} />
 				</ActionsHolder>
 			</PostContainer>
@@ -188,6 +189,8 @@ export default function Post({ postInfo }) {
 					token={token} 
 					postId={postId}
 					setCommentsTabIsOpen={setCommentsTabIsOpen}
+					comments={comments}
+					setComments={setComments}
 				/> : ''}
 		</>
 	);
