@@ -85,7 +85,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 			<img src={userInfo.userImg} alt='perfil' />
 			<PostContent>
 				<form onSubmit={publishPost}>
-					<h2>What do you have to favorite today?</h2>
+					<h2>{'What you\'d like to share today?'}</h2>
 					<fieldset>
 						<Link
 							type='url'
@@ -118,7 +118,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 					height="20px"
 					width="20px"
 				/>
-				Localização {localizationMode ? '' : 'des'}ativada 
+				Localization {localizationMode ? '' : 'des'}activated
 			</ToggleLocalization>
 		</Container>
 	);

@@ -5,7 +5,7 @@ import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 import UserContext from '../../contexts/UserContext';
 
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBarComponents';
 
 
 export default function Header () {

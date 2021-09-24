@@ -1,11 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { SearchSharp } from 'react-ionicons';
 import { DebounceInput } from 'react-debounce-input';
 
-import { getSearching, getFollows } from '../../service/service.posts';
-import UserContext from '../../contexts/UserContext';
+import { getSearching, getFollows } from '../../../service/service.posts';
+import UserContext from '../../../contexts/UserContext';
+
+import SearchSuggestion from './SearchSuggestion';
 
 
 export default function SearchBar({ inHeader }) {
@@ -15,7 +17,7 @@ export default function SearchBar({ inHeader }) {
 	const [followIdsList, setFollowIdsList] = useState([]);
 	const [isOnFocus, setIsOnFocus] = useState(false);
 	const history = useHistory();
-	
+		
 	
 	const updateSuggestionsList = () => {
 		if (searchText.length < 3 || searchText.includes('#')) return setSearchList([]);
@@ -45,27 +47,6 @@ export default function SearchBar({ inHeader }) {
 					setFollowIdsList(users.map(({ id }) => id));
 				});
 		}
-	};
-	
-	const makeSuggestion = ({ id, username, avatar }) => {
-		const isFollowing = followIdsList.includes(id);
-		return (
-			<Link
-				key={id}
-				isFollowing={isFollowing}
-				onClick={() => setSearchText('')}
-				to={`/user/${id}`}
-			>
-				<li>
-					<img src={avatar} />
-					<h1>{username}</h1>
-					{isFollowing
-						? <h2>• following</h2>
-						: <></>
-					}
-				</li>
-			</Link>
-		);
 	};
 
 	const handleSubmit = (event) => {
@@ -119,9 +100,16 @@ export default function SearchBar({ inHeader }) {
 			</div>
 
 			<SuggestionsWrapper displaySuggestions={isOnFocus && searchText.length >= 3}>
-				{searchList.map((searchUser) => makeSuggestion(searchUser))}
+				{searchList.map((someonesInfo) => {
+					return <SearchSuggestion
+						key={someonesInfo.id}
+						someonesInfo={someonesInfo}
+						followIdsList={followIdsList}
+						setSearchText={setSearchText}
+					/>;
+				})}
 			</SuggestionsWrapper>
-
+						
 		</Container>
 	);
 }

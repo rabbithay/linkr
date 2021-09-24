@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../shared/Header';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBarComponents';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
