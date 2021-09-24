@@ -18,7 +18,7 @@ export default function SearchBar({ inHeader }) {
 	
 	
 	const updateSuggestionsList = () => {
-		if (searchText.length < 3 || searchText.includes('#')) return;
+		if (searchText.length < 3 || searchText.includes('#')) return setSearchList([]);
 
 		if (token) {
 			getSearching({ token, searchText })
@@ -77,6 +77,10 @@ export default function SearchBar({ inHeader }) {
 					.replaceAll('#', '')
 					.replaceAll(' ', '')
 			}`);
+		} else {
+			if (searchList[0]) {
+				history.push(`/user/${searchList[0].id}`);
+			}
 		}
 		setSearchText('');
 	};
