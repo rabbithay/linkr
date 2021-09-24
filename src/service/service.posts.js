@@ -12,9 +12,11 @@ const makeConfig = (token) => {
 	return config;
 };
 
-const getTimelinePosts = ({ token, lastPostId }) => {
+const getTimelinePosts = ({ token, lastPostId, firstPostId }) => {
 	if (lastPostId) 
 		return axios.get(`${BASE_URL}/posts?olderThan=${lastPostId}`, makeConfig(token));
+	if (firstPostId) 
+		return axios.get(`${BASE_URL}/posts?earlierThan=${firstPostId}`, makeConfig(token));
 	else
 		return axios.get(`${BASE_URL}/posts`, makeConfig(token));
 };

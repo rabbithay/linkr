@@ -55,9 +55,28 @@ export default function MainPage(props) {
 			}).catch(pageReloadErrorAlert);
 	};
 
+	const updatePosts = () => {
+		if (!token || !postsList[0]) return;
+		const firstPostId = postsList[0].repostId !== undefined ? postsList[0].repostId : postsList[0].id; 
+		getPosts({token, userId, hashtag, someonesId, firstPostId})
+			.then((res) => {
+				setPostsList([...res.data.posts, ...postsList]);
+			}).catch(pageReloadErrorAlert);
+	};
+
+
+	if (updateTitle) {
+		if (Number(someonesId) === userId) history.push('/my-posts');
+		useEffect(() => updateTitle(token, someonesId), [token]);
+	}
+
 	useEffect(()=>{
 		loadPosts();
 		window.scrollTo(0, 0);
+		const intervalId = setInterval(() => {
+			updatePosts();
+		}, 15000);
+		return () => clearInterval(intervalId);
 	}, [token, hashtag]);
 
 	const postListJSX = (postsList) => {
