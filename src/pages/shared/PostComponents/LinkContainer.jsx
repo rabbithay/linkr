@@ -1,21 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
+import ReactPlayer from 'react-player';
 
 export default function LinkContainer ({onClick, postInfo}) {
 	const {linkImage,
 		linkTitle,
 		linkDescription,
 		link} = postInfo;
-	return	(<Container onClick={onClick} >
-		<LinkPreviewTexts
-			isLongDescription={linkDescription ? linkDescription.length > 120 : false}
-		>
-			<h4>{linkTitle}</h4>
-			<p>{linkDescription}</p>
-			<a>{link}</a>
-		</LinkPreviewTexts>
-		<LinkPreviewImage alt="link preview image" src={linkImage} />
-	</Container>);
+
+	return	(
+		<>
+			{ReactPlayer.canPlay(link)  
+				? <ReactPlayer url={link} 
+					width="501px"
+					height="281px"
+				/> 
+				: <Container onClick={onClick} >
+					<LinkPreviewTexts
+						isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+					>
+						<h4>{linkTitle}</h4>
+						<p>{linkDescription}</p>
+						<a>{link}</a>
+					</LinkPreviewTexts>
+					<LinkPreviewImage alt="link preview image" src={linkImage} />
+				</Container>
+			}
+			
+		</>	
+	);
 }
 
 const Container = styled.div `
@@ -51,8 +64,7 @@ const LinkPreviewTexts = styled.div `
 			line-height: 13px;
     	}
 	}			
-	p {
-		font-size: 11px;
+	p {font-size: 11px;
 		color: #9B9595;
 		line-height: 13px;
 		max-height: 40px;
