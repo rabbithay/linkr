@@ -24,7 +24,7 @@ function App() {
 				setPeopleIFollow(res.data.users);
 			}).catch();
 		}
-	}, [peopleIFollow]);
+	}, [peopleIFollow, userInfo.token]);
 
 
 	return (
