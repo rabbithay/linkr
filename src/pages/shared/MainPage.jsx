@@ -45,6 +45,7 @@ export default function MainPage(props) {
 	const loadMorePosts = () => {
 		let index = postsList.length - 1;
 		let lastPostId = postsList[index].repostId !== undefined ? postsList[index].repostId : postsList[index].id; 
+
 		getPosts({ token, userId, hashtag, someonesId, lastPostId })
 			.then((res) => {
 				if (res.data.posts.length === 0) {
@@ -54,6 +55,16 @@ export default function MainPage(props) {
 			}).catch(pageReloadErrorAlert);
 	};
 
+	const updatePosts = () => {
+		if (!token || !postsList[0]) return;
+		const firstPostId = postsList[0].repostId !== undefined ? postsList[0].repostId : postsList[0].id; 
+		getPosts({token, userId, hashtag, someonesId, firstPostId})
+			.then((res) => {
+				setPostsList([...res.data.posts, ...postsList]);
+			}).catch(pageReloadErrorAlert);
+	};
+
+
 	if (updateTitle) {
 		if (Number(someonesId) === userId) history.push('/my-posts');
 		useEffect(() => updateTitle(token, someonesId), [token]);
@@ -62,6 +73,10 @@ export default function MainPage(props) {
 	useEffect(()=>{
 		loadPosts();
 		window.scrollTo(0, 0);
+		const intervalId = setInterval(() => {
+			updatePosts();
+		}, 15000);
+		return () => clearInterval(intervalId);
 	}, [token, hashtag]);
 
 	const postListJSX = (postsList) => {
