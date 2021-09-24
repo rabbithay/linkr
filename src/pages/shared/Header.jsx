@@ -52,7 +52,7 @@ function Header () {
 				<P>linkr</P>
 			</Link>
 
-			<SearchBar />
+			<SearchBar inHeader />
 
 			<Container ref={dropdownRef} onClick={toggleDropdown}>
 				<Dropdown >
@@ -193,9 +193,9 @@ const ProfilePhoto = styled.img`
 	margin-left: 10px;
 
 	@media(max-width: 600px) {
-        width: 44px;
+		width: 44px;
 		height: 44px;
-    }
+	}
 `;
 
 export default Header;

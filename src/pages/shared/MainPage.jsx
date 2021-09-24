@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import UserContext from '../../contexts/UserContext';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../shared/Header';
+import SearchBar from './SearchBar';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
@@ -80,6 +81,8 @@ export default function MainPage(props) {
 			<Header />
 			<Background>
 				<TimelineContent>
+					<SearchBar />
+					
 					{loaderIsActive || !titleText
 						? <h1>Carregando...</h1>
 						: <h1>{titleText}</h1>
@@ -137,7 +140,7 @@ const TimelineContent = styled.div`
 	width: 611px;
 	height: auto;
 
-	h1 {
+	> h1 {
 		font-family: 'Oswald';
 		font-weight: 700;
 		font-size: 43px;
@@ -148,7 +151,7 @@ const TimelineContent = styled.div`
 		word-break: break-all;
 
 		@media (max-width: 611px) {
-			margin: 53px 0px 12px 17px;
+			margin: calc(53px + 75px) 0px 12px 17px;
 			font-size: 33px;
 			line-height: 49px;
 		}

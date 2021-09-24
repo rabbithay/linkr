@@ -51,7 +51,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 			<img src={userInfo.userImg} alt='perfil' />
 			<PostContent>
 				<form onSubmit={publishPost}>
-					<h2>O que você tem pra favoritar hoje?</h2>
+					<h2>What do you have to favorite today?</h2>
 					<fieldset>
 						<Link
 							type='url'
