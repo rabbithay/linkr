@@ -5,7 +5,7 @@ import { getComments, postComment } from '../../../service/service.posts';
 import Comment from './CommentBox';
 import { CommentBox, UserIcon } from './CommentBox';
 
-export default function Comments({token, postId, userInfo, postUserId, setCommentsTabIsOpen}){
+export default function Comments({token, postId, userInfo, postUserId, setCommentsTabIsOpen, comments, setComments}){
 	const [text, setText] = useState('');
 	const [commentsList, setCommentsList] = useState([]);    
 
@@ -22,6 +22,7 @@ export default function Comments({token, postId, userInfo, postUserId, setCommen
 		if (token){
 			postComment(token, postId, text).then(()=>{
 				setText('');
+				setComments(comments + 1);
 			}).catch();
 		}
 	}
