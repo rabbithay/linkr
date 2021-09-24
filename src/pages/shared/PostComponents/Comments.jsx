@@ -5,7 +5,7 @@ import { getComments, postComment } from '../../../service/service.posts';
 import Comment from './CommentBox';
 import { CommentBox, UserIcon } from './CommentBox';
 
-export default function Comments({token, postId, userInfo, postUserId}){
+export default function Comments({token, postId, userInfo, postUserId, setCommentsTabIsOpen}){
 	const [text, setText] = useState('');
 	const [commentsList, setCommentsList] = useState([]);    
 
@@ -25,6 +25,15 @@ export default function Comments({token, postId, userInfo, postUserId}){
 			}).catch();
 		}
 	}
+
+	const postOnEnter = (key) => {
+		if (key === 'Escape') {
+			setCommentsTabIsOpen(false);
+		}
+		else if (key === 'Enter') {
+			newComment();
+		}
+	};
     
 	return(
 		<CommentsContainer>
@@ -43,6 +52,7 @@ export default function Comments({token, postId, userInfo, postUserId}){
 					placeholder="write a comment..." 
 					type='text'
 					onChange={(e)=>setText(e.target.value)}
+					onKeyUp={(keyboard) => postOnEnter(keyboard.nativeEvent.key)}
 					value={text}
 				/>
 				<SendComment onClick={newComment} >
@@ -84,6 +94,9 @@ const CommentInput = styled.input`
         font-weight: normal;
         font-size: 14px;
     }
+	:focus {
+		outline: none;
+	}
     @media (max-width: 600px) {
         width: calc(100% + 20px);
 	}

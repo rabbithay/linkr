@@ -30,11 +30,15 @@ const postLikeOrDislike = (token, postId, action) => {
 	return axios.post(`${BASE_URL}/posts/${postId}/${action}`, {}, makeConfig(token));
 };
 
-const createPostAPI = (text, link, token) => {
+const createPostAPI = (text, link, localization, token) => {
 	const body = {
 		text,
 		link
 	};
+
+	if (localization !== {}) {
+		body.geolocation = localization;
+	}
 
 	return axios.post(`${BASE_URL}/posts`, body, makeConfig(token));
 };
