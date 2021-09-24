@@ -14,11 +14,11 @@ const makeConfig = (token) => {
 
 const getTimelinePosts = ({ token, lastPostId, firstPostId }) => {
 	if (lastPostId) 
-		return axios.get(`${BASE_URL}/posts?olderThan=${lastPostId}`, makeConfig(token));
+		return axios.get(`${BASE_URL}/following/posts?olderThan=${lastPostId}`, makeConfig(token));
 	if (firstPostId) 
-		return axios.get(`${BASE_URL}/posts?earlierThan=${firstPostId}`, makeConfig(token));
+		return axios.get(`${BASE_URL}/following/posts?earlierThan=${firstPostId}`, makeConfig(token));
 	else
-		return axios.get(`${BASE_URL}/posts`, makeConfig(token));
+		return axios.get(`${BASE_URL}/following/posts`, makeConfig(token));
 };
 
 const getUserPosts = ({ token, userId, lastPostId }) => {

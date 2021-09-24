@@ -165,6 +165,9 @@ const TopPageWrapper = styled.div`
 	position: relative;
 	top: 0;
 	left: 0;
+	@media (max-width: 611px){
+		flex-direction: column;
+	}
 `;
 
 const ButtonWrapper = styled.div`
@@ -177,8 +180,9 @@ const ButtonWrapper = styled.div`
 	}
 
 	@media (max-width: 611px){
-		top: 100px;
-		left: 18px;
+		position: relative;
+		top: 0;
+		left: 15px;
 	}
 `;
 
@@ -196,10 +200,15 @@ const TimelineContent = styled.div`
 		line-height: 63px;
 		word-break: break-all;
 
+		@media (max-width: 1024px){
+			width: 80%;
+		}
+
 		@media (max-width: 611px) {
 			margin: 53px 0px 12px 17px;
 			font-size: 33px;
 			line-height: 49px;
+			width: 90%;
 		}
 	}
 
