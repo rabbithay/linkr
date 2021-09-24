@@ -7,7 +7,7 @@ import ModalAlert from './ModalAlert';
 export default function FollowUnfollow({someonesId, token}){
 	const [content, setContent] = useState('carregando...');
 	const {peopleIFollow, updatePeopleIFollow} = useContext(FollowsContext);
-
+	
 	const toggleFollowStatus = () => {
 		setContent('Carregando...');
 		if (content === 'Follow') {
@@ -40,15 +40,19 @@ export default function FollowUnfollow({someonesId, token}){
 				});
 		}
 	};
-
+	
 	useEffect(()=>{
-		let peopleIFollowIds = peopleIFollow.map((people)=>people.id);
-		if (peopleIFollowIds.includes(Number(someonesId))){
+		updatePeopleIFollow();
+	}, []);
+
+	useEffect(() => {
+		let peopleIFollowIds = peopleIFollow.map((people) => people.id);
+		if (peopleIFollowIds.includes(Number(someonesId))) {
 			setContent('Unfollow');
-		}else{
+		} else {
 			setContent('Follow');
 		}
-	},[peopleIFollow]);
+	}, [peopleIFollow]);
 
 
 
