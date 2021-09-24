@@ -106,7 +106,7 @@ export default function MainPage(props) {
 						{loaderIsActive || !titleText
 							? <h1>Carregando...</h1>
 							: 
-							<Wrapper>
+							<Wrapper hasImage={profilePhoto !== undefined}>
 								{profilePhoto ?
 									<UserImage src={profilePhoto} />
 									:
@@ -216,7 +216,7 @@ const TimelineContent = styled.div`
 		word-break: break-all;
 
 		@media (max-width: 1024px){
-			width: 80%;
+			width: 70%;
 		}
 
 		@media (max-width: 611px) {
@@ -250,6 +250,10 @@ const HashtagContainer = styled.div`
 const Wrapper = styled.div`
 	width: 100%;
 	display: flex;
+
+	@media (max-width: 600px) {
+		margin-left: ${props => props.hasImage ? '20px' : '0px'};
+	}
 `;
 
 const UserImage = styled.img`
@@ -257,4 +261,8 @@ const UserImage = styled.img`
 	height: 50px;
 	border-radius: 25px;
 	margin: 60px 20px 0px 0px;
+
+	@media (max-width: 600px) {
+		margin-right: 10px;
+	}
 `;
