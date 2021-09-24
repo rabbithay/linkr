@@ -37,8 +37,6 @@ function Routes() {
 
 	const routes = 
 	[
-		{path: '/', Component: SignIn},
-		{path: '/sign-up', Component: SignUp},
 		{path: '/timeline', Component: Timeline},
 		{path: '/my-posts', Component: MyPosts},
 		{path: '/my-likes', Component: MyLikes},
@@ -48,6 +46,8 @@ function Routes() {
 
 	return (
 		<Switch location={location} key={location.pathname}>
+			<Route exact path='/'component={SignIn} />
+			<Route exact path='/sign-up'component={SignUp} />
 			{routes.map(({ path, Component }) => (
 				<Route key={path} exact path={path}>
 					<motion.div
