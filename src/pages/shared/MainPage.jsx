@@ -55,7 +55,7 @@ export default function MainPage(props) {
 	};
 
 	const updatePosts = () => {
-		if (!postsList[0]) return;
+		if (!token || !postsList[0]) return;
 		const firstPostId = postsList[0].repostId !== undefined ? postsList[0].repostId : postsList[0].id; 
 		getPosts({token, userId, hashtag, someonesId, firstPostId})
 			.then((res) => {

@@ -33,8 +33,8 @@ export default function LinkContainer ({onClick, postInfo}) {
 						<a>{link}</a>
 					</LinkPreviewTexts>
 					<LinkPreviewImage alt="link preview image" src={linkImage} />
-				</Container>}
-			
+				</Container>
+			}			
 		</>	
 	);
 }
