@@ -15,8 +15,8 @@ import { getFollows } from './service/service.users';
 function App() {
 	const [userInfo, setUserInfo] = useState('');
 	const [peopleIFollow, setPeopleIFollow] = useState([]);
-
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
+
 	useEffect(() => {
 		if (infoFromLocalStorage) setUserInfo(infoFromLocalStorage);
 		if(userInfo.token){
@@ -24,7 +24,7 @@ function App() {
 				setPeopleIFollow(res.data.users);
 			}).catch();
 		}
-	}, [peopleIFollow]);
+	}, [userInfo.token]);
 
 
 	return (

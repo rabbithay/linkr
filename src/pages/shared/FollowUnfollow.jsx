@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import React, { useEffect, useState, useContext } from 'react';
 import FollowsContext from '../../contexts/FollowsContext';
 
-
-export default function FollowUnfollow(){
+export default function FollowUnfollow({someonesId}){
 	const [content, setContent] = useState('carregando...');
-	const {peopleIFollow, setPeopleIFollow} = useContext(FollowsContext);
+	const {peopleIFollow} = useContext(FollowsContext);
 
 	const toggleFollowStatus = () => {
 		if(content === 'Follow'){
@@ -16,8 +15,13 @@ export default function FollowUnfollow(){
 	};
 
 	useEffect(()=>{
-		setContent('Follow');
-	},[]);
+		let peopleIFollowIds = peopleIFollow.map((people)=>people.id);
+		if (peopleIFollowIds.includes(Number(someonesId))){
+			setContent('Unfollow');
+		}else{
+			setContent('Follow');
+		}
+	},[peopleIFollow]);
 
 
 
