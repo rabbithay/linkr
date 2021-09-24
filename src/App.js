@@ -17,19 +17,21 @@ function App() {
 	const [peopleIFollow, setPeopleIFollow] = useState([]);
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
 
+	const updatePeopleIFollow = () => {
+		getFollows(userInfo.token).then((res)=>{
+			setPeopleIFollow(res.data.users);
+		}).catch();
+	};
+
 	useEffect(() => {
 		if (infoFromLocalStorage) setUserInfo(infoFromLocalStorage);
-		if(userInfo.token){
-			getFollows(userInfo.token).then((res)=>{
-				setPeopleIFollow(res.data.users);
-			}).catch();
-		}
+		if(userInfo.token) updatePeopleIFollow;
 	}, [userInfo.token]);
 
 
 	return (
 		<UserContext.Provider value={{userInfo, setUserInfo}}>
-			<FollowsContext.Provider value={{peopleIFollow, setPeopleIFollow}}>
+			<FollowsContext.Provider value={{peopleIFollow, updatePeopleIFollow}}>
 				<Router>
 					<GlobalStyle/>
 					<Switch>

@@ -1,16 +1,43 @@
 import styled from 'styled-components';
 import React, { useEffect, useState, useContext } from 'react';
 import FollowsContext from '../../contexts/FollowsContext';
+import { postFollow, postUnfollow } from '../../service/service.users';
+import ModalAlert from './ModalAlert';
 
-export default function FollowUnfollow({someonesId}){
+export default function FollowUnfollow({someonesId, token}){
 	const [content, setContent] = useState('carregando...');
-	const {peopleIFollow} = useContext(FollowsContext);
+	const {peopleIFollow, updatePeopleIFollow} = useContext(FollowsContext);
 
 	const toggleFollowStatus = () => {
-		if(content === 'Follow'){
-			setContent('Unfollow');
-		}else{
-			setContent('Follow');
+		setContent('Carregando...');
+		if (content === 'Follow') {
+			postFollow(someonesId, token)
+				.then(() => {
+					setContent('Unfollow');
+					updatePeopleIFollow();
+				})
+				.catch(() => {
+					const modalObj = {
+						icon: 'error',
+						title: 'An error occurred on trying to follow this user, please, try again later'
+					};
+					ModalAlert(modalObj);
+					setContent('Follow');
+				});
+		} else {
+			postUnfollow(someonesId, token)
+				.then(()=>{
+					setContent('Follow');
+					updatePeopleIFollow();
+				})
+				.catch(() => {
+					const modalObj = {
+						icon: 'error',
+						title: 'An error occurred on trying to unfollow this user, please, try again later'
+					};
+					ModalAlert(modalObj);
+					setContent('Unfollow');
+				});
 		}
 	};
 
@@ -26,9 +53,18 @@ export default function FollowUnfollow({someonesId}){
 
 
 	return(
-		<StyledButton onClick={toggleFollowStatus} content={content}>
-			{content}
-		</StyledButton>
+		<>
+			{content === 'Carregando...' ?
+				<StyledButton  content={content}>
+					{content}
+				</StyledButton>
+				:
+				<StyledButton onClick={toggleFollowStatus} content={content}>
+					{content}
+				</StyledButton>
+			}
+
+		</>
 	);
 }
 

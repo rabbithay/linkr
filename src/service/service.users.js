@@ -17,6 +17,16 @@ const getFollows = (token) => {
 	return axios.get(`${BASE_URL}/follows`, makeConfig(token));
 };
 
+const postFollow = (someonesId, token) => {
+	return axios.post(`${BASE_URL}/${someonesId}/follow`, {}, makeConfig(token));
+};
+
+const postUnfollow = (someonesId, token) => {
+	return axios.post(`${BASE_URL}/${someonesId}/unfollow`, {}, makeConfig(token));
+};
+
 export {
-	getFollows
+	getFollows,
+	postFollow,
+	postUnfollow
 };
