@@ -19,7 +19,8 @@ export default function MainPage(props) {
 		titleText,
 		CreatePost,
 		params={},
-		updateTitle
+		updateTitle,
+		profilePhoto
 	} = props;
 	const { hashtag, someonesId } = params;
 
@@ -100,7 +101,15 @@ export default function MainPage(props) {
 					<TopPageWrapper>
 						{loaderIsActive || !titleText
 							? <h1>Carregando...</h1>
-							: <h1>{titleText}</h1>
+							: 
+							<Wrapper>
+								{profilePhoto ?
+									<UserImage src={profilePhoto} />
+									:
+									''
+								}
+								<h1>{titleText}</h1>
+							</Wrapper>
 						}
 						{someonesId
 							? <ButtonWrapper>
@@ -223,4 +232,14 @@ const HashtagContainer = styled.div`
 	}
 `;
 
+const Wrapper = styled.div`
+	width: 100%;
+	display: flex;
+`;
 
+const UserImage = styled.img`
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	margin: 60px 20px 0px 0px;
+`;
