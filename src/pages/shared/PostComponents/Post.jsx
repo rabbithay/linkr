@@ -9,6 +9,8 @@ import { editPost, deletePostAPI } from '../../../service/service.posts';
 import ModalAlert from '../ModalAlert';
 import CirclesLoader from '../CirclesLoader';
 import WrapperDeleteAndEdit, {InsertEditInput} from './DeleteAndEdit';
+import Comments from './Comments';
+import CommentIcon from './CommentIcon';
 import LinkPreview from './LinkPreview';
 
 export default function Post({ postInfo }) {
@@ -24,7 +26,8 @@ export default function Post({ postInfo }) {
 		id: postId,
 		likes,
 		repostCount,
-		repostedBy
+		repostedBy,
+		commentCount
 	} = postInfo;
 	const { avatar, username, id } = user;
 
@@ -35,6 +38,7 @@ export default function Post({ postInfo }) {
 	const [readPreview, setReadPreview] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const editRef = useRef();
+	const [commentsTabIsOpen, setCommentsTabIsOpen] = useState(false);
 	
 	function hashtag(text){
 		const repl = text.replace(/#(\w+)/g, '<a href="/hashtag/$1">#$1</a>');
@@ -91,63 +95,77 @@ export default function Post({ postInfo }) {
 	};
 
 	return (
-		<PostContainer postDeleted={postDeleted ? 1 : 0} postReposted={repostedBy !== undefined}>
-			{repostedBy ?
-				<RepostInfo user={repostedBy.id === userId ? 'you' : repostedBy.username}/>
-				:
-				''}
-			<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
-			{ loading ?
-				<Loading>
-					<CirclesLoader />
-				</Loading>
-				:
-				<PostContent>
-					{userId === id ?
-						<WrapperDeleteAndEdit
-							edit={edit}
-							setEdit={setEdit}
-							setPostText={setPostText}
-							text={text}
-							deletePost={deletePost}
-						/>
-						:
-						''
-					}
+		<>
+			<PostContainer postDeleted={postDeleted ? 1 : 0} postReposted={repostedBy !== undefined}>
+				{repostedBy ?
+					<RepostInfo user={repostedBy.id === userId ? 'you' : repostedBy.username}/>
+					:
+					''}
+				<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
+				{ loading ?
+					<Loading>
+						<CirclesLoader />
+					</Loading>
+					:
+					<PostContent>
+						{userId === id ?
+							<WrapperDeleteAndEdit
+								edit={edit}
+								setEdit={setEdit}
+								setPostText={setPostText}
+								text={text}
+								deletePost={deletePost}
+							/>
+							:
+							''
+						}
 
-					<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
+						<Link to={`/user/${user.id}`}><h3>{username}</h3></Link>
 
-					{edit ?
-						<InsertEditInput
-							editPostText={editPostText}
-							setEditPostText={setEditPostText}
-							editRef={editRef}
-							handleEditMode={handleEditMode}
-							loading={loading ? 1 : 0}
-						/>
-						:
-						<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
-					}
-					{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
-					<a style={{cursor: 'pointer'}}>
-						<LinkContainer onClick={() => setReadPreview(true)}>
-							<LinkPreviewTexts
-								isLongDescription={linkDescription ? linkDescription.length > 120 : false}
-							>
-								<h4>{linkTitle}</h4>
-								<p>{linkDescription}</p>
-								<p>{link}</p>
-							</LinkPreviewTexts>
-							<LinkPreviewImage alt="link preview image" src={linkImage} />
-						</LinkContainer>
-					</a>
-				</PostContent>
-			}
-			<ActionsHolder>
-				<Like likes={likes} id={postId} userInfo={userInfo} />
-				<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId}/>
-			</ActionsHolder>
-		</PostContainer>
+						{edit ?
+							<InsertEditInput
+								editPostText={editPostText}
+								setEditPostText={setEditPostText}
+								editRef={editRef}
+								handleEditMode={handleEditMode}
+								loading={loading ? 1 : 0}
+							/>
+							:
+							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
+						}
+						{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
+						<a style={{cursor: 'pointer'}}>
+
+							<LinkContainer onClick={() => setReadPreview(true)}>
+								<LinkPreviewTexts
+									isLongDescription={linkDescription ? linkDescription.length > 120 : false}
+								>
+									<h4>{linkTitle}</h4>
+									<p>{linkDescription}</p>
+									<a>{link}</a>
+								</LinkPreviewTexts>
+								<LinkPreviewImage alt="link preview image" src={linkImage} />
+							</LinkContainer>
+						</a>
+					</PostContent>
+
+				}
+				<ActionsHolder>
+					<Like likes={likes} id={postId} userInfo={userInfo} />
+					<CommentIcon onClick={()=>setCommentsTabIsOpen(!commentsTabIsOpen)} commentCount={commentCount} />
+					<SharePost shareCount={repostCount} postId={postId} token={token} repostedBy={repostedBy} userId={userId} />
+				</ActionsHolder>
+			</PostContainer>
+			{commentsTabIsOpen ? 
+				<Comments 
+					userInfo={userInfo} 
+					postUserId={id} 
+					token={token} 
+					postId={postId}
+				/> : ''}
+
+		</>
+
 	);
 }
 
@@ -182,6 +200,7 @@ const PostContainer = styled.div`
 		padding: 10px 18px 15px 15px;		
     }
 	position: relative;
+	z-index: 1;
 `;
 
 const UserIcon = styled.img`
@@ -259,11 +278,11 @@ const LinkPreviewTexts = styled.div `
 		overflow: hidden;
 		display: ${(p) => p.isLongDescription ? '-webkit-box' : 'flex'};
 		-webkit-line-clamp: 2; /* number of lines to show */
-  	-webkit-box-orient: vertical;
+  		-webkit-box-orient: vertical;
 		@media (max-width: 611px) {
 			font-size: 11px;
 			line-height: 13px;
-    }
+    	}
 	}			
 	p {
 		font-size: 11px;
@@ -276,7 +295,7 @@ const LinkPreviewTexts = styled.div `
 		@media (max-width: 611px) {
 			font-size: 9px;
 			line-height: 11px;
-    }
+    	}
 	}
 	a {
 		font-size: 11px;
@@ -297,7 +316,6 @@ const LinkPreviewTexts = styled.div `
 		padding: 7px 7px 8px 11px;
   }
 `;
-
 
 const LinkPreviewImage = styled.img `
 	width: 155px;
