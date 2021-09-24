@@ -7,14 +7,23 @@ export default function LinkContainer ({onClick, postInfo}) {
 		linkTitle,
 		linkDescription,
 		link} = postInfo;
-
 	return	(
 		<>
 			{ReactPlayer.canPlay(link)  
-				? <ReactPlayer url={link} 
-					width="501px"
-					height="281px"
-				/> 
+				? <>
+					<Video>
+						<ReactPlayer url={link} 
+							width='100%'
+							height='100%'
+							controls="true"
+							position="absolute"
+							top="0px"
+							right="0px"
+						/> 
+					</Video>
+				
+					<VideoLink>{link}</VideoLink>
+				</>
 				: <Container onClick={onClick} >
 					<LinkPreviewTexts
 						isLongDescription={linkDescription ? linkDescription.length > 120 : false}
@@ -24,12 +33,36 @@ export default function LinkContainer ({onClick, postInfo}) {
 						<a>{link}</a>
 					</LinkPreviewTexts>
 					<LinkPreviewImage alt="link preview image" src={linkImage} />
-				</Container>
-			}
+				</Container>}
 			
 		</>	
 	);
 }
+
+const Video = styled.div `
+	width: 501px;
+	height: 281px;
+	position: relative;
+	@media (max-width: 611px) {
+		width: 100%;
+		height: auto;
+	}
+`;
+const VideoLink = styled.h6 `
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-family: 'Lato';
+	margin-top: 10px;
+	font-weight: normal;
+	font-size: 17px;
+	line-height: 20px;
+	color: #B7B7B7;
+	max-width: 90%;
+	@media (max-width: 611px) {
+		font-size: 14px;
+	}
+`;
 
 const Container = styled.div `
 	width: 503px;
