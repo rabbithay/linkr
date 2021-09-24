@@ -93,7 +93,7 @@ const getFollows = ({ token }) => {
 };
 
 const getComments = (token, postId) => {
-	return axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, makeConfig(token));
+	return axios.get(`${BASE_URL}/posts/${postId}/comments`, makeConfig(token));
 };
 
 const postComment = (token, postId, text) => {

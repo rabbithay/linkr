@@ -17,6 +17,7 @@ function App() {
 	const [peopleIFollow, setPeopleIFollow] = useState([]);
 
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
+
 	useEffect(() => {
 		if (infoFromLocalStorage) setUserInfo(infoFromLocalStorage);
 		if(userInfo.token){

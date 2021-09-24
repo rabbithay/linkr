@@ -168,7 +168,7 @@ export default function Post({ postInfo }) {
 								>
 									<h4>{linkTitle}</h4>
 									<p>{linkDescription}</p>
-									<p>{link}</p>
+									<h5>{link}</h5>
 								</LinkPreviewTexts>
 								<LinkPreviewImage alt="link preview image" src={linkImage} />
 							</LinkContainer>
@@ -320,7 +320,7 @@ const LinkPreviewTexts = styled.div `
 			line-height: 11px;
     	}
 	}
-	a {
+	h5 {
 		font-size: 11px;
 		color: #CECECE;
 		line-height: 13px;		

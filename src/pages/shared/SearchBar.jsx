@@ -1,5 +1,3 @@
-// TODO: Tirar isso aqui
-/* eslint-disable no-unused-vars */
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,9 +15,11 @@ export default function SearchBar({ inHeader }) {
 	const [followIdsList, setFollowIdsList] = useState([]);
 	const [isOnFocus, setIsOnFocus] = useState(false);
 	const history = useHistory();
-
+	
 	
 	const updateSuggestionsList = () => {
+		if (searchText.length < 3 || searchText.includes('#')) return;
+
 		if (token) {
 			getSearching({ token, searchText })
 				.then(({ data: { users } }) => orderFollowsList(users));
@@ -50,8 +50,13 @@ export default function SearchBar({ inHeader }) {
 	const makeSuggestion = ({ id, username, avatar }) => {
 		const isFollowing = followIdsList.includes(id);
 		return (
-			<Link key={id} to={`/user/${id}`}>
-				<li isFollowing={isFollowing}>
+			<Link
+				key={id}
+				isFollowing={isFollowing}
+				onClick={() => setSearchText('')}
+				to={`/user/${id}`}
+			>
+				<li>
 					<img src={avatar} />
 					<h1>{username}</h1>
 					{isFollowing
@@ -63,7 +68,9 @@ export default function SearchBar({ inHeader }) {
 		);
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = (event) => {
+		event.preventDefault();
+
 		if (searchText.includes('#')) {
 			history.push(`/hashtag/${
 				searchText
@@ -75,7 +82,7 @@ export default function SearchBar({ inHeader }) {
 	};
 
 	const handleClickOutside = () => {
-		setTimeout(() => setIsOnFocus(false), 10);
+		setTimeout(() => setIsOnFocus(false), 150);
 	};
 	
 	
@@ -87,8 +94,6 @@ export default function SearchBar({ inHeader }) {
 	return (
 		<Container onSubmit={handleSubmit} inHeader={inHeader} >
 			<div>
-				{/* TODO: Descobrir porque está matando duas letras quando
-				vou apagando o search */}
 				<DebounceInput
 					type="text"
 					placeholder='Search for people and friends'
@@ -109,7 +114,7 @@ export default function SearchBar({ inHeader }) {
 				</IconWrapper>
 			</div>
 
-			<SuggestionsWrapper isOnFocus={isOnFocus}>
+			<SuggestionsWrapper displaySuggestions={isOnFocus && searchText.length >= 3}>
 				{searchList.map((searchUser) => makeSuggestion(searchUser))}
 			</SuggestionsWrapper>
 
@@ -125,7 +130,7 @@ const Container = styled.form`
 		font-weight: normal;
 	}
 
-	z-index: 10;
+	z-index: 3;
 	position: absolute;
 	top: 13px;
 	left: 30%;
@@ -143,11 +148,12 @@ const Container = styled.form`
 		margin-top: 72px;
 		display: flex;
 		flex-direction: column;
+		z-index: 1;
 		${(p) => p.inHeader ? 'display: none;' : ''}
   }
 	
 	> div {
-		z-index: 2;
+		z-index: 4;
 		width: 100%;	
 		height: 45px;
 		display: flex;
@@ -196,10 +202,10 @@ const SuggestionsWrapper = styled.ul`
 	max-height: calc(20px + 2.5 * 55px);
 	overflow: auto;
 	padding-top: 20px;
-	margin-top: -18px;
+	margin-top: -20px;
 	background-color: #E7E7E7;
 	border-radius: 8px;
-	display: ${(p) => p.isOnFocus ? 'flex' : 'none'};
+	display: ${(p) => p.displaySuggestions ? 'flex' : 'none'};
 	flex-direction: column;
 
 	li {
@@ -260,5 +266,3 @@ const SuggestionsWrapper = styled.ul`
 		display: none;
 	}
 `;
-
-/* eslint-enable no-unused-vars */

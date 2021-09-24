@@ -103,9 +103,9 @@ export default function CreatePost({ loadTimelinePosts }) {
 							loading={loading? 1:0}
 						/>
 						{loading ?
-							<button >Publicando...</button>
+							<button >Posting...</button>
 							:
-							<button type='submit'>Publicar</button>
+							<button type='submit'>Post</button>
 						}
 					</fieldset>
 				</form>
