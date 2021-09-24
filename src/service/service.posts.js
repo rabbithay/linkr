@@ -30,11 +30,15 @@ const postLikeOrDislike = (token, postId, action) => {
 	return axios.post(`${BASE_URL}/posts/${postId}/${action}`, {}, makeConfig(token));
 };
 
-const createPostAPI = (text, link, token) => {
+const createPostAPI = (text, link, localization, token) => {
 	const body = {
 		text,
 		link
 	};
+
+	if (localization !== {}) {
+		body.geolocation = localization;
+	}
 
 	return axios.post(`${BASE_URL}/posts`, body, makeConfig(token));
 };
@@ -88,6 +92,14 @@ const getFollows = ({ token }) => {
 	return axios.get(`${BASE_URL}/users/follows`, makeConfig(token));
 };
 
+const getComments = (token, postId) => {
+	return axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, makeConfig(token));
+};
+
+const postComment = (token, postId, text) => {
+	return axios.post(`${BASE_URL}/posts/${postId}/comment`, {text} ,makeConfig(token));
+};
+
 
 export {
 	getTimelinePosts,
@@ -102,5 +114,7 @@ export {
 	getSomeonesName,
 	sharePost,
 	getSearching,
-	getFollows
+	getFollows,
+	getComments,
+	postComment
 };

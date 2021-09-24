@@ -39,6 +39,10 @@ const PreviewBackground = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	@media (max-width: 600px) {
+		padding: 5%;
+	}
 `;
 
 const PreviewContainer = styled.div`
@@ -73,6 +77,7 @@ const Preview = styled.iframe`
 	position: absolute;
 	bottom: 3%;
 	left: 2.5%;
+	border-radius: 10px;
 `;
 
 

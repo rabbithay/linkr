@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { useState, useContext } from 'react';
+import { LocationOutline } from 'react-ionicons';
 import ModalAlert from '../shared/ModalAlert';
 import { createPostAPI } from '../../service/service.posts';
 import UserContext from '../../contexts/UserContext';
@@ -9,8 +10,41 @@ export default function CreatePost({ loadTimelinePosts }) {
 	const {userInfo} = useContext(UserContext);
 	const [link, setLink] = useState('');
 	const [linkDescription, setLinkDescription] = useState('');
+	const [localizationMode, setLocalizationMode] = useState(false);
+	const [localization, setLocalization] = useState({});
 	const [loading, setLoading] = useState(false);
 
+	const getUserLocalization = () => {
+		const options = {
+			enableHighAccuracy: true,
+			timeout: 5000,
+			maximumAge: 0
+		};
+		
+		function onSuccess(pos) {
+			const coord = pos.coords;
+			setLocalizationMode(true);
+			setLocalization({'latitude': coord.latitude,'longitude': coord.longitude});
+		}
+		
+		function onError() {
+			const modalObj = 
+			{
+				title: 'An error occurred on locating you, please enable your navigator localization',
+				icon: 'error'
+			};
+			ModalAlert(modalObj);
+		}
+		
+		if (!localizationMode) {
+			navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
+		}
+		else {
+			setLocalizationMode(false);
+			setLocalization({});
+		}
+	};
+	
 	const publishPost = (event) => {
 		if (event) event.preventDefault();
 		
@@ -23,7 +57,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 			return;
 		}
 		setLoading(true);
-		createPostAPI(linkDescription, link, userInfo.token)
+		createPostAPI(linkDescription, link, localization, userInfo.token)
 			.then(() => {
 				setLoading(false);
 				setLinkDescription('');
@@ -68,7 +102,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 							onKeyUp={(key) => postOnEnter(key.nativeEvent.key)}
 							loading={loading? 1:0}
 						/>
-						{loading?
+						{loading ?
 							<button >Publicando...</button>
 							:
 							<button type='submit'>Publicar</button>
@@ -76,6 +110,16 @@ export default function CreatePost({ loadTimelinePosts }) {
 					</fieldset>
 				</form>
 			</PostContent>
+			<ToggleLocalization 
+				localizationMode={localizationMode}
+				onClick={getUserLocalization}
+			>
+				<LocationOutline
+					height="20px"
+					width="20px"
+				/>
+				Localização {localizationMode ? '' : 'des'}ativada 
+			</ToggleLocalization>
 		</Container>
 	);
 }
@@ -216,4 +260,25 @@ const LinkDescription = styled.textarea`
 			height: 47px;
 			width: 100%;
 		}
+`;
+
+const ToggleLocalization = styled.button`
+	height: 20px;
+	width: 200px;
+	position: absolute;
+	bottom: 25px;
+	left: 75px;
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	color: ${props => props.localizationMode ? '#238700' : '#949494'};
+	cursor: pointer;
+	font-family: 'Lato';
+	font-weight: 300;
+	font-size: 15px;
+
+	@media(max-width: 600px){
+		bottom: 15px;
+		left: 25px;
+	}
 `;

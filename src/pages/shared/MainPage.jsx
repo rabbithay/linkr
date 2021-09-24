@@ -9,11 +9,11 @@ import SearchBar from './SearchBar';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
-import Post from './Post/Post';
+import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
 
-
 export default function MainPage(props) {
+
 	const {
 		getPosts,
 		titleText,
@@ -55,6 +55,11 @@ export default function MainPage(props) {
 			}).catch(pageReloadErrorAlert);
 	};
 
+	useEffect(()=>{
+		loadPosts();
+		window.scrollTo(0, 0);
+	}, [token, hashtag]);
+
 	const postListJSX = (postsList) => {
 		return postsList.map((post) => {
 			return (
@@ -62,7 +67,9 @@ export default function MainPage(props) {
 					key={post.repostId !== undefined ? post.repostId : post.id}
 					postInfo={post}
 				/>
-			);});
+				
+			);
+		});
 	};
 	
 
@@ -105,7 +112,8 @@ export default function MainPage(props) {
 								{postListJSX(postsList)}
 							</InfiniteScroll>
 							: <NoPostMessage />
-					}
+					}					
+					
 				</TimelineContent>
 				
 				<HashtagContainer>
