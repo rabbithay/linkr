@@ -11,6 +11,7 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
 import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
+import FollowUnfollow from './FollowUnfollow';
 
 export default function MainPage(props) {
 
@@ -107,15 +108,28 @@ export default function MainPage(props) {
 			<Header />
 			<Background>
 				<TimelineContent>
-					<SearchBar />
 					
-					{loaderIsActive || !titleText
-						? <h1>Loading...</h1>
-						: <h1>{titleText}</h1>
-					}
+					<SearchBar />
+
+					<TopPageWrapper>
+						{loaderIsActive || !titleText
+							? <h1>Loading...</h1>
+							: <h1>{titleText}</h1>
+						}
+
+						{someonesId
+							? <ButtonWrapper>
+								<FollowUnfollow
+									someonesId={someonesId}
+									token={token}>
+								</FollowUnfollow>
+							</ButtonWrapper>
+							: <></>
+						}
+					</TopPageWrapper>
 
 					{CreatePost
-						? <CreatePost loadTimelinePosts={loadPosts}/>
+						? <CreatePost loadTimelinePosts={loadPosts} />
 						: <></>
 					}
 
@@ -132,7 +146,6 @@ export default function MainPage(props) {
 							</InfiniteScroll>
 							: <NoPostMessage />
 					}					
-					
 				</TimelineContent>
 				
 				<HashtagContainer>
@@ -163,6 +176,29 @@ const Background = styled.div`
   }
 `;
 
+const TopPageWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	top: 0;
+	left: 0;
+`;
+
+const ButtonWrapper = styled.div`
+	position: absolute;
+	top: 69px;
+	left: 812px;
+
+	@media (max-width: 1024px){
+		left: 500px;
+	}
+
+	@media (max-width: 611px){
+		top: 100px;
+		left: 18px;
+	}
+`;
+
 const TimelineContent = styled.div`
 	width: 611px;
 	height: auto;
@@ -188,6 +224,7 @@ const TimelineContent = styled.div`
 		width: 100vw;    
 	}
 `;
+
 
 const HashtagContainer = styled.div`
 	width: 301px; 
