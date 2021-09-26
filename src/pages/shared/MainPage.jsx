@@ -10,6 +10,7 @@ import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
 import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
+import ScrollTopButton from './ScrollTopButton';
 
 export default function MainPage(props) {
 
@@ -94,6 +95,7 @@ export default function MainPage(props) {
 	return (
 		<>
 			<Header />
+			<ScrollTopButton/>
 			<Background>
 				<TimelineContent>
 					{loaderIsActive || !titleText

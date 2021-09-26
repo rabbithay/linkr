@@ -46,7 +46,7 @@ function Header () {
 
 	return (
 		<Topbar >
-			<Link to='/timeline'>
+			<Link to='/timeline' onClick={()=>window.scrollTo(0,0)} >
 				<P>linkr</P>
 			</Link>
 			<Container ref={dropdownRef} onClick={toggleDropdown}>
