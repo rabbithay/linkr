@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
+import FollowsContext from '../../contexts/FollowsContext';
 import UserContext from '../../contexts/UserContext';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../shared/Header';
@@ -11,6 +12,8 @@ import NoPostMessage from '../shared/NoPostMessage';
 import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
 import ScrollTopButton from './ScrollTopButton';
+import FollowUnfollow from './FollowUnfollow';
+import FollowingNoOneMessage from './FollowingNoOneMessage';
 
 export default function MainPage(props) {
 
@@ -24,7 +27,8 @@ export default function MainPage(props) {
 	const { hashtag, someonesId } = params;
 
 	const { userInfo: { token, userId } } = useContext(UserContext);
-	
+	const {peopleIFollow, updatePeopleIFollow} = useContext(FollowsContext);
+
 	const [postsList, setPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
@@ -71,6 +75,7 @@ export default function MainPage(props) {
 	}
 
 	useEffect(()=>{
+		updatePeopleIFollow();
 		loadPosts();
 		window.scrollTo(0, 0);
 		const intervalId = setInterval(() => {
@@ -98,16 +103,25 @@ export default function MainPage(props) {
 			<ScrollTopButton/>
 			<Background>
 				<TimelineContent>
-					{loaderIsActive || !titleText
-						? <h1>Carregando...</h1>
-						: <h1>{titleText}</h1>
-					}
-
+					<TopPageWrapper>
+						{loaderIsActive || !titleText
+							? <h1>Carregando...</h1>
+							: <h1>{titleText}</h1>
+						}
+						{someonesId
+							? <ButtonWrapper>
+								<FollowUnfollow
+									someonesId={someonesId}
+									token={token}>
+								</FollowUnfollow>
+							</ButtonWrapper>
+							: <></>
+						}
+					</TopPageWrapper>
 					{CreatePost
-						? <CreatePost loadTimelinePosts={loadPosts}/>
+						? <CreatePost loadTimelinePosts={loadPosts} />
 						: <></>
 					}
-
 					{loaderIsActive
 						? <CirclesLoader />
 						: (postsList.length)
@@ -119,7 +133,9 @@ export default function MainPage(props) {
 							>
 								{postListJSX(postsList)}
 							</InfiniteScroll>
-							: <NoPostMessage />
+							: peopleIFollow.length > 0 
+								?<NoPostMessage />
+								:<FollowingNoOneMessage />
 					}					
 					
 				</TimelineContent>
@@ -151,6 +167,33 @@ const Background = styled.div`
   }
 `;
 
+const TopPageWrapper = styled.div`
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	top: 0;
+	left: 0;
+	@media (max-width: 611px){
+		flex-direction: column;
+	}
+`;
+
+const ButtonWrapper = styled.div`
+	position: absolute;
+	top: 69px;
+	left: 812px;
+
+	@media (max-width: 1024px){
+		left: 500px;
+	}
+
+	@media (max-width: 611px){
+		position: relative;
+		top: 0;
+		left: 15px;
+	}
+`;
+
 const TimelineContent = styled.div`
 	width: 611px;
 	height: auto;
@@ -165,10 +208,15 @@ const TimelineContent = styled.div`
 		line-height: 63px;
 		word-break: break-all;
 
+		@media (max-width: 1024px){
+			width: 80%;
+		}
+
 		@media (max-width: 611px) {
 			margin: 53px 0px 12px 17px;
 			font-size: 33px;
 			line-height: 49px;
+			width: 90%;
 		}
 	}
 
@@ -176,6 +224,7 @@ const TimelineContent = styled.div`
 		width: 100vw;    
 	}
 `;
+
 
 const HashtagContainer = styled.div`
 	width: 301px; 

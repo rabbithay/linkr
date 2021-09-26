@@ -1,9 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import {
-	BrowserRouter as Router, Switch, 
-} from 'react-router-dom';
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import UserContext from './contexts/UserContext';
 
 import GlobalStyle from './styles/GlobalStyle';
@@ -15,26 +13,28 @@ import { getFollows } from './service/service.users';
 function App() {
 	const [userInfo, setUserInfo] = useState('');
 	const [peopleIFollow, setPeopleIFollow] = useState([]);
-
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
+
+	const updatePeopleIFollow = () => {
+		getFollows(userInfo.token).then((res)=>{
+			setPeopleIFollow(res.data.users);
+		}).catch();
+	};
+
 	useEffect(() => {
 		if (infoFromLocalStorage) setUserInfo(infoFromLocalStorage);
-		if(userInfo.token){
-			getFollows(userInfo.token).then((res)=>{
-				setPeopleIFollow(res.data.users);
-			}).catch();
-		}
-	}, [peopleIFollow]);
+		if(userInfo.token) updatePeopleIFollow;
+	}, [userInfo.token]);
 
 
 	return (
 		<UserContext.Provider value={{userInfo, setUserInfo}}>
-			<FollowsContext.Provider value={{peopleIFollow, setPeopleIFollow}}>
+			<FollowsContext.Provider value={{peopleIFollow, updatePeopleIFollow}}>
 				<Router>
 					<GlobalStyle/>
-					<Switch>
+					<AnimatePresence exitBeforeEnter initial={false}>
 						<Routes/>
-					</Switch>
+					</AnimatePresence>
 				</Router>
 			</FollowsContext.Provider>
 		</UserContext.Provider>
