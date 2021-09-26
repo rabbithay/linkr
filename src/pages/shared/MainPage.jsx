@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
+import FollowsContext from '../../contexts/FollowsContext';
 import UserContext from '../../contexts/UserContext';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Header from '../shared/Header';
@@ -12,6 +13,7 @@ import NoPostMessage from '../shared/NoPostMessage';
 import Post from './PostComponents/Post';
 import Trending from '../shared/Trending';
 import FollowUnfollow from './FollowUnfollow';
+import FollowingNoOneMessage from './FollowingNoOneMessage';
 
 export default function MainPage(props) {
 
@@ -25,7 +27,8 @@ export default function MainPage(props) {
 	const { hashtag, someonesId } = params;
 
 	const { userInfo: { token, userId } } = useContext(UserContext);
-	
+	const {peopleIFollow, updatePeopleIFollow} = useContext(FollowsContext);
+
 	const [postsList, setPostsList] = useState([]);
 	const [loaderIsActive, setLoaderIsActive] = useState(false);
 	const [hasMore, setHasMore] = useState(true);
@@ -72,6 +75,7 @@ export default function MainPage(props) {
 	}
 
 	useEffect(()=>{
+		updatePeopleIFollow();
 		loadPosts();
 		window.scrollTo(0, 0);
 		const intervalId = setInterval(() => {
@@ -144,7 +148,9 @@ export default function MainPage(props) {
 							>
 								{postListJSX(postsList)}
 							</InfiniteScroll>
-							: <NoPostMessage />
+							: peopleIFollow.length > 0 
+								?<NoPostMessage />
+								:<FollowingNoOneMessage />
 					}					
 				</TimelineContent>
 				
@@ -182,6 +188,9 @@ const TopPageWrapper = styled.div`
 	position: relative;
 	top: 0;
 	left: 0;
+	@media (max-width: 611px){
+		flex-direction: column;
+	}
 `;
 
 const ButtonWrapper = styled.div`
@@ -194,8 +203,9 @@ const ButtonWrapper = styled.div`
 	}
 
 	@media (max-width: 611px){
-		top: 100px;
-		left: 18px;
+		position: relative;
+		top: 0;
+		left: 15px;
 	}
 `;
 
@@ -213,10 +223,15 @@ const TimelineContent = styled.div`
 		line-height: 63px;
 		word-break: break-all;
 
+		@media (max-width: 1024px){
+			width: 80%;
+		}
+
 		@media (max-width: 611px) {
 			margin: calc(53px + 75px) 0px 12px 17px;
 			font-size: 33px;
 			line-height: 49px;
+			width: 90%;
 		}
 	}
 
