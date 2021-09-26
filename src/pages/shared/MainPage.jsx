@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import FollowsContext from '../../contexts/FollowsContext';
 import UserContext from '../../contexts/UserContext';
-import InfiniteScroll from 'react-infinite-scroll-component';
+
 import Header from '../shared/Header';
 import SearchBar from './SearchBarComponents';
 import CirclesLoader from '../shared/CirclesLoader';

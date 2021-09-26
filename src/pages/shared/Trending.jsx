@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import UserContext from '../../contexts/UserContext';
-import { getTrending } from '../../service/service.hashtag';
+import { getTrending } from '../../service/service.trending';
 
 import ModalAlert from './ModalAlert';
 

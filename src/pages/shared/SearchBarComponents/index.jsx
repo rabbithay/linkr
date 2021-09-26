@@ -203,57 +203,7 @@ const SuggestionsWrapper = styled.ul`
 	border-radius: 8px;
 	display: ${(p) => p.displaySuggestions ? 'flex' : 'none'};
 	flex-direction: column;
-
-	li {
-		width: 100%;
-		height: calc(2 * 8px + 39px);
-		display: flex;
-		align-items: center;
-		padding: 8px 17px;
-
-		img {
-			width: 39px;
-			height: 39px;
-			margin-right: 12px;
-			border-radius: 50%;
-		}
-
-		h1 {
-			max-width: ${(p) => {
-		return (
-			p.isFollowing
-				? 'calc(40vw - (2 * 17px + 12px + 39px + 2 * 8px + 92px))'
-				: 'calc(40vw - (2 * 17px + 12px + 39px + 2 * 8px + 0px))'
-		);
-	}};
-			overflow: hidden;
-			text-overflow: ellipsis;
-			margin-right: 8px;
-			font-size: 19px;
-			line-height: 23px;
-			color: #515151;
-			word-break: break-word;
-			display: -webkit-box;
-			-webkit-line-clamp: 2;
-  		-webkit-box-orient: vertical;
-
-			@media (max-width: 611px) {
-				max-width: ${(p) => {
-		return (
-			p.isFollowing
-				? 'calc(96vw - (2 * 17px + 12px + 39px + 2 * 8px + 92px))'
-				: 'calc(96vw - (2 * 17px + 12px + 39px + 2 * 8px + 0px))'
-		);
-	}};
-			}
-		}
-
-		h2 {
-			font-size: 19px;
-			line-height: 23px;
-			color: #C5C5C5;
-		}
-	}
+	
 	a:last-child {
 		padding-bottom: 15px;
 	}
