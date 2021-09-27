@@ -223,7 +223,7 @@ const TimelineContent = styled.div`
 	width: 611px;
 	height: auto;
 
-	> div > h1 {
+	> div h1 {
 		font-family: 'Oswald';
 		font-weight: 700;
 		font-size: 43px;
