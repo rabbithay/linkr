@@ -17,15 +17,17 @@ function App() {
 	const infoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo'));
 
 	const updatePeopleIFollow = () => {
-		getFollows(userInfo.token).then((res)=>{
-			setPeopleIFollow(res.data.users);
-		}).catch(()=>{
-			const modalObj = {
-				icon: 'error',
-				title: 'Something went wrong, please reload the page'
-			};
-			ModalAlert(modalObj);
-		});
+		if (userInfo) {
+			getFollows(userInfo.token).then((res)=>{
+				setPeopleIFollow(res.data.users);
+			}).catch(()=>{
+				const modalObj = {
+					icon: 'error',
+					title: 'Something went wrong, please reload the page'
+				};
+				ModalAlert(modalObj);
+			});
+		}
 	};
 
 	useEffect(() => {
