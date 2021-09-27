@@ -3,6 +3,7 @@ import { HeartOutline, HeartSharp } from 'react-ionicons';
 import styled from 'styled-components';
 import ReactTooltip from 'react-tooltip';
 import { postLikeOrDislike } from '../../../service/service.posts';
+import ModalAlert from '../ModalAlert';
 
 export default function Like ({ id, userInfo, likes }) {
 	const [liked, setLiked] = useState(checkLike());
@@ -15,6 +16,11 @@ export default function Like ({ id, userInfo, likes }) {
 			.then()
 			.catch(() => {
 				setLiked(!liked);
+				const modalObj = {
+					icon: 'error',
+					title: 'Something went wrong, please, try again later'
+				};
+				ModalAlert(modalObj);
 			});
 	}
 

@@ -4,6 +4,7 @@ import { PaperPlaneOutline } from 'react-ionicons';
 import { getComments, postComment } from '../../../service/service.posts';
 import Comment from './CommentBox';
 import { CommentBox, UserIcon } from './CommentBox';
+import ModalAlert from '../ModalAlert';
 
 export default function Comments({token, postId, userInfo, postUserId, setCommentsTabIsOpen, comments, setComments}){
 	const [text, setText] = useState('');
@@ -13,7 +14,13 @@ export default function Comments({token, postId, userInfo, postUserId, setCommen
 		if (token){
 			getComments(token, postId).then((res)=>{
 				setCommentsList(res.data.comments);
-			}).catch();
+			}).catch(()=>{
+				const modalObj = {
+					icon: 'error',
+					title: 'Something went wrong, please, try again later'
+				};
+				ModalAlert(modalObj);
+			});
 		}
 	},[commentsList, token]);
 
@@ -23,7 +30,13 @@ export default function Comments({token, postId, userInfo, postUserId, setCommen
 			postComment(token, postId, text).then(()=>{
 				setText('');
 				setComments(comments + 1);
-			}).catch();
+			}).catch(()=>{
+				const modalObj = {
+					icon: 'error',
+					title: 'Something went wrong, please, try again later'
+				};
+				ModalAlert(modalObj);
+			});
 		}
 	}
 

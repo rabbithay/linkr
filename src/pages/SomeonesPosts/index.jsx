@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { getSomeonesPosts, getSomeonesName } from '../../service/service.posts';
-
+import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import MainPage from '../shared/MainPage';
 
 
@@ -13,13 +13,13 @@ export default function SomeonesPosts() {
 	const { id: someonesId } = useParams();
 
 	const updateTitle = (token, someonesId) => {
-		if (someonesId) {
+		if (someonesId && token) {
 			getSomeonesName(token, someonesId)
 				.then(({ data: { user: { username, avatar } } }) => {
 					setTitleText(`${username}'s Posts`);
 					setProfilePhoto(avatar);
 				})
-				.catch(({ response }) => console.log(response));
+				.catch(pageReloadErrorAlert);
 		}
 	};
 	

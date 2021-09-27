@@ -48,7 +48,7 @@ export default function Header () {
 
 	return (
 		<Topbar >
-			<Link to='/timeline'>
+			<Link to='/timeline' onClick={()=> window.scroll({top: 0, behavior: 'smooth'})} >
 				<P>linkr</P>
 			</Link>
 

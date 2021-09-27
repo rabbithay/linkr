@@ -1,16 +1,18 @@
 import React, {useContext} from 'react';
 import styled from 'styled-components';
 import FollowsContext from '../../../contexts/FollowsContext';
+import { Link } from 'react-router-dom';
 
 export default function Comment ({comment, postUserId}) {
 	const { peopleIFollow } = useContext(FollowsContext);
 	const peopleIFollowId = peopleIFollow.map(p=>p.id);
+
 	return (
 		<>
 			<CommentBox >
-				<UserIcon src={comment.user.avatar}/>
+				<Link to={`/user/${comment.user.id}`}><UserIcon src={comment.user.avatar}/></Link>
 				<CommentInfo>
-					<Username>{comment.user.username}</Username>
+					<Link to={`/user/${comment.user.id}`}><Username>{comment.user.username}</Username></Link>
 					<UserTag>
 						{(comment.user.id === postUserId) 
 							? '• post\'s author' 
