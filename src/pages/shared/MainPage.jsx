@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import FollowsContext from '../../contexts/FollowsContext';
 import UserContext from '../../contexts/UserContext';
-import InfiniteScroll from 'react-infinite-scroll-component';
+
 import Header from '../shared/Header';
+import SearchBar from './SearchBarComponents';
 import CirclesLoader from '../shared/CirclesLoader';
 import pageReloadErrorAlert from '../shared/pageReloadErrorAlert';
 import NoPostMessage from '../shared/NoPostMessage';
@@ -22,7 +24,8 @@ export default function MainPage(props) {
 		titleText,
 		CreatePost,
 		params={},
-		updateTitle
+		updateTitle,
+		profilePhoto
 	} = props;
 	const { hashtag, someonesId } = params;
 
@@ -34,7 +37,6 @@ export default function MainPage(props) {
 	const [hasMore, setHasMore] = useState(true);
 	const history = useHistory();
 
-	
 
 	const loadPosts = () => {
 		setLoaderIsActive(true);
@@ -48,8 +50,9 @@ export default function MainPage(props) {
 
 	const loadMorePosts = () => {
 		let index = postsList.length - 1;
-		let lastPostId = postsList[index].repostId !== undefined ? postsList[index].repostId : postsList[index].id; 
-
+		let lastPostId = postsList[index].repostId !== undefined
+			? postsList[index].repostId
+			: postsList[index].id; 
 		getPosts({ token, userId, hashtag, someonesId, lastPostId })
 			.then((res) => {
 				if (res.data.posts.length === 0) {
@@ -95,7 +98,17 @@ export default function MainPage(props) {
 			);
 		});
 	};
+	
 
+	if (updateTitle) {
+		if (Number(someonesId) === userId) history.push('/my-posts');
+		useEffect(() => updateTitle(token, someonesId), [token, someonesId]);
+	}
+	
+	useEffect(() => {
+		window.scrollTo(0, 0);
+		loadPosts();
+	}, [token, hashtag, someonesId]);
 
 	return (
 		<>
@@ -103,11 +116,23 @@ export default function MainPage(props) {
 			<ScrollTopButton/>
 			<Background>
 				<TimelineContent>
+					
+					<SearchBar />
+
 					<TopPageWrapper>
 						{loaderIsActive || !titleText
 							? <h1>Carregando...</h1>
-							: <h1>{titleText}</h1>
+							: 
+							<Wrapper hasImage={profilePhoto !== undefined}>
+								{profilePhoto ?
+									<UserImage src={profilePhoto} />
+									:
+									''
+								}
+								<h1>{titleText}</h1>
+							</Wrapper>
 						}
+
 						{someonesId
 							? <ButtonWrapper>
 								<FollowUnfollow
@@ -118,10 +143,12 @@ export default function MainPage(props) {
 							: <></>
 						}
 					</TopPageWrapper>
+
 					{CreatePost
 						? <CreatePost loadTimelinePosts={loadPosts} />
 						: <></>
 					}
+
 					{loaderIsActive
 						? <CirclesLoader />
 						: (postsList.length)
@@ -137,7 +164,6 @@ export default function MainPage(props) {
 								?<NoPostMessage />
 								:<FollowingNoOneMessage />
 					}					
-					
 				</TimelineContent>
 				
 				<HashtagContainer>
@@ -150,6 +176,7 @@ export default function MainPage(props) {
 		</>
 	);
 }
+
 
 const Background = styled.div`
 	width: 100%;
@@ -198,7 +225,7 @@ const TimelineContent = styled.div`
 	width: 611px;
 	height: auto;
 
-	h1 {
+	> div h1 {
 		font-family: 'Oswald';
 		font-weight: 700;
 		font-size: 43px;
@@ -209,11 +236,11 @@ const TimelineContent = styled.div`
 		word-break: break-all;
 
 		@media (max-width: 1024px){
-			width: 80%;
+			width: 70%;
 		}
 
 		@media (max-width: 611px) {
-			margin: 53px 0px 12px 17px;
+			margin: calc(53px + 75px) 0px 12px 17px;
 			font-size: 33px;
 			line-height: 49px;
 			width: 90%;
@@ -240,4 +267,22 @@ const HashtagContainer = styled.div`
 	}
 `;
 
+const Wrapper = styled.div`
+	width: 100%;
+	display: flex;
 
+	@media (max-width: 600px) {
+		margin-left: ${props => props.hasImage ? '20px' : '0px'};
+	}
+`;
+
+const UserImage = styled.img`
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	margin: 60px 20px 0px 0px;
+
+	@media (max-width: 600px) {
+		margin-right: 10px;
+	}
+`;

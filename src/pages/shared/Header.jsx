@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState, useRef, useContext } from 'react';
 import { ChevronDownOutline, ChevronUpOutline } from 'react-ionicons';
 
 import UserContext from '../../contexts/UserContext';
 
-function Header () {
+import SearchBar from './SearchBarComponents';
+
+
+export default function Header () {
 	const [enabled, setEnabled] = useState(false);
 	const history = useHistory();
 	let dropdownRef = useRef();
@@ -49,6 +51,9 @@ function Header () {
 			<Link to='/timeline' onClick={()=>window.scrollTo(0,0)} >
 				<P>linkr</P>
 			</Link>
+
+			<SearchBar inHeader />
+
 			<Container ref={dropdownRef} onClick={toggleDropdown}>
 				<Dropdown >
 					<DropdownButton>
@@ -188,9 +193,7 @@ const ProfilePhoto = styled.img`
 	margin-left: 10px;
 
 	@media(max-width: 600px) {
-        width: 44px;
+		width: 44px;
 		height: 44px;
-    }
+	}
 `;
-
-export default Header;
