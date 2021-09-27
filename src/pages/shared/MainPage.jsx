@@ -202,6 +202,7 @@ const TopPageWrapper = styled.div`
 	left: 0;
 	@media (max-width: 611px){
 		flex-direction: column;
+		max-width: 94%;
 	}
 `;
 
@@ -270,7 +271,6 @@ const HashtagContainer = styled.div`
 const Wrapper = styled.div`
 	width: 100%;
 	display: flex;
-
 	@media (max-width: 600px) {
 		margin-left: ${props => props.hasImage ? '20px' : '0px'};
 	}
@@ -283,6 +283,6 @@ const UserImage = styled.img`
 	margin: 60px 20px 0px 0px;
 
 	@media (max-width: 600px) {
-		margin-right: 10px;
+		margin: calc(53px + 75px) 0px 12px 0px;
 	}
 `;

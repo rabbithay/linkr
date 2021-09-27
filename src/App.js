@@ -5,6 +5,7 @@ import { AnimatePresence } from 'framer-motion';
 import UserContext from './contexts/UserContext';
 
 import GlobalStyle from './styles/GlobalStyle';
+import ModalAlert from './pages/shared/ModalAlert';
 
 import Routes from './Routes';
 import FollowsContext from './contexts/FollowsContext';
@@ -18,7 +19,13 @@ function App() {
 	const updatePeopleIFollow = () => {
 		getFollows(userInfo.token).then((res)=>{
 			setPeopleIFollow(res.data.users);
-		}).catch();
+		}).catch(()=>{
+			const modalObj = {
+				icon: 'error',
+				title: 'Something went wrong, please reload the page'
+			};
+			ModalAlert(modalObj);
+		});
 	};
 
 	useEffect(() => {

@@ -6,6 +6,7 @@ import { DebounceInput } from 'react-debounce-input';
 
 import { getSearching, getFollows } from '../../../service/service.posts';
 import UserContext from '../../../contexts/UserContext';
+import ModalAlert from '../../shared/ModalAlert';
 
 import SearchSuggestion from './SearchSuggestion';
 
@@ -24,7 +25,13 @@ export default function SearchBar({ inHeader }) {
 
 		if (token) {
 			getSearching({ token, searchText })
-				.then(({ data: { users } }) => orderFollowsList(users));
+				.then(({ data: { users } }) => orderFollowsList(users)).catch(()=>{
+					const modalObj = {
+						icon: 'error',
+						title: 'Something went wrong, please reload the page'
+					};
+					ModalAlert(modalObj);
+				});
 		}
 	};
 	
@@ -45,6 +52,12 @@ export default function SearchBar({ inHeader }) {
 			getFollows({ token })
 				.then(({ data: { users } }) => {
 					setFollowIdsList(users.map(({ id }) => id));
+				}).catch(()=>{
+					const modalObj = {
+						icon: 'error',
+						title: 'Something went wrong, please reload the page'
+					};
+					ModalAlert(modalObj);
 				});
 		}
 	};
