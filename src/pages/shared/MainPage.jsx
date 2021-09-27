@@ -23,7 +23,8 @@ export default function MainPage(props) {
 		titleText,
 		CreatePost,
 		params={},
-		updateTitle
+		updateTitle,
+		profilePhoto
 	} = props;
 	const { hashtag, someonesId } = params;
 
@@ -118,8 +119,16 @@ export default function MainPage(props) {
 
 					<TopPageWrapper>
 						{loaderIsActive || !titleText
-							? <h1>Loading...</h1>
-							: <h1>{titleText}</h1>
+							? <h1>Carregando...</h1>
+							: 
+							<Wrapper hasImage={profilePhoto !== undefined}>
+								{profilePhoto ?
+									<UserImage src={profilePhoto} />
+									:
+									''
+								}
+								<h1>{titleText}</h1>
+							</Wrapper>
 						}
 
 						{someonesId
@@ -214,7 +223,7 @@ const TimelineContent = styled.div`
 	width: 611px;
 	height: auto;
 
-	> div > h1 {
+	> div h1 {
 		font-family: 'Oswald';
 		font-weight: 700;
 		font-size: 43px;
@@ -225,7 +234,7 @@ const TimelineContent = styled.div`
 		word-break: break-all;
 
 		@media (max-width: 1024px){
-			width: 80%;
+			width: 70%;
 		}
 
 		@media (max-width: 611px) {
@@ -253,5 +262,25 @@ const HashtagContainer = styled.div`
 
 	@media (max-width: 1024px) {
 		display: none;
+	}
+`;
+
+const Wrapper = styled.div`
+	width: 100%;
+	display: flex;
+
+	@media (max-width: 600px) {
+		margin-left: ${props => props.hasImage ? '20px' : '0px'};
+	}
+`;
+
+const UserImage = styled.img`
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	margin: 60px 20px 0px 0px;
+
+	@media (max-width: 600px) {
+		margin-right: 10px;
 	}
 `;
