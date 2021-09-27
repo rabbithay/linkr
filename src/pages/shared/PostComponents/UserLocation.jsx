@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CloseOutline } from 'react-ionicons';
-import {MapContainer, TileLayer, Marker} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 
 function UserLocation({setViewUserLocation, username, coord}) {
 	const position = [coord.latitude, coord.longitude];

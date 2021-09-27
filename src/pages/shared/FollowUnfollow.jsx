@@ -5,11 +5,11 @@ import { postFollow, postUnfollow } from '../../service/service.users';
 import ModalAlert from './ModalAlert';
 
 export default function FollowUnfollow({someonesId, token}){
-	const [content, setContent] = useState('carregando...');
+	const [content, setContent] = useState('Loading...');
 	const {peopleIFollow, updatePeopleIFollow} = useContext(FollowsContext);
 	
 	const toggleFollowStatus = () => {
-		setContent('Carregando...');
+		setContent('Loading...');
 		if (content === 'Follow') {
 			postFollow(someonesId, token)
 				.then(() => {
@@ -58,7 +58,7 @@ export default function FollowUnfollow({someonesId, token}){
 
 	return(
 		<>
-			{content === 'Carregando...' ?
+			{content === 'Loading...' ?
 				<StyledButton  content={content}>
 					{content}
 				</StyledButton>

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { CloseOutline } from 'react-ionicons';
 
-function LinkPreview({setReadPreview, link}) {
+function LinkPreview({ setReadPreview, link }) {
 	return(
 		<PreviewBackground>
 			<PreviewContainer>
@@ -35,7 +35,7 @@ const PreviewBackground = styled.div`
 	left: 0;
 	z-index: 1;
 	background: #FFFFFFE5;
-	padding: 4% 15%;
+	padding: 5% 15%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -74,6 +74,7 @@ const OpenNewTab = styled.a`
 const Preview = styled.iframe`
 	width: 95%;
 	height: calc(100% - 90px);
+	background: white;
 	position: absolute;
 	bottom: 3%;
 	left: 2.5%;

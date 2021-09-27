@@ -86,8 +86,16 @@ const getSomeonesName = (token, someonesId) => {
 	return axios.get(`${BASE_URL}/users/${someonesId}`, makeConfig(token));
 };
 
+const getSearching = ({ token, searchText }) => {
+	return axios.get(`${BASE_URL}/users/search?username=${searchText}`, makeConfig(token));
+};
+
+const getFollows = ({ token }) => {
+	return axios.get(`${BASE_URL}/users/follows`, makeConfig(token));
+};
+
 const getComments = (token, postId) => {
-	return axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v3/linkr/posts/${postId}/comments`, makeConfig(token));
+	return axios.get(`${BASE_URL}/posts/${postId}/comments`, makeConfig(token));
 };
 
 const postComment = (token, postId, text) => {
@@ -107,6 +115,8 @@ export {
 	getHashtagPosts,
 	getSomeonesName,
 	sharePost,
+	getSearching,
+	getFollows,
 	getComments,
 	postComment
 };

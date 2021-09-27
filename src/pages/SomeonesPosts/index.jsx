@@ -9,12 +9,16 @@ import MainPage from '../shared/MainPage';
 export default function SomeonesPosts() {
 	
 	const [titleText, setTitleText] = useState(undefined);
+	const [profilePhoto, setProfilePhoto] = useState(undefined);
 	const { id: someonesId } = useParams();
 
 	const updateTitle = (token, someonesId) => {
 		if (someonesId) {
 			getSomeonesName(token, someonesId)
-				.then(({ data: { user: { username } } }) => setTitleText(`${username}'s Posts`))
+				.then(({ data: { user: { username, avatar } } }) => {
+					setTitleText(`${username}'s Posts`);
+					setProfilePhoto(avatar);
+				})
 				.catch(pageReloadErrorAlert);
 		}
 	};
@@ -25,6 +29,7 @@ export default function SomeonesPosts() {
 			titleText={titleText}
 			params={{someonesId}}
 			updateTitle={updateTitle}
+			profilePhoto={profilePhoto}
 		/>
 	);
 }

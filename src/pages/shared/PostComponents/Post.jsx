@@ -100,7 +100,7 @@ export default function Post({ postInfo }) {
 		<>
 			<PostContainer postDeleted={postDeleted ? 1 : 0} postReposted={repostedBy !== undefined}>
 				{repostedBy ?
-					<RepostInfo user={repostedBy.id === userId ? 'you' : repostedBy.username}/>
+					<RepostInfo user={repostedBy} id={userId}/>
 					:
 					''}
 				<Link to={`/user/${user.id}`}><UserIcon alt='avatar' src={avatar} /></Link>
@@ -185,7 +185,7 @@ export default function Post({ postInfo }) {
 	);
 }
 
-function RepostInfo({user}) {
+function RepostInfo({user, userId}) {
 	return (
 		<RepostDiv >
 			<RepeatOutline
@@ -196,7 +196,7 @@ function RepostInfo({user}) {
 					marginRight: '10px'
 				}}
 			/>
-			Re-posted by <span>{user}</span>
+			Re-posted by <Link to={`/user/${user.id === userId ? userId : user.id}`}><span>{user.id === userId ? 'you' : user.username}</span></Link>
 		</RepostDiv>
 	);
 }
