@@ -26,14 +26,15 @@ function Routes() {
 			history.push('/');
 		}
 		if (userInfo && location.pathname === '/') {
-			if (previousLocation !== '/timeline' && previousLocation !== '' && userInfo.token) {
+			if (previousLocation !== '/timeline' && previousLocation !== '') {
+				history.push('/timeline');
 				history.push(previousLocation);
 			}
 			else {
 				history.push('/timeline');
 			}
 		}
-	}, [location, userInfo]);
+	}, [previousLocation, userInfo]);
 
 	const routes = 
 	[

@@ -13,7 +13,7 @@ export default function SomeonesPosts() {
 	const { id: someonesId } = useParams();
 
 	const updateTitle = (token, someonesId) => {
-		if (someonesId) {
+		if (someonesId && token) {
 			getSomeonesName(token, someonesId)
 				.then(({ data: { user: { username, avatar } } }) => {
 					setTitleText(`${username}'s Posts`);
