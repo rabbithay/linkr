@@ -103,7 +103,7 @@ export default function CreatePost({ loadTimelinePosts }) {
 							loading={loading? 1:0}
 						/>
 						{loading ?
-							<button >Posting...</button>
+							<button style={{filter: 'brightness(0.8)'}}>Posting...</button>
 							:
 							<button type='submit'>Post</button>
 						}
