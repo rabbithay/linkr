@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { CloseOutline } from 'react-ionicons';
 
-function LinkPreview({setReadPreview, link}) {
+function LinkPreview({ setReadPreview, link }) {
 	return(
 		<PreviewBackground>
 			<PreviewContainer>
