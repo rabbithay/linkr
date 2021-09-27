@@ -149,7 +149,7 @@ export default function Post({ postInfo }) {
 								loading={loading ? 1 : 0}
 							/>
 							:
-							<div dangerouslySetInnerHTML={{ __html: `<p >${hashtag(postText)}</p>` }} />
+							<div dangerouslySetInnerHTML={{ __html: `<p>${hashtag(postText)}</p>` }} />
 						}
 						{readPreview ? <LinkPreview setReadPreview={setReadPreview} link={link}/> : ''}
 						{viewUserLocation ? 
@@ -255,6 +255,7 @@ const PostContent = styled.div `
 		@media (max-width: 611px) {
 			font-size: 15px;
 			line-height: 18px;
+			max-width: 80%;
 		}
 	}
 	a {
@@ -263,6 +264,7 @@ const PostContent = styled.div `
 	}
 	@media (max-width: 611px) {
 		min-height: 174px;
+		max-width: 80%;
 	}
 `;
 
@@ -329,5 +331,11 @@ const Wrapper = styled.div`
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	@media (max-width: 611px) {
+		a {
+			max-width: 80%;
+		}
 	}
 `;

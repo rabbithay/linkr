@@ -44,7 +44,7 @@ const Video = styled.div `
 	height: 281px;
 	position: relative;
 	@media (max-width: 611px) {
-		width: calc(100% );
+		width: 100%;
 		height: auto;
 	}
 `;

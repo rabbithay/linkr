@@ -26,8 +26,8 @@ function Routes() {
 			history.push('/');
 		}
 		if (userInfo && location.pathname === '/') {
-			if (previousLocation !== '/timeline' && previousLocation !== '') {
-				console.log(previousLocation);
+			if (previousLocation !== '/timeline' && previousLocation !== '' && userInfo.token) {
+				history.push(previousLocation);
 			}
 			else {
 				history.push('/timeline');

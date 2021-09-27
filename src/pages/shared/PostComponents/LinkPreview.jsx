@@ -33,7 +33,7 @@ const PreviewBackground = styled.div`
 	position: fixed;
 	top: 0;
 	left: 0;
-	z-index: 1;
+	z-index: 5;
 	background: #FFFFFFE5;
 	padding: 5% 15%;
 	display: flex;

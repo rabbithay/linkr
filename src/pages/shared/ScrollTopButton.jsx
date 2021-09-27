@@ -6,7 +6,7 @@ export default function ScrollTopButton () {
 
 	
 	return (
-		<ScrollButton onClick={()=>window.scrollTo(0,0)}>
+		<ScrollButton onClick={()=>window.scrollTo({top: 0, behavior: 'smooth'})}>
 			<ChevronUpCircleSharp
 				color={'#ffffff7f'} 
 				height="4rem"
