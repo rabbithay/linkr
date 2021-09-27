@@ -95,7 +95,6 @@ export default function Post({ postInfo }) {
 		};
 		ModalAlert(modalObj);
 	};
-	console.log(repostedBy);
 
 	return (
 		<>
