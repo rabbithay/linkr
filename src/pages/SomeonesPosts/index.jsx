@@ -14,8 +14,7 @@ export default function SomeonesPosts() {
 	const updateTitle = (token, someonesId) => {
 		if (someonesId) {
 			getSomeonesName(token, someonesId)
-				.then(({ data: { user: { username } } }) => setTitleText(`${username}'s Posts`))
-				.catch(({ response }) => console.log(response));
+				.then(({ data: { user: { username } } }) => setTitleText(`${username}'s Posts`));
 		}
 	};
 	
