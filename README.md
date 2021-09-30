@@ -27,7 +27,10 @@ um gif da aplicação bem maneiro -->
 ## Features ✅
 
 - [x] register and log into the website
-- [x] see my timeline posts
+- [x] search for users and hashtags
+- [x] follow and unfollow other users
+- [x] see in my timeline posts only from users I follow
+- [x] posts load progressively as the page scrolls
 - [x] publish a post with an interesting link and a cool description
 - [x] edit the posts I published
 - [x] delete a post I published
@@ -38,6 +41,12 @@ um gif da aplicação bem maneiro -->
 - [x] access my posts, my likes and leave the page in the header menu
 - [x] see the list of trending hashtags
 - [x] see all posts that contain a specific hashtag by clicking on it
+- [x] be able to repost other posts
+- [x] comment on a post and see comments from other users
+- [x] preview links without leaving the site
+- [x] watch videos from others sites directly on the timeline
+- [x] share my location and see the location of other users
+
 
 </br>
 
